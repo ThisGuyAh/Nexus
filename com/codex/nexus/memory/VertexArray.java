@@ -1,4 +1,4 @@
-package com.codex.nexus.buffer;
+package com.codex.nexus.memory;
 
 import static org.lwjgl.opengl.GL30.*;
 
