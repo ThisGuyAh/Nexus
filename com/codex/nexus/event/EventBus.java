@@ -3,11 +3,11 @@ package com.codex.nexus.event;
 import static com.codex.nexus.utility.Methods.*;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class EventBus {
 
@@ -26,7 +26,8 @@ public class EventBus {
 			methods.forEach(method -> {
 				Class<?> parameterType = method.getParameterTypes()[0];
 
-				subscribers.computeIfAbsent(parameterType, key -> new HashSet<>()).add(new Invocation(method, object));
+				subscribers.computeIfAbsent(parameterType, key -> new CopyOnWriteArraySet<>())
+						.add(new Invocation(method, object));
 			});
 
 			clazz = clazz.getSuperclass();
