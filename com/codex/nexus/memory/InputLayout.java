@@ -3,13 +3,13 @@ package com.codex.nexus.memory;
 public class InputLayout {
 
 	private InputElement[] inputElements;
-	private int size;
+	private int stride;
 
-	public InputLayout(InputElement[] inputElements) {
+	public InputLayout(InputElement... inputElements) {
 		this.inputElements = inputElements;
 
 		for (InputElement inputElement : inputElements) {
-			size += inputElement.getComponentCount() * Float.BYTES;
+			stride += inputElement.getComponentCount() * Float.BYTES;
 		}
 	}
 
@@ -17,8 +17,8 @@ public class InputLayout {
 		return inputElements;
 	}
 
-	public int getSize() {
-		return size;
+	public int getStride() {
+		return stride;
 	}
 
 }
