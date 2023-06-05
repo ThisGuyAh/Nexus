@@ -23,7 +23,7 @@ public class VertexBuffer {
 		return inputLayout;
 	}
 
-	public float[] getVertices() {
+	public float[] getData() {
 		return data;
 	}
 
