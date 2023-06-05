@@ -1,43 +1,30 @@
 package com.codex.nexus.memory;
 
 import static org.lwjgl.BufferUtils.*;
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
 
 public class VertexBuffer {
 
-	private float[] vertices;
 	private InputLayout inputLayout;
+	private float[] data;
 	private int handle;
 
-	public VertexBuffer(float[] vertices, InputLayout inputLayout) {
-		this.vertices = vertices;
+	public VertexBuffer(InputLayout inputLayout, float[] data) {
 		this.inputLayout = inputLayout;
+		this.data = data;
 
 		handle = glGenBuffers();
 
 		bind();
-		glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(vertices.length).put(vertices).flip(), GL_STATIC_DRAW);
-
-		InputElement[] inputElements = inputLayout.getInputElements();
-		int offset = 0;
-
-		for (int i = 0; i < inputElements.length; i++) {
-			int componentCount = inputElements[i].getComponentCount();
-
-			glVertexAttribPointer(i, componentCount, GL_FLOAT, false, inputLayout.getSize(), offset);
-			offset += componentCount * Float.BYTES;
-		}
-
-	}
-
-	public float[] getVertices() {
-		return vertices;
+		glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(data.length).put(data).flip(), GL_STATIC_DRAW);
 	}
 
 	public InputLayout getInputLayout() {
 		return inputLayout;
+	}
+
+	public float[] getVertices() {
+		return data;
 	}
 
 	public long getHandle() {
