@@ -27,7 +27,7 @@ public class VertexBuffer {
 		return data;
 	}
 
-	public long getHandle() {
+	public int getHandle() {
 		return handle;
 	}
 
