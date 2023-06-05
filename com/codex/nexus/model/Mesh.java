@@ -1,23 +1,16 @@
 package com.codex.nexus.model;
 
-import com.codex.nexus.memory.IndexBuffer;
 import com.codex.nexus.memory.VertexArray;
-import com.codex.nexus.memory.VertexBuffer;
 
 public class Mesh {
 
 	private String name;
 	private VertexArray vertexArray;
-	private VertexBuffer vertexBuffer;
-	private IndexBuffer indexBuffer;
 	private Material material;
 
-	public Mesh(String name, VertexArray vertexArray, VertexBuffer vertexBuffer, IndexBuffer indexBuffer,
-			Material material) {
+	public Mesh(String name, VertexArray vertexArray, Material material) {
 		this.name = name;
 		this.vertexArray = vertexArray;
-		this.vertexBuffer = vertexBuffer;
-		this.indexBuffer = indexBuffer;
 		this.material = material;
 	}
 
@@ -27,14 +20,6 @@ public class Mesh {
 
 	public VertexArray getVertexArray() {
 		return vertexArray;
-	}
-
-	public VertexBuffer getVertexBuffer() {
-		return vertexBuffer;
-	}
-
-	public IndexBuffer getIndexBuffer() {
-		return indexBuffer;
 	}
 
 	public Material getMaterial() {
@@ -59,8 +44,6 @@ public class Mesh {
 
 	public void delete() {
 		vertexArray.delete();
-		vertexBuffer.delete();
-		indexBuffer.delete();
 	}
 
 }
