@@ -1,79 +1,91 @@
 package com.codex.nexus.memory;
 
 /**
- * Describes a single input element of vertex data within the {@link InputLayout}.
+ * An {@code InputElement} is a description of a vertex attribute.
+ * 
+ * <p>
+ * This is commonly describing a position, normal, texture coordinate, or color.
+ * 
+ * @see DataType
+ * @see InputLayout
  * 
  * @author Christopher Ruley
  */
 public class InputElement {
 
 	/**
-	 * The name of this input element.
+	 * The name.
 	 */
 	private String name;
 
 	/**
-	 * The component count of this input element.
+	 * The {@code DataType}.
 	 */
-	private int componentCount;
+	private DataType dataType;
 
 	/**
-	 * Whether or not this input element is normalized.
+	 * Whether or not this should be normalized or converted directly as
+	 * fixed-point values. If true, values are mapped to the range [-1, 1] (for
+	 * signed values) or [0, 1] (for unsigned values) when accessed and
+	 * converted to floating points.
 	 */
 	private boolean normalized;
 
 	/**
-	 * The offset (in bytes) of this input element. This is used to determine the position of the input element relative
-	 * to the start of a buffer. This field's value is calculated during the creation of the {@link InputLayout}.
+	 * The offset (in bytes), or displacement. This value is calculated during
+	 * the creation of the {@code InputLayout}.
 	 */
 	int offset;
 
 	/**
-	 * Constructs an input element.
+	 * Constructs an {@code InputElement}.
 	 * 
-	 * @param name The name of this input element.
-	 * @param componentCount The component count of this input element.
-	 * @param normalized Whether or not this input element is nornalized.
+	 * @param name the name.
+	 * @param dataType the {@code DataType}.
+	 * @param normalized whether or not this is normalized.
 	 */
-	public InputElement(String name, int componentCount, boolean normalized) {
+	public InputElement(String name, DataType dataType, boolean normalized) {
 		this.name = name;
-		this.componentCount = componentCount;
+		this.dataType = dataType;
 		this.normalized = normalized;
 	}
 
 	/**
-	 * Gets the name of this input element.
+	 * Gets the name
 	 * 
-	 * @return The name of this input element.
+	 * @return the name.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * Gets the component count of this input element.
+	 * Gets the {@code DataType}.
 	 * 
-	 * @return The component count of this input element.
+	 * @return the {@code DataType}.
 	 */
-	public int getComponentCount() {
-		return componentCount;
+	public DataType getDataType() {
+		return dataType;
 	}
 
 	/**
-	 * Gets whether or not this input element is normalized.
+	 * Gets whether or not this should be normalized or converted directly as
+	 * fixed-point values. If true, values are mapped to the range [-1, 1] (for
+	 * signed values) or [0, 1] (for unsigned values) when accessed and
+	 * converted to floating points.
 	 * 
-	 * @return Whether or not this input element is normalized.
+	 * @return whether or not this should be normalized or converted directly as
+	 * fixed-point values.
 	 */
 	public boolean isNormalized() {
 		return normalized;
 	}
 
 	/**
-	 * Gets the offset, in bytes, of this input element. This is used to determine the position of the input element
-	 * relative to the start of a buffer. This field's value is calculated during the creation of the
-	 * {@link InputLayout}.
+	 * Gets the offset (in bytes), or displacement. This value is calculated
+	 * during the creation of the {@code InputLayout}.
 	 * 
-	 * @return The offset, in bytes, of this input element.
+	 * @return the offset (in bytes).
 	 */
 	public int getOffset() {
 		return offset;
