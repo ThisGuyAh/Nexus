@@ -1,26 +1,32 @@
 package com.codex.nexus.memory;
 
 /**
- * Describes the layout within a {@link VertexBuffer}.
+ * An {@code InputLayout} stores one or more {@code InputElement}s to provide
+ * an interpretation of vertex data stored in a {@code VertexBuffer}.
+ * 
+ * @see DataType
+ * @see InputElement
+ * @see VertexBuffer
  * 
  * @author Christopher Ruley
  */
 public class InputLayout {
 
 	/**
-	 * The input element(s).
+	 * The {@code InputElement} array.
 	 */
 	private InputElement[] inputElements;
 
 	/**
-	 * The stride (in bytes) of a vertex.
+	 * The stride (in bytes), or the total of each {@code InputElement}'s size.
 	 */
 	private int stride;
 
 	/**
-	 * Constructs an input layout and calculates the offsets of each input element and the stride.
+	 * Constructs an {@code InputLayout} and calculates the offsets of each
+	 * {@code InputElement} and the stride.
 	 * 
-	 * @param inputElements The input element(s).
+	 * @param inputElements the {@code InputElement} array.
 	 */
 	public InputLayout(InputElement... inputElements) {
 		this.inputElements = inputElements;
@@ -30,7 +36,7 @@ public class InputLayout {
 		for (var inputElement : inputElements) {
 			inputElement.offset = offset;
 
-			int size = inputElement.getComponentCount() * Float.BYTES;
+			int size = inputElement.getDataType().getSize();
 
 			offset += size;
 			stride += size;
@@ -38,14 +44,19 @@ public class InputLayout {
 	}
 
 	/**
-	 * Gets the input element(s).
+	 * Gets the {@code InputElement} array.
+	 * 
+	 * @return the {@code InputElement} array.
 	 */
 	public InputElement[] getInputElements() {
 		return inputElements;
 	}
 
 	/**
-	 * Gets the stride (in bytes) of a vertex.
+	 * Gets the stride (in bytes), or the total of each {@code InputElement}'s
+	 * size.
+	 * 
+	 * @return the stride (in bytes).
 	 */
 	public int getStride() {
 		return stride;
