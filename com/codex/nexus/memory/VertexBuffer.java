@@ -24,7 +24,7 @@ public class VertexBuffer {
 	private InputLayout inputLayout;
 
 	/**
-	 * The unique identifier.
+	 * The unique identification.
 	 */
 	private int handle;
 
@@ -61,6 +61,15 @@ public class VertexBuffer {
 	 */
 	public InputLayout getInputLayout() {
 		return inputLayout;
+	}
+	
+	/**
+	 * Gets the unique identification.
+	 * 
+	 * @return the unique identification.
+	 */
+	public int getHandle() {
+		return handle;
 	}
 
 	/**
