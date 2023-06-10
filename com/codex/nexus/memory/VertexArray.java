@@ -5,31 +5,36 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 /**
- * Stores vertex buffers (and optionally) an index buffer for later referencing.
+ * Stores one or more {@code VertexBuffer}s (and optionally) an
+ * {@code IndexBuffer}.
+ * 
+ * @see VertexBuffer
+ * @see IndexBuffer
  * 
  * @author Christopher Ruley
  */
 public class VertexArray {
 
 	/**
-	 * The vertex buffers associated with this vertex array.
+	 * The {@code VertexBuffer} array.
 	 */
 	private VertexBuffer[] vertexBuffers;
 
 	/**
-	 * The unique identifier for this vertex array.
+	 * The unique identifier.
 	 */
 	private int handle;
 
 	/**
-	 * The (optional) index buffer associated with this vertex array.
+	 * The (optional) {@code IndexBuffer}.
 	 */
 	private IndexBuffer indexBuffer;
 
 	/**
-	 * Constructs this vertex array and sets the vertex attributes according to the provided vertex buffers.
+	 * Constructs a {@code VertexArray} and associates the provided
+	 * {@code VertexBuffer}s.
 	 * 
-	 * @param vertexBuffers The vertex buffer(s) to be associated with this vertex array.
+	 * @param vertexBuffers The {@code VertexBuffer}s.
 	 */
 	public VertexArray(VertexBuffer... vertexBuffers) {
 		this.vertexBuffers = vertexBuffers;
@@ -48,7 +53,9 @@ public class VertexArray {
 				InputElement inputElement = inputElements[i];
 
 				glEnableVertexAttribArray(i);
-				glVertexAttribPointer(i, inputElement.getComponentCount(), GL_FLOAT, inputElement.isNormalized(),
+				glVertexAttribPointer(i,
+						inputElement.getDataType().getComponentCount(),
+						GL_FLOAT, inputElement.isNormalized(),
 						inputLayout.getStride(), inputElement.getOffset());
 			}
 		}
@@ -57,19 +64,28 @@ public class VertexArray {
 	}
 
 	/**
-	 * Gets the (optional) index buffer associated with this vertex array. This value may be null if this vertex array
-	 * does not use an index buffer.
+	 * Gets the {@code VertexBuffer} array.
 	 * 
-	 * @return The (optional) index buffer assocated with this vertex array.
+	 * @return the {@code VertexBuffer} array.
+	 */
+	public VertexBuffer[] getVertexBuffers() {
+		return vertexBuffers;
+	}
+
+	/**
+	 * Gets the (optional) {@code IndexBuffer}. This value is null if this
+	 * {@code VertexArray} does not use an {@code IndexBuffer}.
+	 * 
+	 * @return The (optional) {@code IndexBuffer}.
 	 */
 	public IndexBuffer getIndexBuffer() {
 		return indexBuffer;
 	}
 
 	/**
-	 * Sets the index buffer and associates it with this vertex array.
+	 * Sets the {@code IndexBuffer}.
 	 * 
-	 * @param indexBuffer The index buffer to be associated with this vertex array.
+	 * @param indexBuffer The {@code IndexBuffer}.
 	 */
 	public void setIndexBuffer(IndexBuffer indexBuffer) {
 		this.indexBuffer = indexBuffer;
@@ -80,17 +96,33 @@ public class VertexArray {
 	}
 
 	/**
-	 * Binds this vertex array.
+	 * Binds this {@code VertexArray}.
 	 */
 	public void bind() {
 		glBindVertexArray(handle);
 	}
 
 	/**
-	 * Unbinds this vertex array.
+	 * Unbinds this {@code VertexArray}.
 	 */
 	public void unbind() {
 		glBindVertexArray(0);
+	}
+
+	/**
+	 * Deletes this {@code VertexArray} and the associated {@code VertexBuffer}s
+	 * (and {@code IndexBuffer}, if used).
+	 */
+	public void delete() {
+		glDeleteVertexArrays(handle);
+
+		for (var vertexBuffer : vertexBuffers) {
+			vertexBuffer.delete();
+		}
+
+		if (indexBuffer != null) {
+			indexBuffer.delete();
+		}
 	}
 
 }
