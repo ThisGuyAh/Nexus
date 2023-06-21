@@ -51,7 +51,6 @@ public class ShaderProgram {
 		}
 
 		this.shaders = shaders;
-
 		handle = glCreateProgram();
 		uniformLocations = new HashMap<>();
 
