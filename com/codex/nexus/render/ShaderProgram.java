@@ -43,6 +43,10 @@ public class ShaderProgram {
 	 */
 	public ShaderProgram(Shader... shaders) {
 		if (!isPipelineComplete(shaders)) {
+			for (var shader : shaders) {
+				shader.delete();
+			}
+			
 			throw new RuntimeException();
 		}
 
