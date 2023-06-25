@@ -1,15 +1,17 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.core.Window;
+
 public class WindowDestroyEvent {
 
-	private long handle;
+	private Window window;
 
-	public WindowDestroyEvent(long handle) {
-		this.handle = handle;
+	public WindowDestroyEvent(Window window) {
+		this.window = window;
 	}
 
-	public long getHandle() {
-		return handle;
+	public Window getWindow() {
+		return window;
 	}
 
 }
