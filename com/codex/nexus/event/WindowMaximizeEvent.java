@@ -1,15 +1,17 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.core.Window;
+
 public class WindowMaximizeEvent {
 	
-	private long handle;
+	private Window window;
 	
-	public WindowMaximizeEvent(long handle) {
-		this.handle = handle;
+	public WindowMaximizeEvent(Window window) {
+		this.window = window;
 	}
 	
-	public long getHandle() {
-		return handle;
+	public Window getWindow() {
+		return window;
 	}
 
 }
