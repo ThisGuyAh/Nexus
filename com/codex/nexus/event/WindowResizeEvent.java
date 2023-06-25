@@ -1,27 +1,17 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.core.Window;
+
 public class WindowResizeEvent {
 	
-	private int width;
-	private int height;
-	private long handle;
+	private Window window;
 	
-	public WindowResizeEvent(int width, int height, long handle) {
-		this.width = width;
-		this.height = height;
-		this.handle = handle;
+	public WindowResizeEvent(Window window) {
+		this.window = window;
 	}
 	
-	public int getWidth() {
-		return width;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-	
-	public long getHandle() {
-		return handle;
+	public Window getWindow() {
+		return window;
 	}
 
 }
