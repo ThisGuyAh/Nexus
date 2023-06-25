@@ -1,15 +1,17 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.core.Window;
+
 public class WindowMinimizeEvent {
-	
-	private long handle;
-	
-	public WindowMinimizeEvent(long handle) {
-		this.handle = handle;
+
+	private Window window;
+
+	public WindowMinimizeEvent(Window window) {
+		this.window = window;
 	}
-	
-	public long getHandle() {
-		return handle;
+
+	public Window getWindow() {
+		return window;
 	}
 
 }
