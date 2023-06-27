@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * A {@code ShaderProgram} contains at least two {@code Shader}s belonging to the vertex and fragment pipeline stages,
  * and optionally additional {@code Shader}s.
- * 
+ *
  * @author Christopher Ruley
  */
 public class ShaderProgram {
@@ -38,7 +38,7 @@ public class ShaderProgram {
 	/**
 	 * Constructs a {@code ShaderProgram} with the specified {@code Shader}s. A {@code ShaderProgram} should be
 	 * constructed with at least two {@code Shader}s belonging to the vertex and fragment pipeline stages.
-	 * 
+	 *
 	 * @param shaders the {@code Shader} array.
 	 */
 	public ShaderProgram(Shader... shaders) {
@@ -46,7 +46,7 @@ public class ShaderProgram {
 			for (var shader : shaders) {
 				shader.delete();
 			}
-			
+
 			throw new RuntimeException();
 		}
 
@@ -79,7 +79,7 @@ public class ShaderProgram {
 
 	/**
 	 * Constructs a {@code ShaderProgram} with the specified file path.
-	 * 
+	 *
 	 * @param path the file path.
 	 */
 	public ShaderProgram(String path) {
@@ -88,7 +88,7 @@ public class ShaderProgram {
 
 	/**
 	 * Gets the {@code Shader} array.
-	 * 
+	 *
 	 * @return the {@code Shader} array.
 	 */
 	public Shader[] getShaders() {
@@ -97,7 +97,7 @@ public class ShaderProgram {
 
 	/**
 	 * Gets the unique identification.
-	 * 
+	 *
 	 * @return the unique identification.
 	 */
 	public int getHandle() {
@@ -107,9 +107,9 @@ public class ShaderProgram {
 	/**
 	 * Gets whether the pipeline is complete, or when at least two shaders belong to the vertex and fragment pipeline
 	 * stages.
-	 * 
+	 *
 	 * @param shaders the {@code Shader} array.
-	 * 
+	 *
 	 * @return whether the pipeline is complete.
 	 */
 	private boolean isPipelineComplete(Shader[] shaders) {
@@ -135,12 +135,12 @@ public class ShaderProgram {
 
 	/**
 	 * Gets the array of {@code Shader}s from a file.
-	 * 
+	 *
 	 * @param path the file path.
-	 * 
+	 *
 	 * @return the array of {@code Shader}s.
 	 */
-	private static final Shader[] getShadersFromFile(String path) {
+	private static Shader[] getShadersFromFile(String path) {
 		List<List<String>> groups = split("#type", read(path));
 		List<Shader> shaders = new ArrayList<>();
 
@@ -151,31 +151,14 @@ public class ShaderProgram {
 
 			String source = concatenate(group);
 
-			switch (firstLine) {
-				case "#type vertex":
-					shaders.add(new Shader(PipelineStage.VERTEX, source));
-					break;
-
-				case "#type geometry":
-					shaders.add(new Shader(PipelineStage.GEOMETRY, source));
-					break;
-
-				case "#type tess control":
-					shaders.add(new Shader(PipelineStage.TESS_CONTROL, source));
-					break;
-
-				case "#type tess evaluation":
-					shaders.add(new Shader(PipelineStage.TESS_EVALUATION, source));
-					break;
-
-				case "#type fragment":
-					shaders.add(new Shader(PipelineStage.FRAGMENT, source));
-					break;
-
-				case "#type compute":
-					shaders.add(new Shader(PipelineStage.COMPUTE, source));
-					break;
-			}
+            switch (firstLine) {
+                case "#type vertex" -> shaders.add(new Shader(PipelineStage.VERTEX, source));
+                case "#type geometry" -> shaders.add(new Shader(PipelineStage.GEOMETRY, source));
+                case "#type tess control" -> shaders.add(new Shader(PipelineStage.TESS_CONTROL, source));
+                case "#type tess evaluation" -> shaders.add(new Shader(PipelineStage.TESS_EVALUATION, source));
+                case "#type fragment" -> shaders.add(new Shader(PipelineStage.FRAGMENT, source));
+                case "#type compute" -> shaders.add(new Shader(PipelineStage.COMPUTE, source));
+            }
 		}
 
 		return shaders.toArray(new Shader[0]);
@@ -183,9 +166,9 @@ public class ShaderProgram {
 
 	/**
 	 * Gets the cached uniform location. The uniform location is queried and cached if it doesn't exist.
-	 * 
+	 *
 	 * @param name the name of the uniform.
-	 * 
+	 *
 	 * @return the cached uniform location.
 	 */
 	private int getUniformLocation(String name) {
@@ -198,7 +181,7 @@ public class ShaderProgram {
 
 	/**
 	 * Uploads a uniform to the corresponding {@code Shader}.
-	 * 
+	 *
 	 * @param name the name of the uniform.
 	 * @param value the value to be uploaded.
 	 */
@@ -208,7 +191,7 @@ public class ShaderProgram {
 
 	/**
 	 * Uploads a uniform to the corresponding {@code Shader}.
-	 * 
+	 *
 	 * @param name the name of the uniform.
 	 * @param value the value to be uploaded.
 	 */
@@ -218,7 +201,7 @@ public class ShaderProgram {
 
 	/**
 	 * Uploads a uniform to the corresponding {@code Shader}.
-	 * 
+	 *
 	 * @param name the name of the uniform.
 	 * @param value the value to be uploaded.
 	 */
@@ -228,7 +211,7 @@ public class ShaderProgram {
 
 	/**
 	 * Uploads a uniform to the corresponding {@code Shader}.
-	 * 
+	 *
 	 * @param name the name of the uniform.
 	 * @param value the value to be uploaded.
 	 */
