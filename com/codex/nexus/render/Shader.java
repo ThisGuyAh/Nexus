@@ -26,12 +26,14 @@ public class Shader {
 	private int handle;
 
 	/**
-	 * {@code Constructs a {@code Shader}.
+	 * Constructs a {@code Shader}.
 	 * 
 	 * @param pipelineStage the {@code PipelineStage}.
 	 * @param sourceCode the source code.
 	 */
 	public Shader(PipelineStage pipelineStage, String sourceCode) {
+		this.pipelineStage = pipelineStage;
+		this.sourceCode = sourceCode;
 		handle = glCreateShader(pipelineStage.getOpenGLType());
 
 		glShaderSource(handle, sourceCode);
