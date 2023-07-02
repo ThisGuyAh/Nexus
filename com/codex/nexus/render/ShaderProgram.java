@@ -1,9 +1,13 @@
 package com.codex.nexus.render;
 
 import static com.codex.nexus.utility.Documents.*;
+import static com.codex.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
+import com.codex.nexus.math.Matrix2;
+import com.codex.nexus.math.Matrix3;
+import com.codex.nexus.math.Matrix4;
 import com.codex.nexus.math.Vector2;
 import com.codex.nexus.math.Vector3;
 import com.codex.nexus.math.Vector4;
@@ -20,136 +24,134 @@ import java.util.Map;
  */
 public class ShaderProgram {
 
-	/**
-	 * The {@code Shader} array.
-	 */
-	private Shader[] shaders;
+    /**
+     * The {@code Shader} array.
+     */
+    private Shader[] shaders;
 
-	/**
-	 * The unique identification.
-	 */
-	private int handle;
+    /**
+     * The unique identification.
+     */
+    private int handle;
 
-	/**
-	 * The map used to cache uniform locations for quick retrieval.
-	 */
-	private Map<String, Integer> uniformLocations;
+    /**
+     * The map used to cache uniform locations for quick retrieval.
+     */
+    private Map<String, Integer> uniformLocations;
 
-	/**
-	 * Constructs a {@code ShaderProgram} with the specified {@code Shader}s. A {@code ShaderProgram} should be
-	 * constructed with at least two {@code Shader}s belonging to the vertex and fragment pipeline stages.
-	 *
-	 * @param shaders the {@code Shader} array.
-	 */
-	public ShaderProgram(Shader... shaders) {
-		if (!isPipelineComplete(shaders)) {
-			for (var shader : shaders) {
-				shader.delete();
-			}
+    /**
+     * Constructs a {@code ShaderProgram} with the specified {@code Shader}s. A {@code ShaderProgram} should be
+     * constructed with at least two {@code Shader}s belonging to the vertex and fragment pipeline stages.
+     *
+     * @param shaders the {@code Shader} array.
+     */
+    public ShaderProgram(Shader... shaders) {
+        if (!isPipelineComplete(shaders)) {
+            for (var shader : shaders) {
+                shader.delete();
+            }
 
-			throw new RuntimeException();
-		}
+            throw new RuntimeException();
+        }
 
-		this.shaders = shaders;
-		handle = glCreateProgram();
-		uniformLocations = new HashMap<>();
+        this.shaders = shaders;
+        handle = glCreateProgram();
+        uniformLocations = new HashMap<>();
 
-		for (var shader : shaders) {
-			glAttachShader(handle, shader.getHandle());
-		}
+        for (var shader : shaders) {
+            glAttachShader(handle, shader.getHandle());
+        }
 
-		glLinkProgram(handle);
+        glLinkProgram(handle);
 
-		if (glGetProgrami(handle, GL_LINK_STATUS) == GL_FALSE) {
-			String errorMessage = glGetProgramInfoLog(handle);
+        if (glGetProgrami(handle, GL_LINK_STATUS) == GL_FALSE) {
+            String errorMessage = glGetProgramInfoLog(handle);
 
-			glDeleteProgram(handle);
+            glDeleteProgram(handle);
 
-			for (var shader : shaders) {
-				shader.delete();
-			}
+            for (var shader : shaders) {
+                shader.delete();
+            }
 
-			throw new RuntimeException(errorMessage);
-		}
+            throw new RuntimeException(errorMessage);
+        }
 
-		for (var shader : shaders) {
-			glDetachShader(handle, shader.getHandle());
-		}
-	}
+        for (var shader : shaders) {
+            glDetachShader(handle, shader.getHandle());
+        }
+    }
 
-	/**
-	 * Constructs a {@code ShaderProgram} with the specified file path.
-	 *
-	 * @param path the file path.
-	 */
-	public ShaderProgram(String path) {
-		this(getShadersFromFile(path));
-	}
+    /**
+     * Constructs a {@code ShaderProgram} with the specified file path.
+     *
+     * @param path the file path.
+     */
+    public ShaderProgram(String path) {
+        this(getShadersFromFile(path));
+    }
 
-	/**
-	 * Gets the {@code Shader} array.
-	 *
-	 * @return the {@code Shader} array.
-	 */
-	public Shader[] getShaders() {
-		return shaders;
-	}
+    /**
+     * Gets the {@code Shader} array.
+     *
+     * @return the {@code Shader} array.
+     */
+    public Shader[] getShaders() {
+        return shaders;
+    }
 
-	/**
-	 * Gets the unique identification.
-	 *
-	 * @return the unique identification.
-	 */
-	public int getHandle() {
-		return handle;
-	}
+    /**
+     * Gets the unique identification.
+     *
+     * @return the unique identification.
+     */
+    public int getHandle() {
+        return handle;
+    }
 
-	/**
-	 * Gets whether the pipeline is complete, or when at least two shaders belong to the vertex and fragment pipeline
-	 * stages.
-	 *
-	 * @param shaders the {@code Shader} array.
-	 *
-	 * @return whether the pipeline is complete.
-	 */
-	private boolean isPipelineComplete(Shader[] shaders) {
-		if (shaders.length < 2) {
-			return false;
-		}
+    /**
+     * Gets whether the pipeline is complete, or when at least two shaders belong to the vertex and fragment pipeline
+     * stages.
+     *
+     * @param shaders the {@code Shader} array.
+     * @return whether the pipeline is complete.
+     */
+    private boolean isPipelineComplete(Shader[] shaders) {
+        if (shaders.length < 2) {
+            return false;
+        }
 
-		boolean vertex = false;
-		boolean fragment = false;
+        boolean vertex = false;
+        boolean fragment = false;
 
-		for (var shader : shaders) {
-			PipelineStage pipelineStage = shader.getPipelineStage();
+        for (var shader : shaders) {
+            PipelineStage pipelineStage = shader.getPipelineStage();
 
-			if (pipelineStage == PipelineStage.VERTEX) {
-				vertex = true;
-			} else if (pipelineStage == PipelineStage.FRAGMENT) {
-				fragment = true;
-			}
-		}
+            if (pipelineStage == PipelineStage.VERTEX) {
+                vertex = true;
+            } else if (pipelineStage == PipelineStage.FRAGMENT) {
+                fragment = true;
+            }
+        }
 
-		return vertex && fragment;
-	}
+        return vertex && fragment;
+    }
 
-	/**
-	 * Gets the array of {@code Shader}s from a file.
-	 *
-	 * @param path the file path.
-	 *
-	 * @return the array of {@code Shader}s.
-	 */
-	private static Shader[] getShadersFromFile(String path) {
-		List<List<String>> groups = split("#type", read(path));
-		List<Shader> shaders = new ArrayList<>();
+    /**
+     * Gets the array of {@code Shader}s from a file.
+     *
+     * @param path the file path.
+     * @return the array of {@code Shader}s.
+     */
+    private static Shader[] getShadersFromFile(String path) {
+        List<List<String>> groups = split("#type", read(path));
+        List<Shader> shaders = new ArrayList<>();
 
-		for (var group : groups) {
-			String firstLine = group.get(0);
+        for (var group : groups) {
+            String firstLine = group.get(0);
 
-			group.remove(0);
+            group.remove(0);
 
-			String source = concatenate(group);
+            String source = concatenate(group);
 
             switch (firstLine) {
                 case "#type vertex" -> shaders.add(new Shader(PipelineStage.VERTEX, source));
@@ -159,85 +161,144 @@ public class ShaderProgram {
                 case "#type fragment" -> shaders.add(new Shader(PipelineStage.FRAGMENT, source));
                 case "#type compute" -> shaders.add(new Shader(PipelineStage.COMPUTE, source));
             }
-		}
+        }
 
-		return shaders.toArray(new Shader[0]);
-	}
+        return shaders.toArray(new Shader[0]);
+    }
 
-	/**
-	 * Gets the cached uniform location. The uniform location is queried and cached if it doesn't exist.
-	 *
-	 * @param name the name of the uniform.
-	 *
-	 * @return the cached uniform location.
-	 */
-	private int getUniformLocation(String name) {
-		if (!uniformLocations.containsKey(name)) {
-			uniformLocations.put(name, glGetUniformLocation(handle, name));
-		}
+    /**
+     * Gets the cached uniform location. The uniform location is queried and cached if it doesn't exist.
+     *
+     * @param name the name of the uniform.
+     * @return the cached uniform location.
+     */
+    private int getUniformLocation(String name) {
+        if (!uniformLocations.containsKey(name)) {
+            uniformLocations.put(name, glGetUniformLocation(handle, name));
+        }
 
-		return uniformLocations.get(name);
-	}
+        return uniformLocations.get(name);
+    }
 
-	/**
-	 * Uploads a uniform to the corresponding {@code Shader}.
-	 *
-	 * @param name the name of the uniform.
-	 * @param value the value to be uploaded.
-	 */
-	public void uploadUniform(String name, float value) {
-		glUniform1f(getUniformLocation(name), value);
-	}
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, int value) {
+        glUniform1i(getUniformLocation(name), value);
+    }
 
-	/**
-	 * Uploads a uniform to the corresponding {@code Shader}.
-	 *
-	 * @param name the name of the uniform.
-	 * @param value the value to be uploaded.
-	 */
-	public void uploadUniform(String name, Vector2 value) {
-		glUniform2f(getUniformLocation(name), value.x, value.y);
-	}
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, int[] value) {
+        glUniform1iv(getUniformLocation(name), value);
+    }
 
-	/**
-	 * Uploads a uniform to the corresponding {@code Shader}.
-	 *
-	 * @param name the name of the uniform.
-	 * @param value the value to be uploaded.
-	 */
-	public void uploadUniform(String name, Vector3 value) {
-		glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
-	}
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, float value) {
+        glUniform1f(getUniformLocation(name), value);
+    }
 
-	/**
-	 * Uploads a uniform to the corresponding {@code Shader}.
-	 *
-	 * @param name the name of the uniform.
-	 * @param value the value to be uploaded.
-	 */
-	public void uploadUniform(String name, Vector4 value) {
-		glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
-	}
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, float[] value) {
+        glUniform1fv(getUniformLocation(name), value);
+    }
 
-	/**
-	 * Binds this {@code ShaderProgram}.
-	 */
-	public void bind() {
-		glUseProgram(handle);
-	}
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, Vector2 value) {
+        glUniform2f(getUniformLocation(name), value.x, value.y);
+    }
 
-	/**
-	 * Unbinds this {@code ShaderProgram}.
-	 */
-	public void unbind() {
-		glUseProgram(0);
-	}
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, Vector3 value) {
+        glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
+    }
 
-	/**
-	 * Deletes this {@code ShaderProgram}.
-	 */
-	public void delete() {
-		glDeleteProgram(handle);
-	}
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, Vector4 value) {
+        glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
+    }
+
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, Matrix2 value) {
+        glUniformMatrix2fv(getUniformLocation(name), false, store(value));
+    }
+
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, Matrix3 value) {
+        glUniformMatrix3fv(getUniformLocation(name), false, store(value));
+    }
+
+    /**
+     * Uploads a uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the value to be uploaded.
+     */
+    public void uploadUniform(String name, Matrix4 value) {
+        glUniformMatrix4fv(getUniformLocation(name), false, store(value));
+    }
+
+    /**
+     * Binds this {@code ShaderProgram}.
+     */
+    public void bind() {
+        glUseProgram(handle);
+    }
+
+    /**
+     * Unbinds this {@code ShaderProgram}.
+     */
+    public void unbind() {
+        glUseProgram(0);
+    }
+
+    /**
+     * Deletes this {@code ShaderProgram}.
+     */
+    public void delete() {
+        glDeleteProgram(handle);
+    }
 
 }
