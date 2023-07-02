@@ -29,7 +29,7 @@ public class Shader {
      * Constructs a {@code Shader}.
      *
      * @param pipelineStage the {@code PipelineStage}.
-     * @param sourceCode the source code.
+     * @param sourceCode    the source code.
      */
     public Shader(PipelineStage pipelineStage, String sourceCode) {
         this.pipelineStage = pipelineStage;
