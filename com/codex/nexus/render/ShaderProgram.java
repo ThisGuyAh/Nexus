@@ -154,12 +154,12 @@ public class ShaderProgram {
             String source = concatenate(group);
 
             switch (firstLine) {
-                case "#type vertex" -> shaders.add(new Shader(PipelineStage.VERTEX, source));
-                case "#type geometry" -> shaders.add(new Shader(PipelineStage.GEOMETRY, source));
-                case "#type tess control" -> shaders.add(new Shader(PipelineStage.TESS_CONTROL, source));
-                case "#type tess evaluation" -> shaders.add(new Shader(PipelineStage.TESS_EVALUATION, source));
-                case "#type fragment" -> shaders.add(new Shader(PipelineStage.FRAGMENT, source));
-                case "#type compute" -> shaders.add(new Shader(PipelineStage.COMPUTE, source));
+                case "#type vertex"     -> shaders.add(new Shader(PipelineStage.VERTEX, source));
+                case "#type geometry"   -> shaders.add(new Shader(PipelineStage.GEOMETRY, source));
+                case "#type control"    -> shaders.add(new Shader(PipelineStage.CONTROL, source));
+                case "#type evaluation" -> shaders.add(new Shader(PipelineStage.EVALUATION, source));
+                case "#type fragment"   -> shaders.add(new Shader(PipelineStage.FRAGMENT, source));
+                case "#type compute"    -> shaders.add(new Shader(PipelineStage.COMPUTE, source));
             }
         }
 
