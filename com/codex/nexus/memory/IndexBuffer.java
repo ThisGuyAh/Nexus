@@ -4,8 +4,7 @@ import static org.lwjgl.BufferUtils.*;
 import static org.lwjgl.opengl.GL15.*;
 
 /**
- * An {@code IndexBuffer} stores index data, which determines the order in which
- * vertices should be drawn.
+ * An {@code IndexBuffer} stores index data, which determines the order in which vertices should be drawn.
  *
  * @author Christopher Ruley
  */
