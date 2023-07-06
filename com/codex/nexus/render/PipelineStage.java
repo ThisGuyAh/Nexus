@@ -11,8 +11,8 @@ public enum PipelineStage {
 
     VERTEX,
     GEOMETRY,
-    TESS_CONTROL,
-    TESS_EVALUATION,
+    CONTROL,
+    EVALUATION,
     FRAGMENT,
     COMPUTE;
 
@@ -23,12 +23,12 @@ public enum PipelineStage {
      */
     public int getOpenGLType() {
         return switch (this) {
-            case VERTEX -> GL_VERTEX_SHADER;
-            case GEOMETRY -> GL_GEOMETRY_SHADER;
-            case TESS_CONTROL -> GL_TESS_CONTROL_SHADER;
-            case TESS_EVALUATION -> GL_TESS_EVALUATION_SHADER;
-            case FRAGMENT -> GL_FRAGMENT_SHADER;
-            case COMPUTE -> GL_COMPUTE_SHADER;
+            case VERTEX     -> GL_VERTEX_SHADER;
+            case GEOMETRY   -> GL_GEOMETRY_SHADER;
+            case CONTROL    -> GL_TESS_CONTROL_SHADER;
+            case EVALUATION -> GL_TESS_EVALUATION_SHADER;
+            case FRAGMENT   -> GL_FRAGMENT_SHADER;
+            case COMPUTE    -> GL_COMPUTE_SHADER;
         };
     }
 
