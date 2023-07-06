@@ -4,14 +4,14 @@ import com.codex.nexus.core.Window;
 
 public class WindowCreateEvent {
 
-	private Window window;
+    private Window window;
 
-	public WindowCreateEvent(Window window) {
-		this.window = window;
-	}
+    public WindowCreateEvent(Window window) {
+        this.window = window;
+    }
 
-	public Window getWindow() {
-		return window;
-	}
+    public Window getWindow() {
+        return window;
+    }
 
 }
