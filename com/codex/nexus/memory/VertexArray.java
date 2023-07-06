@@ -66,8 +66,8 @@ public class VertexArray {
     }
 
     /**
-     * Gets the (optional) {@code IndexBuffer}. This value is null if this
-     * {@code VertexArray} does not use an {@code IndexBuffer}.
+     * Gets the (optional) {@code IndexBuffer}. This value is null if this {@code VertexArray} does not use an
+     * {@code IndexBuffer}.
      *
      * @return The (optional) {@code IndexBuffer}.
      */
@@ -103,8 +103,7 @@ public class VertexArray {
     }
 
     /**
-     * Deletes this {@code VertexArray} and the associated {@code VertexBuffer}s
-     * (and {@code IndexBuffer}, if used).
+     * Deletes this {@code VertexArray} and the associated {@code VertexBuffer}s (and {@code IndexBuffer}, if used).
      */
     public void delete() {
         glDeleteVertexArrays(handle);
