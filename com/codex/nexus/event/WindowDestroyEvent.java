@@ -4,14 +4,14 @@ import com.codex.nexus.core.Window;
 
 public class WindowDestroyEvent {
 
-	private Window window;
+    private Window window;
 
-	public WindowDestroyEvent(Window window) {
-		this.window = window;
-	}
+    public WindowDestroyEvent(Window window) {
+        this.window = window;
+    }
 
-	public Window getWindow() {
-		return window;
-	}
+    public Window getWindow() {
+        return window;
+    }
 
 }
