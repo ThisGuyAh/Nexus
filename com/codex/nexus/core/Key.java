@@ -1,5 +1,8 @@
 package com.codex.nexus.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public enum Key {
@@ -126,7 +129,14 @@ public enum Key {
     MENU(GLFW_KEY_MENU),
     LAST(GLFW_KEY_LAST);
 
-    final int code;
+    private final int code;
+    private static final Map<Integer, Key> glfwTypes = new HashMap<>();
+
+    static {
+        for (var key : values()) {
+            glfwTypes.put(key.getCode(), key);
+        }
+    }
 
     Key(int code) {
         this.code = code;
@@ -134,6 +144,10 @@ public enum Key {
 
     public int getCode() {
         return code;
+    }
+
+    public static Key getFromGLFWType(int code) {
+        return glfwTypes.get(code);
     }
 
 }
