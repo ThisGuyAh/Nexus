@@ -19,18 +19,18 @@ public enum DataType {
     /**
      * The number of components.
      */
-    final int componentCount;
+    private final int componentCount;
 
     /**
-     * The size (in bytes), or the product of the component count and the number of corresponding bytes.
+     * The size (in bytes), or the product of the component count and the corresponding bytes.
      */
-    final int size;
+    private final int size;
 
     /**
      * Constructs a {@code DataType}.
      *
      * @param componentCount the number of components.
-     * @param size the size (in bytes), or the product of the component count and the number of corresponding bytes.
+     * @param size           the size (in bytes), or the product of the component count and the corresponding bytes.
      */
     DataType(int componentCount, int size) {
         this.componentCount = componentCount;
@@ -47,7 +47,7 @@ public enum DataType {
     }
 
     /**
-     * Gets the size (in bytes), or the product of the component count and the number of corresponding bytes.
+     * Gets the size (in bytes), or the product of the component count and the corresponding bytes.
      *
      * @return the size (in bytes).
      */
