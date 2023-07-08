@@ -7,9 +7,6 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public enum MouseButton {
 
-    LEFT(GLFW_MOUSE_BUTTON_LEFT),
-    RIGHT(GLFW_MOUSE_BUTTON_RIGHT),
-    MIDDLE(GLFW_MOUSE_BUTTON_MIDDLE),
     ONE(GLFW_MOUSE_BUTTON_1),
     TWO(GLFW_MOUSE_BUTTON_2),
     THREE(GLFW_MOUSE_BUTTON_3),
