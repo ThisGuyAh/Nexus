@@ -1,4 +1,4 @@
-package com.codex.nexus.core;
+package com.codex.nexus.input;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -134,7 +134,7 @@ public enum Key {
 
     static {
         for (var key : values()) {
-            glfwTypes.put(key.getCode(), key);
+            glfwTypes.put(key.code, key);
         }
     }
 
