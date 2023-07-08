@@ -1,23 +1,29 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.input.Key;
 import com.codex.nexus.core.Window;
 
 public class KeyReleaseEvent {
 
     private Window window;
-    private int code;
+    private Key key;
 
-    public KeyReleaseEvent(Window window, int code) {
+    public KeyReleaseEvent(Window window, Key key) {
         this.window = window;
-        this.code = code;
+        this.key = key;
     }
 
     public Window getWindow() {
         return window;
     }
 
-    public int getCode() {
-        return code;
+    public Key getKey() {
+        return key;
+    }
+
+    @Override
+    public String toString() {
+        return "KeyReleaseEvent: " + key;
     }
 
 }
