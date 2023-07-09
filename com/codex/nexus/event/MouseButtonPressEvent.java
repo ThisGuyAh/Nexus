@@ -1,26 +1,43 @@
 package com.codex.nexus.event;
 
-import com.codex.nexus.core.Window;
 import com.codex.nexus.input.MouseButton;
 
+/**
+ * A {@code MouseButtonPressEvent} notifies subscribers when a {@code MouseButton} is pressed.
+ *
+ * @author Christopher Ruley
+ */
 public class MouseButtonPressEvent {
 
-    private Window window;
+    /**
+     * The {@code MouseButton} that was pressed.
+     */
     private MouseButton mouseButton;
 
-    public MouseButtonPressEvent(Window window, MouseButton mouseButton) {
-        this.window = window;
+    /**
+     * Constructs a {@code MouseButtonPressEvent}.
+     *
+     * @param mouseButton the {@code MouseButton} that was pressed.
+     */
+    public MouseButtonPressEvent(MouseButton mouseButton) {
         this.mouseButton = mouseButton;
     }
 
-    public Window getWindow() {
-        return window;
-    }
-
+    /**
+     * Gets the {@code MouseButton} that was pressed.
+     *
+     * @return the {@code MouseButton} that was pressed.
+     */
     public MouseButton getMouseButton() {
         return mouseButton;
     }
 
+    /**
+     * Gets a {@code String} representation of this {@code MouseButtonPressEvent} to include the pressed
+     * {@code MouseButton}.
+     *
+     * @return a {@code String} representation of this {@code MouseButtonPressEvent}.
+     */
     @Override
     public String toString() {
         return "MouseButtonPressEvent: " + mouseButton;
