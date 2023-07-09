@@ -10,30 +10,30 @@ import com.codex.nexus.input.Key;
 public class KeyReleaseEvent {
 
     /**
-     * The {@code Key} that was released.
+     * The {@code Key} released.
      */
     private Key key;
 
     /**
      * Constructs a {@code KeyReleaseEvent}.
-     * 
-     * @param key the {@code Key} that was released.
+     *
+     * @param key the {@code Key} released.
      */
     public KeyReleaseEvent(Key key) {
         this.key = key;
     }
 
     /**
-     * Gets the {@code Key} that was released.
-     * 
-     * @return the {@code Key} that was released.
+     * Gets the {@code Key} released.
+     *
+     * @return the {@code Key} released.
      */
     public Key getKey() {
         return key;
     }
 
     /**
-     * Gets a {@code String} representation of this {@code KeyReleaseEvent} to include the pressed {@code Key}.
+     * Gets a {@code String} representation of this {@code KeyReleaseEvent}, including the {@code Key} released.
      *
      * @return a {@code String} representation of this {@code KeyReleaseEvent}.
      */
