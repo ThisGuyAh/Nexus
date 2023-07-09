@@ -10,7 +10,7 @@ import com.codex.nexus.input.Key;
 public class KeyPressEvent {
 
     /**
-     * The {@code Key} that was pressed.
+     * The {@code Key} pressed.
      */
     private Key key;
 
@@ -22,7 +22,7 @@ public class KeyPressEvent {
     /**
      * Constructs a {@code KeyPressEvent}.
      *
-     * @param key    the {@code Key} that was pressed.
+     * @param key    the {@code Key} pressed.
      * @param repeat whether the {@code Key} pressed is repeating.
      */
     public KeyPressEvent(Key key, boolean repeat) {
@@ -31,9 +31,9 @@ public class KeyPressEvent {
     }
 
     /**
-     * Gets the {@code Key} that was pressed.
+     * Gets the {@code Key} pressed.
      *
-     * @return the {@code Key} that was pressed.
+     * @return the {@code Key} pressed.
      */
     public Key getKey() {
         return key;
@@ -49,7 +49,7 @@ public class KeyPressEvent {
     }
 
     /**
-     * Gets a {@code String} representation of this {@code KeyPressEvent} to include the pressed {@code Key}.
+     * Gets a {@code String} representation of this {@code KeyPressEvent}, including the {@code Key} pressed.
      *
      * @return a {@code String} representation of this {@code KeyPressEvent}.
      */
