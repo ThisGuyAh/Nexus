@@ -1,26 +1,42 @@
 package com.codex.nexus.event;
 
 import com.codex.nexus.input.Key;
-import com.codex.nexus.core.Window;
 
+/**
+ * A {@code KeyReleaseEvent} notifies a subscriber when a {@code Key} is released.
+ *
+ * @author Christopher Ruley
+ */
 public class KeyReleaseEvent {
 
-    private Window window;
+    /**
+     * The {@code Key} that was released.
+     */
     private Key key;
 
-    public KeyReleaseEvent(Window window, Key key) {
-        this.window = window;
+    /**
+     * Constructs a {@code KeyReleaseEvent}.
+     * 
+     * @param key the {@code Key} that was released.
+     */
+    public KeyReleaseEvent(Key key) {
         this.key = key;
     }
 
-    public Window getWindow() {
-        return window;
-    }
-
+    /**
+     * Gets the {@code Key} that was released.
+     * 
+     * @return the {@code Key} that was released.
+     */
     public Key getKey() {
         return key;
     }
 
+    /**
+     * Gets a {@code String} representation of this {@code KeyReleaseEvent} to include the pressed {@code Key}.
+     *
+     * @return a {@code String} representation of this {@code KeyReleaseEvent}.
+     */
     @Override
     public String toString() {
         return "KeyReleaseEvent: " + key;
