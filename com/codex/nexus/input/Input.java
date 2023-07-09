@@ -21,21 +21,24 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Input {
 
-    private static EventBus eventBus = Application.getInstance().getEventBus();
-    private static List<Key> activeKeys = new ArrayList<>();
-    private static List<MouseButton> activeMouseButtons = new ArrayList<>();
+    private List<Key> activeKeys;
+    private List<MouseButton> activeMouseButtons;
     private Window window;
+    private static EventBus eventBus = Application.getInstance().getEventBus();
 
     public Input() {
+        activeKeys = new ArrayList<>();
+        activeMouseButtons = new ArrayList<>();
+
         eventBus.register(this);
     }
 
     public void update() {
         for (var activeKey : activeKeys) {
-            eventBus.publish(new KeyDownEvent(window, activeKey));
+            eventBus.publish(new KeyDownEvent(activeKey));
         }
         for (var activeMouseButton : activeMouseButtons) {
-            eventBus.publish(new MouseButtonDownEvent(window, activeMouseButton));
+            eventBus.publish(new MouseButtonDownEvent(activeMouseButton));
         }
     }
 
@@ -52,14 +55,14 @@ public class Input {
 
             switch (action) {
                 case GLFW_PRESS -> {
-                    eventBus.publish(new KeyPressEvent(window, key, false));
+                    eventBus.publish(new KeyPressEvent(key, false));
                     activeKeys.add(key);
                 }
                 case GLFW_RELEASE -> {
-                    eventBus.publish(new KeyReleaseEvent(window, key));
+                    eventBus.publish(new KeyReleaseEvent(key));
                     activeKeys.remove(key);
                 }
-                case GLFW_REPEAT -> eventBus.publish(new KeyPressEvent(window, key, true));
+                case GLFW_REPEAT -> eventBus.publish(new KeyPressEvent(key, true));
             }
         });
         glfwSetMouseButtonCallback(window.getHandle(), (handle, mouseButtonCode, action, mods) -> {
@@ -67,21 +70,19 @@ public class Input {
 
             switch (action) {
                 case GLFW_PRESS -> {
-                    eventBus.publish(new MouseButtonPressEvent(window, mouseButton));
+                    eventBus.publish(new MouseButtonPressEvent(mouseButton));
                     activeMouseButtons.add(mouseButton);
                 }
                 case GLFW_RELEASE -> {
-                    eventBus.publish(new MouseButtonReleaseEvent(window, mouseButton));
+                    eventBus.publish(new MouseButtonReleaseEvent(mouseButton));
                     activeMouseButtons.remove(mouseButton);
                 }
             }
         });
-        glfwSetCursorPosCallback(window.getHandle(), (handle, x, y) -> {
-            eventBus.publish(new MouseMoveEvent(window, new Vector2((float) x, (float) y)));
-        });
-        glfwSetScrollCallback(window.getHandle(), (window1, x, y) -> {
-            eventBus.publish(new MouseScrollEvent(window, new Vector2((float) x, (float) y)));
-        });
+        glfwSetCursorPosCallback(window.getHandle(), (handle, x, y) ->
+            eventBus.publish(new MouseMoveEvent(new Vector2((float) x, (float) y))));
+        glfwSetScrollCallback(window.getHandle(), (handle, x, y) ->
+            eventBus.publish(new MouseScrollEvent(new Vector2((float) x, (float) y))));
     }
 
 }
