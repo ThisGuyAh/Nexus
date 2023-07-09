@@ -10,31 +10,31 @@ import com.codex.nexus.input.MouseButton;
 public class MouseButtonPressEvent {
 
     /**
-     * The {@code MouseButton} that was pressed.
+     * The {@code MouseButton} pressed.
      */
     private MouseButton mouseButton;
 
     /**
      * Constructs a {@code MouseButtonPressEvent}.
      *
-     * @param mouseButton the {@code MouseButton} that was pressed.
+     * @param mouseButton the {@code MouseButton} pressed.
      */
     public MouseButtonPressEvent(MouseButton mouseButton) {
         this.mouseButton = mouseButton;
     }
 
     /**
-     * Gets the {@code MouseButton} that was pressed.
+     * Gets the {@code MouseButton} pressed.
      *
-     * @return the {@code MouseButton} that was pressed.
+     * @return the {@code MouseButton} pressed.
      */
     public MouseButton getMouseButton() {
         return mouseButton;
     }
 
     /**
-     * Gets a {@code String} representation of this {@code MouseButtonPressEvent} to include the pressed
-     * {@code MouseButton}.
+     * Gets a {@code String} representation of this {@code MouseButtonPressEvent}, including the {@code MouseButton}
+     * pressed.
      *
      * @return a {@code String} representation of this {@code MouseButtonPressEvent}.
      */
