@@ -1,6 +1,6 @@
 package com.codex.nexus.memory;
 
-import static org.lwjgl.BufferUtils.*;
+import static com.codex.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL15.*;
 
 /**
@@ -31,7 +31,7 @@ public class IndexBuffer {
         handle = glGenBuffers();
 
         bind();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, createIntBuffer(indices.length).put(indices).flip(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, store(indices), GL_STATIC_DRAW);
     }
 
     /**
