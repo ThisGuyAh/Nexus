@@ -33,10 +33,10 @@ public class MouseButtonDownEvent {
     }
 
     /**
-     * Gets a {@code String} representation of this {@code MouseButtonPressEvent}, including the {@code MouseButton}
+     * Gets a {@code String} representation of this {@code MouseButtonDownEvent}, including the {@code MouseButton}
      * held down.
      *
-     * @return a {@code String} representation of this {@code MouseButtonPressEvent}.
+     * @return a {@code String} representation of this {@code MouseButtonDownEvent}.
      */
     @Override
     public String toString() {
