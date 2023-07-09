@@ -44,7 +44,7 @@ public class VertexLayout {
      *
      * @return the {@code VertexElement} array.
      */
-    public VertexElement[] getInputElements() {
+    public VertexElement[] getVertexElements() {
         return vertexElements;
     }
 
