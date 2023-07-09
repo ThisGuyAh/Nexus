@@ -1,13 +1,13 @@
 package com.codex.nexus.event;
 
-import static com.codex.nexus.utility.Methods.*;
-
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
+
+import static com.codex.nexus.utility.Methods.*;
 
 public class EventBus {
 
