@@ -10,30 +10,30 @@ import com.codex.nexus.input.Key;
 public class KeyDownEvent {
 
     /**
-     * The {@code Key} that was pressed.
+     * The {@code Key} held down.
      */
     private Key key;
 
     /**
      * Constructs a {@code KeyDownEvent}.
      *
-     * @param key the {@code Key} that was pressed.
+     * @param key the {@code Key} held down.
      */
     public KeyDownEvent(Key key) {
         this.key = key;
     }
 
     /**
-     * Gets the {@code Key} that was pressed.
+     * Gets the {@code Key} held down.
      *
-     * @return the {@code Key} that was pressed.
+     * @return the {@code Key} held down.
      */
     public Key getKey() {
         return key;
     }
 
     /**
-     * Gets a {@code String} representation of this {@code KeyDownEvent} to include the pressed {@code Key}.
+     * Gets a {@code String} representation of this {@code KeyDownEvent}, including the {@code Key} held down.
      *
      * @return a {@code String} representation of this {@code KeyDownEvent}.
      */
