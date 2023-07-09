@@ -29,10 +29,10 @@ public class VertexLayout {
 
         int offset = 0;
 
-        for (var inputElement : vertexElements) {
-            inputElement.offset = offset;
+        for (var vertexElement : vertexElements) {
+            vertexElement.offset = offset;
 
-            int size = inputElement.getDataType().getSize();
+            int size = vertexElement.getDataType().getSize();
 
             offset += size;
             stride += size;
