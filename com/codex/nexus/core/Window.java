@@ -1,13 +1,6 @@
 package com.codex.nexus.core;
 
-import static org.lwjgl.glfw.Callbacks.*;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
-
 import com.codex.nexus.event.EventBus;
-import com.codex.nexus.event.KeyPressEvent;
-import com.codex.nexus.event.KeyReleaseEvent;
 import com.codex.nexus.event.WindowCreateEvent;
 import com.codex.nexus.event.WindowDestroyEvent;
 import com.codex.nexus.event.WindowFocusEvent;
@@ -17,6 +10,11 @@ import com.codex.nexus.event.WindowResizeEvent;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
 import java.nio.IntBuffer;
+
+import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.system.MemoryStack.*;
+import static org.lwjgl.system.MemoryUtil.*;
 
 public class Window {
 
@@ -41,40 +39,7 @@ public class Window {
 
         handle = glfwCreateWindow(width, height, title, NULL, NULL);
 
-        EventBus eventBus = Application.getInstance().getEventBus();
-
-        glfwSetWindowFocusCallback(handle, (handle, focused) -> {
-            eventBus.publish(new WindowFocusEvent(this, focused));
-        });
-
-        glfwSetWindowMaximizeCallback(handle, (handle, maximized) -> {
-            eventBus.publish((new WindowMaximizeEvent(this, maximized)));
-        });
-
-        glfwSetWindowPosCallback(handle, (handle, newX, newY) -> {
-            this.x = newX;
-            this.y = newY;
-
-            eventBus.publish(new WindowMoveEvent(this));
-        });
-
-        glfwSetWindowSizeCallback(handle, (handle, newWidth, newHeight) -> {
-            this.width = newWidth;
-            this.height = newHeight;
-
-            eventBus.publish(new WindowResizeEvent(this));
-        });
-
-        glfwSetWindowCloseCallback(handle, handle -> {
-            eventBus.publish(new WindowDestroyEvent(this));
-        });
-
-        glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
-            switch (action) {
-                case GLFW_PRESS, GLFW_REPEAT -> eventBus.publish(new KeyPressEvent(this, key));
-                case GLFW_RELEASE -> eventBus.publish(new KeyReleaseEvent(this, key));
-            }
-        });
+        setCallbacks();
 
         try (MemoryStack memoryStack = stackPush()) {
             IntBuffer storedWidth = memoryStack.mallocInt(1);
@@ -93,7 +58,7 @@ public class Window {
         glfwSwapInterval(vSync ? 1 : 0);
         glfwShowWindow(handle);
 
-        eventBus.publish(new WindowCreateEvent(this));
+        Application.getInstance().getEventBus().publish(new WindowCreateEvent(this));
     }
 
     public String getTitle() {
@@ -125,15 +90,15 @@ public class Window {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+       glfwSetWindowTitle(handle, this.title = title);
     }
 
     public void setWidth(int width) {
-        glfwSetWindowSize(handle, this.width = width, height);
+        glfwSetWindowSize(handle, width, height);
     }
 
     public void setHeight(int height) {
-        glfwSetWindowSize(handle, width, this.height = height);
+        glfwSetWindowSize(handle, width, height);
     }
 
     public void setVSync(boolean vSync) {
@@ -141,11 +106,43 @@ public class Window {
     }
 
     public void setX(int x) {
-        glfwSetWindowPos(handle, this.x = x, y);
+        glfwSetWindowPos(handle, x, y);
     }
 
     public void setY(int y) {
-        glfwSetWindowPos(handle, x, this.y = y);
+        glfwSetWindowPos(handle, x, y);
+    }
+
+    private void setCallbacks() {
+        EventBus eventBus = Application.getInstance().getEventBus();
+
+        glfwSetWindowFocusCallback(handle, (handle, focused) -> {
+            eventBus.publish(new WindowFocusEvent(this, focused));
+        });
+        glfwSetWindowMaximizeCallback(handle, (handle, maximized) -> {
+            eventBus.publish((new WindowMaximizeEvent(this, maximized)));
+        });
+        glfwSetWindowPosCallback(handle, (handle, x, y) -> {
+            int oldX = this.x;
+            int oldY = this.y;
+
+            this.x = x;
+            this.y = y;
+
+            eventBus.publish(new WindowMoveEvent(this, oldX, oldY));
+        });
+        glfwSetWindowSizeCallback(handle, (handle, width, height) -> {
+            int oldWidth = this.width;
+            int oldHeight = this.height;
+
+            this.width = width;
+            this.height = height;
+
+            eventBus.publish(new WindowResizeEvent(this, oldWidth, oldHeight));
+        });
+        glfwSetWindowCloseCallback(handle, handle -> {
+            eventBus.publish(new WindowDestroyEvent(this));
+        });
     }
 
     public void update() {
