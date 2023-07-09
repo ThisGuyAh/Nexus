@@ -1,26 +1,42 @@
 package com.codex.nexus.event;
 
 import com.codex.nexus.input.Key;
-import com.codex.nexus.core.Window;
 
+/**
+ * A {@code KeyDownEvent} notifies a subscriber when a {@code Key} is held down.
+ *
+ * @author Christopher Ruley
+ */
 public class KeyDownEvent {
 
-    private Window window;
+    /**
+     * The {@code Key} that was pressed.
+     */
     private Key key;
 
-    public KeyDownEvent(Window window, Key key) {
-        this.window = window;
+    /**
+     * Constructs a {@code KeyDownEvent}.
+     *
+     * @param key the {@code Key} that was pressed.
+     */
+    public KeyDownEvent(Key key) {
         this.key = key;
     }
 
-    public Window getWindow() {
-        return window;
-    }
-
+    /**
+     * Gets the {@code Key} that was pressed.
+     *
+     * @return the {@code Key} that was pressed.
+     */
     public Key getKey() {
         return key;
     }
 
+    /**
+     * Gets a {@code String} representation of this {@code KeyDownEvent} to include the pressed {@code Key}.
+     *
+     * @return a {@code String} representation of this {@code KeyDownEvent}.
+     */
     @Override
     public String toString() {
         return "KeyDownEvent: " + key;
