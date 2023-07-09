@@ -1,21 +1,20 @@
 package com.codex.nexus.render;
 
-import static com.codex.nexus.utility.Documents.*;
-import static com.codex.nexus.utility.Memory.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
-
 import com.codex.nexus.math.Matrix2;
 import com.codex.nexus.math.Matrix3;
 import com.codex.nexus.math.Matrix4;
 import com.codex.nexus.math.Vector2;
 import com.codex.nexus.math.Vector3;
 import com.codex.nexus.math.Vector4;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.codex.nexus.utility.Documents.*;
+import static com.codex.nexus.utility.Memory.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 
 /**
  * A {@code ShaderProgram} contains at least two {@code Shader}s belonging to the vertex and fragment pipeline stages,
