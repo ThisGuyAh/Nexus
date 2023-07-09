@@ -33,8 +33,7 @@ public class MouseButtonDownEvent {
     }
 
     /**
-     * Gets a {@code String} representation of this {@code MouseButtonDownEvent}, including the {@code MouseButton}
-     * held down.
+     * Gets a {@code String} representation of this {@code MouseButtonDownEvent}.
      *
      * @return a {@code String} representation of this {@code MouseButtonDownEvent}.
      */
