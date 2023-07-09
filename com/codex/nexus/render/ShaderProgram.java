@@ -11,6 +11,7 @@ import com.codex.nexus.math.Matrix4;
 import com.codex.nexus.math.Vector2;
 import com.codex.nexus.math.Vector3;
 import com.codex.nexus.math.Vector4;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -181,100 +182,100 @@ public class ShaderProgram {
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads an int uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the int value to be uploaded.
      */
     public void uploadUniform(String name, int value) {
         glUniform1i(getUniformLocation(name), value);
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads an int array uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the int array value to be uploaded.
      */
     public void uploadUniform(String name, int[] value) {
         glUniform1iv(getUniformLocation(name), value);
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads a float uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the float value to be uploaded.
      */
     public void uploadUniform(String name, float value) {
         glUniform1f(getUniformLocation(name), value);
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads a float array uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the float array value to be uploaded.
      */
     public void uploadUniform(String name, float[] value) {
         glUniform1fv(getUniformLocation(name), value);
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads a {@code Vector2} uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the {@code Vector2} value to be uploaded.
      */
     public void uploadUniform(String name, Vector2 value) {
         glUniform2f(getUniformLocation(name), value.x, value.y);
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads a {@code Vector3} uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the {@code Vector3} value to be uploaded.
      */
     public void uploadUniform(String name, Vector3 value) {
         glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads a {@code Vector4} uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the {@code Vector4} value to be uploaded.
      */
     public void uploadUniform(String name, Vector4 value) {
         glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads a {@code Matrix2} uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the {@code Matrix2} value to be uploaded.
      */
     public void uploadUniform(String name, Matrix2 value) {
         glUniformMatrix2fv(getUniformLocation(name), false, store(value));
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads a {@code Matrix3} uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the {@code Matrix3} value to be uploaded.
      */
     public void uploadUniform(String name, Matrix3 value) {
         glUniformMatrix3fv(getUniformLocation(name), false, store(value));
     }
 
     /**
-     * Uploads a uniform to the corresponding {@code Shader}.
+     * Uploads a {@code Matrix4} uniform to the corresponding {@code Shader}.
      *
      * @param name  the name of the uniform.
-     * @param value the value to be uploaded.
+     * @param value the {@code Matrix4} value to be uploaded.
      */
     public void uploadUniform(String name, Matrix4 value) {
         glUniformMatrix4fv(getUniformLocation(name), false, store(value));
