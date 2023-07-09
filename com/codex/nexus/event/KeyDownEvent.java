@@ -33,7 +33,7 @@ public class KeyDownEvent {
     }
 
     /**
-     * Gets a {@code String} representation of this {@code KeyDownEvent}, including the {@code Key} held down.
+     * Gets a {@code String} representation of this {@code KeyDownEvent}.
      *
      * @return a {@code String} representation of this {@code KeyDownEvent}.
      */
