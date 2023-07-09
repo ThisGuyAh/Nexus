@@ -33,7 +33,7 @@ public class KeyReleaseEvent {
     }
 
     /**
-     * Gets a {@code String} representation of this {@code KeyReleaseEvent}, including the {@code Key} released.
+     * Gets a {@code String} representation of this {@code KeyReleaseEvent}.
      *
      * @return a {@code String} representation of this {@code KeyReleaseEvent}.
      */
