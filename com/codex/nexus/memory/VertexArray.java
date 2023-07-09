@@ -41,15 +41,15 @@ public class VertexArray {
         for (var vertexBuffer : vertexBuffers) {
             vertexBuffer.bind();
 
-            InputLayout inputLayout = vertexBuffer.getInputLayout();
-            InputElement[] inputElements = inputLayout.getInputElements();
+            VertexLayout vertexLayout = vertexBuffer.getVertexLayout();
+            VertexElement[] vertexElements = vertexLayout.getVertexElements();
 
-            for (int i = 0; i < inputElements.length; i++) {
-                InputElement inputElement = inputElements[i];
+            for (int i = 0; i < vertexElements.length; i++) {
+                VertexElement vertexElement = vertexElements[i];
 
                 glEnableVertexAttribArray(i);
-                glVertexAttribPointer(i, inputElement.getDataType().getComponentCount(), GL_FLOAT,
-                    inputElement.isNormalized(), inputLayout.getStride(), inputElement.getOffset());
+                glVertexAttribPointer(i, vertexElement.getDataType().getComponentCount(), GL_FLOAT,
+                    vertexElement.isNormalized(), vertexLayout.getStride(), vertexElement.getOffset());
             }
         }
 
