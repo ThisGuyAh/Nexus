@@ -33,8 +33,7 @@ public class MouseButtonPressEvent {
     }
 
     /**
-     * Gets a {@code String} representation of this {@code MouseButtonPressEvent}, including the {@code MouseButton}
-     * pressed.
+     * Gets a {@code String} representation of this {@code MouseButtonPressEvent}.
      *
      * @return a {@code String} representation of this {@code MouseButtonPressEvent}.
      */
