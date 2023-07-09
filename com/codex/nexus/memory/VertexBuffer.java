@@ -4,7 +4,7 @@ import static com.codex.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL15.*;
 
 /**
- * {@code VertexBuffer} stores vertex data and an {@code InputLayout}.
+ * {@code VertexBuffer} stores vertex data and an {@code VertexLayout}.
  *
  * @author Christopher Ruley
  */
