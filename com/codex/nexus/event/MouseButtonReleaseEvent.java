@@ -33,8 +33,7 @@ public class MouseButtonReleaseEvent {
     }
 
     /**
-     * Gets a {@code String} representation of this {@code MouseButtonReleaseEvent}, including the {@code MouseButton}
-     * released.
+     * Gets a {@code String} representation of this {@code MouseButtonReleaseEvent}.
      *
      * @return a {@code String} representation of this {@code MouseButtonReleaseEvent}.
      */
