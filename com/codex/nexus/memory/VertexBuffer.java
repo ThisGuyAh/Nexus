@@ -1,6 +1,6 @@
 package com.codex.nexus.memory;
 
-import static org.lwjgl.BufferUtils.*;
+import static com.codex.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL15.*;
 
 /**
@@ -16,25 +16,28 @@ public class VertexBuffer {
     private float[] data;
 
     /**
-     * The {@code InputLayout}.
+     * The {@code VertexLayout}.
      */
-    private InputLayout inputLayout;
+    private VertexLayout vertexLayout;
 
+    /**
+     * The unique identification.
+     */
     private int handle;
 
     /**
      * Constructs a {@code VertexBuffer}.
      *
-     * @param data        the data to store.
-     * @param inputLayout the {@code InputLayout}.
+     * @param data         the data to store.
+     * @param vertexLayout the {@code VertexLayout}.
      */
-    public VertexBuffer(float[] data, InputLayout inputLayout) {
+    public VertexBuffer(float[] data, VertexLayout vertexLayout) {
         this.data = data;
-        this.inputLayout = inputLayout;
+        this.vertexLayout = vertexLayout;
         handle = glGenBuffers();
 
         bind();
-        glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(data.length).put(data).flip(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, store(data), GL_STATIC_DRAW);
     }
 
     /**
@@ -47,12 +50,12 @@ public class VertexBuffer {
     }
 
     /**
-     * Gets the {@code InputLayout}.
+     * Gets the {@code VertexLayout}.
      *
-     * @return the {@code InputLayout}.
+     * @return the {@code VertexLayout}.
      */
-    public InputLayout getInputLayout() {
-        return inputLayout;
+    public VertexLayout getVertexLayout() {
+        return vertexLayout;
     }
 
     /**
