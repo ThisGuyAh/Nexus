@@ -1,26 +1,43 @@
 package com.codex.nexus.event;
 
-import com.codex.nexus.core.Window;
 import com.codex.nexus.input.MouseButton;
 
+/**
+ * A {@code MouseButtonDownEvent} notifies subscribers when a {@code MouseButton} is held down.
+ *
+ * @author Christopher Ruley
+ */
 public class MouseButtonDownEvent {
 
-    private Window window;
+    /**
+     * The {@code MouseButton} held down.
+     */
     private MouseButton mouseButton;
 
-    public MouseButtonDownEvent(Window window, MouseButton mouseButton) {
-        this.window = window;
+    /**
+     * Constructs a {@code MouseButton}.
+     *
+     * @param mouseButton the {@code MouseButton} held down.
+     */
+    public MouseButtonDownEvent(MouseButton mouseButton) {
         this.mouseButton = mouseButton;
     }
 
-    public Window getWindow() {
-        return window;
-    }
-
+    /**
+     * Gets the {@code MouseButton} held down.
+     *
+     * @return the {@code MouseButton} held down.
+     */
     public MouseButton getMouseButton() {
         return mouseButton;
     }
 
+    /**
+     * Gets a {@code String} representation of this {@code MouseButtonPressEvent}, including the {@code MouseButton}
+     * held down.
+     *
+     * @return a {@code String} representation of this {@code MouseButtonPressEvent}.
+     */
     @Override
     public String toString() {
         return "MouseButtonDownEvent: " + mouseButton;
