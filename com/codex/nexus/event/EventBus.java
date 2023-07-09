@@ -21,7 +21,7 @@ public class EventBus {
         Class<?> clazz = object.getClass();
 
         while (clazz != null) {
-            List<Method> methods = findWithParameterCount(1, findWithAnnotation(Subscribe.class, clazz));
+            List<Method> methods = findWithParameterCount(1, findWithAnnotation(Event.class, clazz));
 
             methods.forEach(method -> {
                 Class<?> parameterType = method.getParameterTypes()[0];
@@ -38,7 +38,7 @@ public class EventBus {
         Class<?> clazz = object.getClass();
 
         while (clazz != null) {
-            List<Method> methods = findWithParameterCount(1, findWithAnnotation(Subscribe.class, clazz));
+            List<Method> methods = findWithParameterCount(1, findWithAnnotation(Event.class, clazz));
 
             methods.forEach(method -> {
                 Class<?> parameterType = method.getParameterTypes()[0];
