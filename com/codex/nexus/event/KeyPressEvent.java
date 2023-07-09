@@ -49,7 +49,7 @@ public class KeyPressEvent {
     }
 
     /**
-     * Gets a {@code String} representation of this {@code KeyPressEvent}, including the {@code Key} pressed.
+     * Gets a {@code String} representation of this {@code KeyPressEvent}.
      *
      * @return a {@code String} representation of this {@code KeyPressEvent}.
      */
