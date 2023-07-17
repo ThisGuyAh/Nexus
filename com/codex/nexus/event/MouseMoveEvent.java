@@ -1,5 +1,6 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.core.Window;
 import com.codex.nexus.math.Vector2;
 
 /**
@@ -10,6 +11,11 @@ import com.codex.nexus.math.Vector2;
 public class MouseMoveEvent {
 
     /**
+     * The {@code Window}.
+     */
+    private Window window;
+
+    /**
      * The mouse position.
      */
     private Vector2 position;
@@ -17,10 +23,21 @@ public class MouseMoveEvent {
     /**
      * Constructs a {@code MouseMoveEvent}.
      *
+     * @param window   the {@code Window}.
      * @param position the mouse position.
      */
-    public MouseMoveEvent(Vector2 position) {
+    public MouseMoveEvent(Window window, Vector2 position) {
+        this.window = window;
         this.position = position;
+    }
+
+    /**
+     * Gets the {@code Window}.
+     *
+     * @return window the {@code Window}.
+     */
+    public Window getWindow() {
+        return window;
     }
 
     /**
@@ -39,7 +56,7 @@ public class MouseMoveEvent {
      */
     @Override
     public String toString() {
-        return "MouseMoveEvent: " + position.toString();
+        return "MouseMoveEvent: Window = " + window.getTitle() + ", " + position.toString();
     }
 
 }
