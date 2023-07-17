@@ -1,5 +1,6 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.core.Window;
 import com.codex.nexus.input.MouseButton;
 
 /**
@@ -10,6 +11,11 @@ import com.codex.nexus.input.MouseButton;
 public class MouseButtonPressEvent {
 
     /**
+     * The {@code Window}.
+     */
+    private Window window;
+
+    /**
      * The {@code MouseButton} pressed.
      */
     private MouseButton mouseButton;
@@ -17,10 +23,21 @@ public class MouseButtonPressEvent {
     /**
      * Constructs a {@code MouseButtonPressEvent}.
      *
+     * @param window      the {@code Window}.
      * @param mouseButton the {@code MouseButton} pressed.
      */
-    public MouseButtonPressEvent(MouseButton mouseButton) {
+    public MouseButtonPressEvent(Window window, MouseButton mouseButton) {
+        this.window = window;
         this.mouseButton = mouseButton;
+    }
+
+    /**
+     * Gets the {@code Window}.
+     *
+     * @return window the {@code Window}.
+     */
+    public Window getWindow() {
+        return window;
     }
 
     /**
@@ -39,7 +56,7 @@ public class MouseButtonPressEvent {
      */
     @Override
     public String toString() {
-        return "MouseButtonPressEvent: " + mouseButton;
+        return "MouseButtonPressEvent: Window = " + window.getTitle() + ", MouseButton = " + mouseButton;
     }
 
 }
