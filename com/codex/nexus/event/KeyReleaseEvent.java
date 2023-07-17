@@ -1,5 +1,6 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.core.Window;
 import com.codex.nexus.input.Key;
 
 /**
@@ -10,6 +11,11 @@ import com.codex.nexus.input.Key;
 public class KeyReleaseEvent {
 
     /**
+     * The {@code Window}.
+     */
+    private Window window;
+
+    /**
      * The {@code Key} released.
      */
     private Key key;
@@ -17,10 +23,21 @@ public class KeyReleaseEvent {
     /**
      * Constructs a {@code KeyReleaseEvent}.
      *
-     * @param key the {@code Key} released.
+     * @param window the {@code Window}.
+     * @param key    the {@code Key} released.
      */
-    public KeyReleaseEvent(Key key) {
+    public KeyReleaseEvent(Window window, Key key) {
+        this.window = window;
         this.key = key;
+    }
+
+    /**
+     * Gets the {@code Window}.
+     *
+     * @return window the {@code Window}.
+     */
+    public Window getWindow() {
+        return window;
     }
 
     /**
@@ -39,7 +56,7 @@ public class KeyReleaseEvent {
      */
     @Override
     public String toString() {
-        return "KeyReleaseEvent: " + key;
+        return "KeyReleaseEvent: Window = " + window.getTitle() + ", Key = " + key;
     }
 
 }
