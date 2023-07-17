@@ -1,5 +1,6 @@
 package com.codex.nexus.event;
 
+import com.codex.nexus.core.Window;
 import com.codex.nexus.input.Key;
 
 /**
@@ -10,6 +11,11 @@ import com.codex.nexus.input.Key;
 public class KeyDownEvent {
 
     /**
+     * The {@code Window}.
+     */
+    private Window window;
+
+    /**
      * The {@code Key} held down.
      */
     private Key key;
@@ -17,10 +23,21 @@ public class KeyDownEvent {
     /**
      * Constructs a {@code KeyDownEvent}.
      *
-     * @param key the {@code Key} held down.
+     * @param window the {@code Window}.
+     * @param key    the {@code Key} held down.
      */
-    public KeyDownEvent(Key key) {
+    public KeyDownEvent(Window window, Key key) {
+        this.window = window;
         this.key = key;
+    }
+
+    /**
+     * Gets the {@code Window}.
+     *
+     * @return window the {@code Window}.
+     */
+    public Window getWindow() {
+        return window;
     }
 
     /**
@@ -39,7 +56,7 @@ public class KeyDownEvent {
      */
     @Override
     public String toString() {
-        return "KeyDownEvent: " + key;
+        return "KeyDownEvent: Window = " + window.getTitle() + ", Key = " + key;
     }
 
 }
