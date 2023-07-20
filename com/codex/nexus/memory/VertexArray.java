@@ -48,7 +48,7 @@ public class VertexArray {
                 DataType dataType = vertexElement.getDataType();
 
                 glEnableVertexAttribArray(index);
-                glVertexAttribPointer(index, dataType.getComponentCount(), dataType.toOpenGLType(),
+                glVertexAttribPointer(index, dataType.getComponentCount(), dataType.getOpenGLType(),
                     vertexElement.isNormalized(), vertexLayout.getStride(), vertexElement.getOffset());
 
                 index++;
