@@ -1,5 +1,7 @@
 package com.codex.nexus.memory;
 
+import static org.lwjgl.opengl.GL11.*;
+
 /**
  * {@code DataType} defines data types and their attributes.
  *
@@ -55,4 +57,16 @@ public enum DataType {
         return size;
     }
 
+    /**
+     * Gets the OpenGL type corresponding with this {@code DataType}.
+     *
+     * @return the OpenGL type.
+     */
+    public int toOpenGLType() {
+        return switch (this) {
+            case INT, INT2, INT3, INT4         -> GL_INT;
+            case FLOAT, FLOAT2, FLOAT3, FLOAT4 -> GL_FLOAT;
+        };
+    }
+    
 }
