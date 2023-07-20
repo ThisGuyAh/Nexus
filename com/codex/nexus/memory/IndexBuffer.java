@@ -16,6 +16,11 @@ public class IndexBuffer {
     private int[] indices;
 
     /**
+     * The number of indices.
+     */
+    private int count;
+
+    /**
      * The unique identification.
      */
     private int handle;
@@ -27,7 +32,7 @@ public class IndexBuffer {
      */
     public IndexBuffer(int[] indices) {
         this.indices = indices;
-
+        count = indices.length;
         handle = glGenBuffers();
 
         bind();
@@ -41,6 +46,15 @@ public class IndexBuffer {
      */
     public int[] getIndices() {
         return indices;
+    }
+
+    /**
+     * Gets the number of indices.
+     *
+     * @return the number of indices.
+     */
+    public int getCount() {
+        return count;
     }
 
     /**
