@@ -62,7 +62,7 @@ public enum DataType {
      *
      * @return the OpenGL type.
      */
-    public int toOpenGLType() {
+    public int getOpenGLType() {
         return switch (this) {
             case INT, INT2, INT3, INT4         -> GL_INT;
             case FLOAT, FLOAT2, FLOAT3, FLOAT4 -> GL_FLOAT;
