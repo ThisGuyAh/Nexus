@@ -1,6 +1,5 @@
 package com.codex.nexus.memory;
 
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
@@ -38,18 +37,22 @@ public class VertexArray {
 
         bind();
 
-        for (var vertexBuffer : vertexBuffers) {
-            vertexBuffer.bind();
+        int index = 0;
 
+        for (var vertexBuffer : vertexBuffers) {
             VertexLayout vertexLayout = vertexBuffer.getVertexLayout();
             VertexElement[] vertexElements = vertexLayout.getVertexElements();
 
-            for (int i = 0; i < vertexElements.length; i++) {
-                VertexElement vertexElement = vertexElements[i];
+            vertexBuffer.bind();
 
-                glEnableVertexAttribArray(i);
-                glVertexAttribPointer(i, vertexElement.getDataType().getComponentCount(), GL_FLOAT,
+            for (var vertexElement : vertexElements) {
+                DataType dataType = vertexElement.getDataType();
+
+                glEnableVertexAttribArray(index);
+                glVertexAttribPointer(index, dataType.getComponentCount(), dataType.toOpenGLType(),
                     vertexElement.isNormalized(), vertexLayout.getStride(), vertexElement.getOffset());
+
+                index++;
             }
         }
 
