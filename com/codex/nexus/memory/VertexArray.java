@@ -32,7 +32,6 @@ public class VertexArray {
      */
     public VertexArray(VertexBuffer... vertexBuffers) {
         this.vertexBuffers = vertexBuffers;
-
         handle = glGenVertexArrays();
 
         bind();
