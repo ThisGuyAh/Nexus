@@ -1,8 +1,5 @@
 package com.codex.nexus.utility;
 
-import static java.nio.ByteBuffer.*;
-import static java.nio.ByteOrder.*;
-
 import com.codex.nexus.math.Matrix2;
 import com.codex.nexus.math.Matrix3;
 import com.codex.nexus.math.Matrix4;
@@ -12,6 +9,9 @@ import com.codex.nexus.math.Vector4;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import static java.nio.ByteBuffer.*;
+import static java.nio.ByteOrder.*;
 
 /**
  * {@code Memory} defines methods used for memory allocations.
