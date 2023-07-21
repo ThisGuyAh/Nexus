@@ -48,13 +48,13 @@ public class Documents {
         return output;
     }
 
-    public static List<List<String>> split(String startToken, String endToken, List<String> lines) {
+    public static List<List<String>> collect(String startToken, String endToken, List<String> lines) {
         List<String> current = new ArrayList<>();
         List<List<String>> output = new ArrayList<>();
         boolean found = false;
 
         for (String line : lines) {
-            if (line.startsWith(startToken) || line.equalsIgnoreCase(startToken)) {
+            if (!line.startsWith(startToken) || !line.equalsIgnoreCase(startToken)) {
                 found = true;
             }
             if (found) {
