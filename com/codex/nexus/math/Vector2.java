@@ -5,7 +5,7 @@ public class Vector2 {
     public float x;
     public float y;
 
-    public Vector2() {
+    public Vector2(){
         setZero();
     }
 
@@ -34,14 +34,14 @@ public class Vector2 {
         return this;
     }
 
-    public Vector2 add(Vector3 other) {
+    public Vector2 add(Vector2 other) {
         x += other.x;
         y += other.y;
 
         return this;
     }
 
-    public Vector2 subtract(Vector3 other) {
+    public Vector2 subtract(Vector2 other) {
         x -= other.x;
         y -= other.y;
 
@@ -66,6 +66,11 @@ public class Vector2 {
 
     public float[] toArray() {
         return new float[] { x, y };
+    }
+
+    @Override
+    public String toString() {
+        return "X = " + x + ", Y = " + y;
     }
 
 }
