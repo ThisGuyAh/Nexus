@@ -88,4 +88,9 @@ public class Vector3 {
         return new float[] { x, y, z };
     }
 
+    @Override
+    public String toString() {
+        return "X = " + x + ", Y = " + y + ", Z = " + z;
+    }
+
 }
