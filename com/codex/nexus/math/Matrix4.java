@@ -433,4 +433,14 @@ public class Matrix4 {
         };
     }
 
+    @Override
+    public String toString() {
+        String row1 = "[" + element00 + ", " + element10 + ", " + element20 + ", " + element30 + "]";
+        String row2 = "[" + element01 + ", " + element11 + ", " + element21 + ", " + element31 + "]";
+        String row3 = "[" + element02 + ", " + element12 + ", " + element22 + ", " + element32 + "]";
+        String row4 = "[" + element03 + ", " + element13 + ", " + element23 + ", " + element33 + "]";
+
+        return "Row 1: " + row1 + "\n" + "Row 2: " + row2 + "\n" + "Row 3: " + row3 + "\n" + "Row 4: " + row4;
+    }
+
 }
