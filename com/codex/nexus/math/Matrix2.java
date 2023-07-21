@@ -118,10 +118,10 @@ public class Matrix2 {
 
     @Override
     public String toString() {
-        String row1 = "[" + element00 + ", " + element10 + "]";
-        String row2 = "[" + element01 + ", " + element11 + "]";
+        String row1 = "Row 1: [" + element00 + ", " + element10 + "]";
+        String row2 = "Row 2: [" + element01 + ", " + element11 + "]";
 
-        return "Row 1: " + row1 + "\n" + "Row 2: " + row2;
+        return row1 + "\n" + row2;
     }
 
 }
