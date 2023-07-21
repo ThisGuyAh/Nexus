@@ -1,4 +1,4 @@
-package com.codex.nexus.render;
+package com.codex.nexus.model;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -8,13 +8,13 @@ import java.io.IOException;
 import static com.codex.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL11.*;
 
-public class Texture2D {
+public class Texture {
 
     private int width;
     private int height;
     private int handle;
 
-    public Texture2D(String path) {
+    public Texture(String path) {
         int length = 0;
         int[] pixels = null;
 
@@ -47,6 +47,8 @@ public class Texture2D {
         bind();
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
             store(rearrangedPixels));
         unbind();
