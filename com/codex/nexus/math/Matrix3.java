@@ -185,4 +185,13 @@ public class Matrix3 {
         };
     }
 
+    @Override
+    public String toString() {
+        String row1 = "[" + element00 + ", " + element10 + ", " + element20 + "]";
+        String row2 = "[" + element01 + ", " + element11 + ", " + element21 + "]";
+        String row3 = "[" + element02 + ", " + element12 + ", " + element22 + "]";
+
+        return "Row 1: " + row1 + "\n" + "Row 2: " + row2 + "\n" + "Row 3: " + row3;
+    }
+
 }
