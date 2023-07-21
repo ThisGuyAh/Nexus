@@ -38,9 +38,9 @@ public class Material {
      * Constructs a {@code Material}.
      *
      * @param name          the name.
-     * @param ambientColor  color that is reflected under ambient lighting.
-     * @param diffuseColor  color of the surface under diffuse lighting.
-     * @param specularColor color of the specular highlight on the surface.
+     * @param ambientColor  the color that is reflected under ambient lighting.
+     * @param diffuseColor  the color of the surface under diffuse lighting.
+     * @param specularColor the color of the specular highlight on the surface.
      */
     public Material(String name, Vector4 ambientColor, Vector4 diffuseColor, Vector4 specularColor, float shininess) {
         this.name = name;
