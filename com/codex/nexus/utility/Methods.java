@@ -1,11 +1,11 @@
 package com.codex.nexus.utility;
 
-import static java.util.Arrays.*;
-import static java.util.stream.Collectors.*;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
+
+import static java.util.Arrays.*;
+import static java.util.stream.Collectors.*;
 
 public class Methods {
 
