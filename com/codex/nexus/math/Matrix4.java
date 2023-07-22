@@ -1,6 +1,6 @@
 package com.codex.nexus.math;
 
-public class Matrix4 {
+public class Matrix4 extends Matrix {
 
     public float element00;
     public float element01;
@@ -412,6 +412,7 @@ public class Matrix4 {
         return this;
     }
 
+    @Override
     public float[] toArray() {
         return new float[] {
             element00,
