@@ -24,7 +24,7 @@ public class Arrays {
         return output;
     }
 
-    public static float[] interleave(int firstCopyLength, int secondCopyLength, float[] firstArray,
+    public static float[] interleave(int firstCopyInterval, int secondCopyInterval, float[] firstArray,
                                      float[] secondArray) {
         int firstLength = firstArray.length;
         int secondLength = secondArray.length;
@@ -36,12 +36,12 @@ public class Arrays {
 
         for (int i = 0; i < totalLength; i++) {
             if (firstIndex < firstLength - 1) {
-                for (int j = 0; j < firstCopyLength; j++) {
+                for (int j = 0; j < firstCopyInterval; j++) {
                     output[outputIndex++] = firstArray[firstIndex++];
                 }
             }
             if (secondIndex < secondLength - 1) {
-                for (int j = 0; j < secondCopyLength; j++) {
+                for (int j = 0; j < secondCopyInterval; j++) {
                     output[outputIndex++] = secondArray[secondIndex++];
                 }
             }
@@ -50,8 +50,8 @@ public class Arrays {
         return output;
     }
 
-    public static float[] interleave(int firstCopyLength, int secondCopyLength, int thirdCopyLength, float[] firstArray,
-                                     float[] secondArray, float[] thirdArray) {
+    public static float[] interleave(int firstCopyInterval, int secondCopyInterval, int thirdCopyInterval,
+                                     float[] firstArray, float[] secondArray, float[] thirdArray) {
         int firstLength = firstArray.length;
         int secondLength = secondArray.length;
         int thirdLength = thirdArray.length;
@@ -64,17 +64,17 @@ public class Arrays {
 
         for (int i = 0; i < totalLength; i++) {
             if (firstIndex < firstLength - 1) {
-                for (int j = 0; j < firstCopyLength; j++) {
+                for (int j = 0; j < firstCopyInterval; j++) {
                     output[outputIndex++] = firstArray[firstIndex++];
                 }
             }
             if (secondIndex < secondLength - 1) {
-                for (int j = 0; j < secondCopyLength; j++) {
+                for (int j = 0; j < secondCopyInterval; j++) {
                     output[outputIndex++] = secondArray[secondIndex++];
                 }
             }
             if (thirdIndex < thirdLength - 1) {
-                for (int j = 0; j < thirdCopyLength; j++) {
+                for (int j = 0; j < thirdCopyInterval; j++) {
                     output[outputIndex++] = thirdArray[thirdIndex++];
                 }
             }
@@ -83,9 +83,9 @@ public class Arrays {
         return output;
     }
 
-    public static float[] interleave(int firstCopyLength, int secondCopyLength, int thirdCopyLength, 
-                                     int fourthCopyLength, float[] firstArray, float[] secondArray, float[] thirdArray,
-                                     float[] fourthArray) {
+    public static float[] interleave(int firstCopyInterval, int secondCopyInterval, int thirdCopyInterval,
+                                     int fourthCopyInterval, float[] firstArray, float[] secondArray,
+                                     float[] thirdArray, float[] fourthArray) {
         int firstLength = firstArray.length;
         int secondLength = secondArray.length;
         int thirdLength = thirdArray.length;
@@ -100,22 +100,22 @@ public class Arrays {
 
         for (int i = 0; i < totalLength; i++) {
             if (firstIndex < firstLength - 1) {
-                for (int j = 0; j < firstCopyLength; j++) {
+                for (int j = 0; j < firstCopyInterval; j++) {
                     output[outputIndex++] = firstArray[firstIndex++];
                 }
             }
             if (secondIndex < secondLength - 1) {
-                for (int j = 0; j < secondCopyLength; j++) {
+                for (int j = 0; j < secondCopyInterval; j++) {
                     output[outputIndex++] = secondArray[secondIndex++];
                 }
             }
             if (thirdIndex < thirdLength - 1) {
-                for (int j = 0; j < thirdCopyLength; j++) {
+                for (int j = 0; j < thirdCopyInterval; j++) {
                     output[outputIndex++] = thirdArray[thirdIndex++];
                 }
             }
             if (fourthIndex < fourthLength - 1) {
-                for (int j = 0; j < fourthCopyLength; j++) {
+                for (int j = 0; j < fourthCopyInterval; j++) {
                     output[outputIndex++] = fourthArray[fourthIndex++];
                 }
             }
