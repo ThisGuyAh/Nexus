@@ -1,11 +1,7 @@
 package com.codex.nexus.utility;
 
-import com.codex.nexus.math.Matrix2;
-import com.codex.nexus.math.Matrix3;
-import com.codex.nexus.math.Matrix4;
-import com.codex.nexus.math.Vector2;
-import com.codex.nexus.math.Vector3;
-import com.codex.nexus.math.Vector4;
+import com.codex.nexus.math.Matrix;
+import com.codex.nexus.math.Vector;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -55,62 +51,22 @@ public class Memory {
     }
 
     /**
-     * Stores a {@code Vector2} in a {@code FloatBuffer}.
+     * Stores a {@code Vector} in a {@code FloatBuffer}.
      *
-     * @param data the {@code Vector2} to be stored.
+     * @param data the {@code Vector} to be stored.
      * @return a {@code FloatBuffer} containing the stored data.
      */
-    public static FloatBuffer store(Vector2 data) {
+    public static FloatBuffer store(Vector data) {
         return store(data.toArray());
     }
 
     /**
-     * Stores a {@code Vector3} in a {@code FloatBuffer}.
+     * Stores a {@code Matrix} in a {@code FloatBuffer}.
      *
-     * @param data the {@code Vector3} to be stored.
+     * @param data the {@code Matrix} to be stored.
      * @return a {@code FloatBuffer} containing the stored data.
      */
-    public static FloatBuffer store(Vector3 data) {
-        return store(data.toArray());
-    }
-
-    /**
-     * Stores a {@code Vector4} in a {@code FloatBuffer}.
-     *
-     * @param data the {@code Vector4} to be stored.
-     * @return a {@code FloatBuffer} containing the stored data.
-     */
-    public static FloatBuffer store(Vector4 data) {
-        return store(data.toArray());
-    }
-
-    /**
-     * Stores a {@code Matrix2} in a {@code FloatBuffer}.
-     *
-     * @param data the {@code Matrix2} to be stored.
-     * @return a {@code FloatBuffer} containing the stored data.
-     */
-    public static FloatBuffer store(Matrix2 data) {
-        return store(data.toArray());
-    }
-
-    /**
-     * Stores a {@code Matrix3} in a {@code FloatBuffer}.
-     *
-     * @param data the {@code Matrix3} to be stored.
-     * @return a {@code FloatBuffer} containing the stored data.
-     */
-    public static FloatBuffer store(Matrix3 data) {
-        return store(data.toArray());
-    }
-
-    /**
-     * Stores a {@code Matrix4} in a {@code FloatBuffer}.
-     *
-     * @param data the {@code Matrix4} to be stored.
-     * @return a {@code FloatBuffer} containing the stored data.
-     */
-    public static FloatBuffer store(Matrix4 data) {
+    public static FloatBuffer store(Matrix data) {
         return store(data.toArray());
     }
 
