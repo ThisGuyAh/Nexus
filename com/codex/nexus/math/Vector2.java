@@ -1,77 +1,97 @@
 package com.codex.nexus.math;
 
-public class Vector2 extends Vector {
+public class Vector3 extends Vector {
 
     public float x;
     public float y;
+    public float z;
 
-    public Vector2(){
+    public Vector3() {
         setZero();
     }
 
-    public Vector2(Vector2 other) {
+    public Vector3(Vector3 other) {
         x = other.x;
         y = other.y;
+        z = other.z;
     }
 
-    public Vector2(float x, float y) {
+    public Vector3(float x, float y, float z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     public float getMagnitude() {
-        return (float) Math.sqrt(x * x + y * y);
+        return (float) Math.sqrt(x * x + y * y + z * z);
     }
 
-    public float getDot(Vector2 other) {
-        return x * other.x + y * other.y;
+    public float getDot(Vector3 other) {
+        return x * other.x + y * other.y + z * other.z;
     }
 
-    public Vector2 setZero() {
+    public Vector3 setZero() {
         x = 0.0F;
         y = 0.0F;
+        z = 0.0F;
 
         return this;
     }
 
-    public Vector2 add(Vector2 other) {
+    public Vector3 add(Vector3 other) {
         x += other.x;
         y += other.y;
+        z += other.z;
 
         return this;
     }
 
-    public Vector2 subtract(Vector2 other) {
+    public Vector3 subtract(Vector3 other) {
         x -= other.x;
         y -= other.y;
+        z -= other.z;
 
         return this;
     }
 
-    public Vector2 negate() {
+    public Vector3 cross(Vector3 other) {
+        float a = y * other.z - z * other.y;
+        float b = other.x * z - other.z * x;
+        float c = x * other.y - y * other.x;
+
+        x = a;
+        y = b;
+        z = c;
+
+        return this;
+    }
+
+    public Vector3 negate() {
         x = -x;
         y = -y;
+        z = -z;
 
         return this;
     }
 
-    public Vector2 normalize() {
+    public Vector3 normalize() {
         float magnitude = getMagnitude();
 
         x /= magnitude;
         y /= magnitude;
+        z /= magnitude;
 
         return this;
     }
 
     @Override
     public float[] toArray() {
-        return new float[] { x, y };
+        return new float[] { x, y, z };
     }
 
     @Override
     public String toString() {
-        return "X = " + x + ", Y = " + y;
+        return "X = " + x + ", Y = " + y + ", Z = " + z;
     }
 
 }
