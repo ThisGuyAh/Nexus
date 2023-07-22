@@ -1,6 +1,7 @@
 package com.codex.nexus.model;
 
 import java.awt.image.BufferedImage;
+
 import static com.codex.nexus.utility.Documents.*;
 import static com.codex.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL11.*;
