@@ -11,18 +11,18 @@ public class Vector4 extends Vector {
         setZero();
     }
 
-    public Vector4(float x, float y, float z, float w) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
-    }
-
     public Vector4(Vector4 other) {
         x = other.x;
         y = other.y;
         z = other.z;
         w = other.w;
+    }
+
+    public Vector4(float x, float y, float z, float w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
     }
 
     public float getMagnitude() {
