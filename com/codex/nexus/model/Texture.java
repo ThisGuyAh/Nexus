@@ -1,10 +1,7 @@
 package com.codex.nexus.model;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
-
+import static com.codex.nexus.utility.Documents.*;
 import static com.codex.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -15,21 +12,15 @@ public class Texture {
     private int handle;
 
     public Texture(String path) {
-        int length = 0;
-        int[] pixels = null;
+        BufferedImage bufferedImage = readImage(path);
 
-        try {
-            BufferedImage bufferedImage = ImageIO.read(new FileInputStream(path));
+        width = bufferedImage.getWidth();
+        height = bufferedImage.getHeight();
 
-            width = bufferedImage.getWidth();
-            height = bufferedImage.getHeight();
-            length = width * height;
-            pixels = new int[length];
+        int length = width * height;
+        int[] pixels = new int[length];
 
-            bufferedImage.getRGB(0, 0, width, height, pixels, 0, width);
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
+        bufferedImage.getRGB(0, 0, width, height, pixels, 0, width);
 
         int[] rearrangedPixels = new int[length];
 
