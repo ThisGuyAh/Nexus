@@ -1,5 +1,8 @@
 package com.codex.nexus.utility;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,7 +14,7 @@ public class Documents {
     private Documents() {
     }
 
-    public static List<String> read(String path) {
+    public static List<String> readFile(String path) {
         List<String> output = new ArrayList<>();
 
         try {
@@ -21,6 +24,18 @@ public class Documents {
         }
 
         return output;
+    }
+
+    public static BufferedImage readImage(String path) {
+        BufferedImage bufferedImage = null;
+
+        try {
+            bufferedImage = ImageIO.read(new FileInputStream(path));
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        return bufferedImage;
     }
 
     public static List<List<String>> split(String token, List<String> lines) {
