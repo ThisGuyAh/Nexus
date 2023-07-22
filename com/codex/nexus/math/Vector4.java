@@ -1,6 +1,6 @@
 package com.codex.nexus.math;
 
-public class Vector4 {
+public class Vector4 extends Vector {
 
     public float x;
     public float y;
@@ -90,6 +90,7 @@ public class Vector4 {
         return this;
     }
 
+    @Override
     public float[] toArray() {
         return new float[] { x, y, z, w };
     }
