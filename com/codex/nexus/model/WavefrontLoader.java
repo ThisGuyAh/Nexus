@@ -10,7 +10,6 @@ import com.codex.nexus.memory.VertexArray;
 import com.codex.nexus.memory.VertexBuffer;
 import com.codex.nexus.memory.VertexElement;
 import com.codex.nexus.memory.VertexLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +19,61 @@ import static java.lang.Integer.*;
 
 public class WavefrontLoader {
 
+    public static final String MTL_NEWMTL = "newmtl";
+    public static final String MTL_KA =     "Ka";
+    public static final String MTL_KD =     "Kd";
+    public static final String MTL_KS =     "Ks";
+    public static final String MTL_NS =     "Ns";
+    public static final String OBJ_O =      "o";
+    public static final String OBJ_V =      "v";
+    public static final String OBJ_VT =     "vt";
+    public static final String OBJ_VN =     "vn";
+    public static final String OBJ_F =      "f";
+
     private WavefrontLoader() {
     }
 
-    public static Model parseWavefrontFile(String path) {
-        List<List<String>> groups = split("o ", readFile(path));
+    public static List<Material> parseMTLFile(String path) {
+        List<List<String>> groups = split(MTL_NEWMTL, readFile(path));
+        List<Material> materials = new ArrayList<>();
+
+        for (var group : groups) {
+            materials.add(constructMaterial(group));
+        }
+
+        return materials;
+    }
+
+    private static Material constructMaterial(List<String> lines) {
+        String name = null;
+        Vector4 ambientColor = null;
+        Vector4 diffuseColor = null;
+        Vector4 specularColor = null;
+        float shininess = 0.0F;
+
+        for (var line : lines) {
+            String[] tokens = line.split("\\s+");
+
+            switch (tokens[0]) {
+                case MTL_NEWMTL ->
+                    name = tokens[0];
+                case MTL_KA ->
+                    ambientColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]), 1.0F);
+                case MTL_KD ->
+                    diffuseColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]), 1.0F);
+                case MTL_KS ->
+                    specularColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]), 1.0F);
+                case MTL_NS ->
+                    shininess = parseFloat(tokens[1]);
+            }
+        }
+
+
+        return new Material(name, ambientColor, diffuseColor, specularColor, shininess);
+    }
+
+    public static Model parseOBJFile(String path) {
+        List<List<String>> groups = split(OBJ_O, readFile(path));
         List<Mesh> meshes = new ArrayList<>();
 
         for (var group : groups) {
@@ -36,26 +85,33 @@ public class WavefrontLoader {
 
     private static Mesh constructMesh(List<String> lines) {
         String name = null;
+        Material material = new Material();
         List<Vector> positions = new ArrayList<>();
         List<Vector> texcoords = new ArrayList<>();
         List<Vector> normals = new ArrayList<>();
         List<Integer> positionIndices = new ArrayList<>();
         List<Integer> texcoordIndices = new ArrayList<>();
         List<Integer> normalIndices = new ArrayList<>();
+        boolean hasTexcoords = false;
+        boolean hasNormals = false;
 
         for (var line : lines) {
             String[] tokens = line.split("\\s+");
 
             switch (tokens[0]) {
-                case "o" ->
+                case OBJ_O ->
                     name = tokens[1];
-                case "v" ->
+                case OBJ_V ->
                     positions.add(new Vector3(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3])));
-                case "vt" -> 
+                case OBJ_VT -> {
                     texcoords.add(new Vector2(parseFloat(tokens[1]), 1 - parseFloat(tokens[2])));
-                case "vn" ->
+                    hasTexcoords = true;
+                }
+                case OBJ_VN -> {
                     normals.add(new Vector3(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3])));
-                case "f" -> {
+                    hasNormals = true;
+                }
+                case OBJ_F -> {
                     String[] vertexData1 = tokens[1].split("/");
                     String[] vertexData2 = tokens[2].split("/");
                     String[] vertexData3 = tokens[3].split("/");
@@ -63,37 +119,50 @@ public class WavefrontLoader {
                     positionIndices.add(parseInt(vertexData1[0]) - 1);
                     positionIndices.add(parseInt(vertexData2[0]) - 1);
                     positionIndices.add(parseInt(vertexData3[0]) - 1);
-                    texcoordIndices.add(parseInt(vertexData1[1]) - 1);
-                    texcoordIndices.add(parseInt(vertexData2[1]) - 1);
-                    texcoordIndices.add(parseInt(vertexData3[1]) - 1);
-                    normalIndices.add(parseInt(vertexData1[2]) - 1);
-                    normalIndices.add(parseInt(vertexData2[2]) - 1);
-                    normalIndices.add(parseInt(vertexData3[2]) - 1);
+
+                    if (hasTexcoords) {
+                        texcoordIndices.add(parseInt(vertexData1[1]) - 1);
+                        texcoordIndices.add(parseInt(vertexData2[1]) - 1);
+                        texcoordIndices.add(parseInt(vertexData3[1]) - 1);
+                    }
+                    if (hasNormals) {
+                        normalIndices.add(parseInt(vertexData1[2]) - 1);
+                        normalIndices.add(parseInt(vertexData2[2]) - 1);
+                        normalIndices.add(parseInt(vertexData3[2]) - 1);
+                    }
                 }
             }
         }
 
-        reorder(texcoords, positionIndices, texcoordIndices);
-        reorder(normals, positionIndices, normalIndices);
+        if (hasTexcoords) {
+            reorder(texcoords, positionIndices, texcoordIndices);
+        }
+        if (hasNormals) {
+            reorder(normals, positionIndices, normalIndices);
+        }
 
         List<Vector> vertices = new ArrayList<>();
 
         for (int i = 0; i < positions.size(); i++) {
             vertices.add(positions.get(i));
-            vertices.add(texcoords.get(i));
-            vertices.add(normals.get(i));
+
+            if (hasTexcoords) {
+                vertices.add(texcoords.get(i));
+            }
+            if (hasNormals) {
+                vertices.add(normals.get(i));
+            }
         }
 
-        //Test 
+        //Test
         VertexLayout vertexLayout = new VertexLayout(new VertexElement[] {
             new VertexElement("position", DataType.FLOAT3, false),
             new VertexElement("texcoord", DataType.FLOAT2, false),
             new VertexElement("normal", DataType.FLOAT3, false)
         });
         VertexBuffer vertexBuffer = new VertexBuffer(vertices.toArray(new Vector[0]), vertexLayout);
-        IndexBuffer indexBuffer = new IndexBuffer(positionIndices.stream().mapToInt((Integer i) -> i).toArray());
+        IndexBuffer indexBuffer = new IndexBuffer(positionIndices.stream().mapToInt(i -> i).toArray());
         VertexArray vertexArray = new VertexArray(vertexBuffer);
-        Material material = new Material("null", new Vector4(), new Vector4(), new Vector4(), 1.0F);
 
         vertexArray.setIndexBuffer(indexBuffer);
 
