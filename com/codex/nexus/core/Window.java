@@ -9,6 +9,7 @@ import com.codex.nexus.event.WindowMoveEvent;
 import com.codex.nexus.event.WindowResizeEvent;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
+
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
@@ -56,10 +57,10 @@ public class Window {
     /**
      * Constructs a {@code Window}.
      *
-     * @param title the title.
-     * @param width the width (in pixels).
+     * @param title  the title.
+     * @param width  the width (in pixels).
      * @param height the height (in pixels).
-     * @param vSync whether vertical synchronization is enabled.
+     * @param vSync  whether vertical synchronization is enabled.
      */
     public Window(String title, int width, int height, boolean vSync) {
         this.title = title;
@@ -106,7 +107,7 @@ public class Window {
     /**
      * Gets the width (in pixels).
      *
-     *@return the width (in pixels).
+     * @return the width (in pixels).
      */
     public int getWidth() {
         return width;
@@ -222,7 +223,7 @@ public class Window {
     /**
      * Destroys the {@code Window} and frees all memory allocations.
      */
-    public void destroy() {
+    public void delete() {
         glfwDestroyWindow(handle);
         glfwFreeCallbacks(handle);
         glfwTerminate();
