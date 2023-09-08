@@ -221,7 +221,7 @@ public class Window {
     }
 
     /**
-     * Destroys the {@code Window} and frees all memory allocations.
+     * Deletes the {@code Window} and frees all memory allocations.
      */
     public void delete() {
         glfwDestroyWindow(handle);
