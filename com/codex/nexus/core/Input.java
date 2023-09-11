@@ -39,7 +39,8 @@ public class Input {
     }
 
     /**
-     * Updates the input by polling for active {@code Key}s and {@code MouseButton}s.
+     * Updates the input by querying for cached active {@code Key}s and {@code MouseButton}s, and publishing their
+     * respective events. This method is called from the {@code Application}.
      */
     static void update() {
         for (var activeKey : activeKeys.keySet()) {
@@ -51,8 +52,8 @@ public class Input {
     }
 
     /**
-     * Called from the {@code Window} and publishes the respective events. The actively held {@code Key}s are
-     * also cached.
+     * Handles {@code Key} actions and publishes their respective events, and caches or removes
+     * {@code Key}s for publishing {@code KeyDownEvent}s. This method is called from the {@code Window}.
      *
      * @param window the window.
      * @param key    the {@code Key}.
@@ -73,8 +74,8 @@ public class Input {
     }
 
     /**
-     * Called from the {@code Window} and publishes the respective events. The actively held {@code MouseButton}s are
-     * also cached.
+     * Handles {@code MouseButton} actions and publishes their respective events, and caches or removes
+     * {@code MouseButton}s for publishing {@code MouseButtonDownEvent}s. This method is called from the {@code Window}.
      *
      * @param window      the {@code Window}.
      * @param mouseButton the {@code MouseButton}.
@@ -94,7 +95,7 @@ public class Input {
     }
 
     /**
-     * Called from the {@code Window} and publishes the respective event.
+     * Handles mouse movement and publishes the respective event. This method is called from the {@code Window}.
      *
      * @param window the {@code Window}.
      * @param x      the x offset.
@@ -105,7 +106,7 @@ public class Input {
     }
 
     /**
-     * Called from the {@code Window} and publishes the respective event.
+     * Handles mouse scrolling and publishes the respective event. This method is called from the {@code Window}.
      *
      * @param window the {@code Window}.
      * @param x      the x offset.
