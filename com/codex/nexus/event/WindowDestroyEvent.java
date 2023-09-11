@@ -3,7 +3,7 @@ package com.codex.nexus.event;
 import com.codex.nexus.core.Window;
 
 /**
- * A {@code WindowDestroyEvent} notifies subscribers when a {@code Window} is created.
+ * A {@code WindowDestroyEvent} notifies subscribers when a {@code Window} is destroyed.
  *
  * @author Christopher Ruley
  */
