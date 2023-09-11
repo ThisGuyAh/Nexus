@@ -4,7 +4,7 @@ import com.codex.nexus.core.Window;
 import com.codex.nexus.core.Key;
 
 /**
- * A {@code KeyPressEvent} notifies a subscriber when a {@code Key} is pressed.
+ * A {@code KeyPressEvent} notifies subscribers when a {@code Key} is pressed.
  *
  * @author Christopher Ruley
  */
