@@ -62,7 +62,7 @@ public class MouseCursorMoveEvent {
 
     @Override
     public String toString() {
-        return "MouseMoveEvent: Window = " + window.getTitle() + ", " + position;
+        return "MouseCursorMoveEvent: Window = " + window.getTitle() + ", " + position;
     }
 
 }
