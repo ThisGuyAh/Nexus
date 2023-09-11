@@ -15,7 +15,7 @@ public class WindowFocusEvent {
     private Window window;
 
     /**
-     * Whether focus was gained or lost.
+     * Whether the {@code Window} has gained or lost focus.
      */
     private boolean focused;
 
@@ -23,7 +23,7 @@ public class WindowFocusEvent {
      * Instantiates a {@code WindowFocusEvent}.
      *
      * @param window  the {@code Window}.
-     * @param focused whether focus was gained or lost.
+     * @param focused whether the {@code Window} has gained or lost focus.
      */
     public WindowFocusEvent(Window window, boolean focused) {
         this.window = window;
