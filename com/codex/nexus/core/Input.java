@@ -15,6 +15,12 @@ import java.util.Map;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * {@code Input} is an all-static class responsible for providing the logic used to process user input per
+ * {@code Window}.
+ *
+ * @author Christopher Ruley
+ */
 public class Input {
 
     /**
