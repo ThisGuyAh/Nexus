@@ -41,7 +41,7 @@ public class MouseWheelScrollEvent {
 
     @Override
     public String toString() {
-        return "MouseScrollEvent: Window = " + window.getTitle() + ", " + offset;
+        return "MouseWheelScrollEvent: Window = " + window.getTitle() + ", " + offset;
     }
 
 }
