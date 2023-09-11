@@ -1,7 +1,7 @@
 package com.codex.nexus.event;
 
 import com.codex.nexus.core.Window;
-import com.codex.nexus.input.Key;
+import com.codex.nexus.core.Key;
 
 /**
  * A {@code KeyReleaseEvent} notifies a subscriber when a {@code Key} is released.
@@ -31,29 +31,14 @@ public class KeyReleaseEvent {
         this.key = key;
     }
 
-    /**
-     * Gets the {@code Window}.
-     *
-     * @return window the {@code Window}.
-     */
     public Window getWindow() {
         return window;
     }
 
-    /**
-     * Gets the {@code Key} released.
-     *
-     * @return the {@code Key} released.
-     */
     public Key getKey() {
         return key;
     }
 
-    /**
-     * Gets a {@code String} representation of this {@code KeyReleaseEvent}.
-     *
-     * @return a {@code String} representation of this {@code KeyReleaseEvent}.
-     */
     @Override
     public String toString() {
         return "KeyReleaseEvent: Window = " + window.getTitle() + ", Key = " + key;
