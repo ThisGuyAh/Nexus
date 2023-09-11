@@ -20,31 +20,50 @@ import static java.lang.Integer.*;
 public class WavefrontLoader {
 
     public static final String MTL_NEWMTL = "newmtl";
-    public static final String MTL_KA =     "Ka";
-    public static final String MTL_KD =     "Kd";
-    public static final String MTL_KS =     "Ks";
-    public static final String MTL_NS =     "Ns";
-    public static final String OBJ_O =      "o";
-    public static final String OBJ_V =      "v";
-    public static final String OBJ_VT =     "vt";
-    public static final String OBJ_VN =     "vn";
-    public static final String OBJ_F =      "f";
+    public static final String MTL_KA = "Ka";
+    public static final String MTL_KD = "Kd";
+    public static final String MTL_KS = "Ks";
+    public static final String MTL_NS = "Ns";
+    public static final String OBJ_O = "o";
+    public static final String OBJ_V = "v";
+    public static final String OBJ_VT = "vt";
+    public static final String OBJ_VN = "vn";
+    public static final String OBJ_USEMTL = "usemtl";
+    public static final String OBJ_F = "f";
 
+    /**
+     * {@code WavefrontLoader} cannot be instantiated.
+     */
     private WavefrontLoader() {
     }
 
-    public static List<Material> parseMTLFile(String path) {
-        List<List<String>> groups = split(MTL_NEWMTL, readFile(path));
+    public static Model generateModel(String mtlPath, String objPath) {
+        Mesh[] meshes = parseOBJFile(parseMTLFile(mtlPath), objPath).toArray(new Mesh[0]);
+
+        return new Model(meshes);
+    }
+
+    private static List<Material> parseMTLFile(String path) {
         List<Material> materials = new ArrayList<>();
 
-        for (var group : groups) {
-            materials.add(constructMaterial(group));
+        for (var lines : split(MTL_NEWMTL, readFile(path))) {
+            materials.add(createMaterial(lines));
         }
 
         return materials;
     }
 
-    private static Material constructMaterial(List<String> lines) {
+    private static List<Mesh> parseOBJFile(List<Material> materials, String path) {
+        List<Mesh> meshes = new ArrayList<>();
+
+        for (var lines : split(OBJ_O, readFile(path))) {
+            meshes.add(createMesh(materials, lines));
+        }
+
+        return meshes;
+    }
+
+    private static Material createMaterial(List<String> lines) {
         String name = null;
         Vector4 ambientColor = null;
         Vector4 diffuseColor = null;
@@ -55,37 +74,26 @@ public class WavefrontLoader {
             String[] tokens = line.split("\\s+");
 
             switch (tokens[0]) {
-                case MTL_NEWMTL ->
-                    name = tokens[0];
+                case MTL_NEWMTL -> name = tokens[1];
                 case MTL_KA ->
-                    ambientColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]), 1.0F);
+                    ambientColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]),
+                        1.0F);
                 case MTL_KD ->
-                    diffuseColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]), 1.0F);
+                    diffuseColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]),
+                        1.0F);
                 case MTL_KS ->
-                    specularColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]), 1.0F);
-                case MTL_NS ->
-                    shininess = parseFloat(tokens[1]);
+                    specularColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]),
+                        1.0F);
+                case MTL_NS -> shininess = parseFloat(tokens[1]);
             }
         }
-
 
         return new Material(name, ambientColor, diffuseColor, specularColor, shininess);
     }
 
-    public static Model parseOBJFile(String path) {
-        List<List<String>> groups = split(OBJ_O, readFile(path));
-        List<Mesh> meshes = new ArrayList<>();
-
-        for (var group : groups) {
-            meshes.add(constructMesh(group));
-        }
-
-        return new Model(meshes.toArray(new Mesh[0]));
-    }
-
-    private static Mesh constructMesh(List<String> lines) {
+    private static Mesh createMesh(List<Material> materials, List<String> lines) {
         String name = null;
-        Material material = new Material();
+        Material material = null;
         List<Vector> positions = new ArrayList<>();
         List<Vector> texcoords = new ArrayList<>();
         List<Vector> normals = new ArrayList<>();
@@ -99,10 +107,12 @@ public class WavefrontLoader {
             String[] tokens = line.split("\\s+");
 
             switch (tokens[0]) {
-                case OBJ_O ->
+                case OBJ_O -> {
                     name = tokens[1];
-                case OBJ_V ->
+                }
+                case OBJ_V -> {
                     positions.add(new Vector3(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3])));
+                }
                 case OBJ_VT -> {
                     texcoords.add(new Vector2(parseFloat(tokens[1]), 1 - parseFloat(tokens[2])));
                     hasTexcoords = true;
@@ -110,6 +120,11 @@ public class WavefrontLoader {
                 case OBJ_VN -> {
                     normals.add(new Vector3(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3])));
                     hasNormals = true;
+                }
+                case OBJ_USEMTL -> {
+                    for (var mat : materials) {
+                        material = mat.getName().equals(tokens[1]) ? mat : new Material();
+                    }
                 }
                 case OBJ_F -> {
                     String[] vertexData1 = tokens[1].split("/");
@@ -154,7 +169,6 @@ public class WavefrontLoader {
             }
         }
 
-        //Test
         VertexLayout vertexLayout = new VertexLayout(new VertexElement[] {
             new VertexElement("position", DataType.FLOAT3, false),
             new VertexElement("texcoord", DataType.FLOAT2, false),
