@@ -26,17 +26,17 @@ public class WindowMoveEvent {
 
     /**
      * Instantiates a {@code WindowMoveEvent}.
-     * 
+     *
      * @param window the {@code Window}.
-     * @param oldX the old x position.
-     * @param oldY the old y position.           
+     * @param oldX   the old x position.
+     * @param oldY   the old y position.
      */
     public WindowMoveEvent(Window window, int oldX, int oldY) {
         this.window = window;
         this.oldX = oldX;
         this.oldY = oldY;
     }
-    
+
     public Window getWindow() {
         return window;
     }
