@@ -9,7 +9,6 @@ import com.codex.nexus.event.WindowMoveEvent;
 import com.codex.nexus.event.WindowResizeEvent;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
-
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
@@ -213,7 +212,7 @@ public class Window {
     }
 
     /**
-     * Updates the {@code Window}.
+     * Updates the {@code Window} and input.
      */
     public void update() {
         glfwSwapBuffers(handle);
@@ -262,6 +261,18 @@ public class Window {
         });
         glfwSetWindowCloseCallback(handle, handle -> {
             eventBus.publish(new WindowDestroyEvent(this));
+        });
+        glfwSetKeyCallback(handle, (handle, keyCode, scanCode, action, mods) -> {
+            Input.keyCallback(this, Key.getFromGLFWType(keyCode), action);
+        });
+        glfwSetMouseButtonCallback(handle, (handle, mouseButtonCode, action, mods) -> {
+            Input.mouseButtonCallback(this, MouseButton.getFromGLFWType(mouseButtonCode), action);
+        });
+        glfwSetCursorPosCallback(handle, (handle, x, y) -> {
+            Input.cursorCallback(this, x, y);
+        });
+        glfwSetScrollCallback(handle, (handle, x, y) -> {
+            Input.scrollCallback(this, x, y);
         });
     }
 
