@@ -26,9 +26,9 @@ public class WindowResizeEvent {
 
     /**
      * Instantiates a {@code WindowResizeEvent}.
-     * 
-     * @param window the {@code Window}.
-     * @param oldWidth the old width.
+     *
+     * @param window    the {@code Window}.
+     * @param oldWidth  the old width.
      * @param oldHeight the old height.
      */
     public WindowResizeEvent(Window window, int oldWidth, int oldHeight) {
