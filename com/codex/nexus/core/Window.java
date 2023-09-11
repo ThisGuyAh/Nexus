@@ -7,6 +7,7 @@ import com.codex.nexus.event.WindowFocusEvent;
 import com.codex.nexus.event.WindowMaximizeEvent;
 import com.codex.nexus.event.WindowMoveEvent;
 import com.codex.nexus.event.WindowResizeEvent;
+import com.codex.nexus.math.Vector2;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
 import java.nio.IntBuffer;
@@ -93,139 +94,57 @@ public class Window {
         glfwSwapInterval(vSync ? 1 : 0);
         glfwShowWindow(handle);
     }
-
-    /**
-     * Gets the title.
-     *
-     * @return the title.
-     */
+    
     public String getTitle() {
         return title;
     }
-
-    /**
-     * Gets the width (in pixels).
-     *
-     * @return the width (in pixels).
-     */
+    
     public int getWidth() {
         return width;
     }
-
-    /**
-     * Gets the height (in pixels).
-     *
-     * @return the height (in pixels).
-     */
+    
     public int getHeight() {
         return height;
     }
-
-    /**
-     * Gets whether vertical synchronization is enabled.
-     *
-     * @return whether vertical synchronization is enabled.
-     */
+    
     public boolean isVSync() {
         return vSync;
     }
-
-    /**
-     * Gets the unique identification.
-     *
-     * @return the unique identification.
-     */
+    
     public long getHandle() {
         return handle;
     }
-
-    /**
-     * Gets the x position.
-     *
-     * @return the x position.
-     */
+    
     public int getX() {
         return x;
     }
-
-    /**
-     * Gets the y position.
-     *
-     * @return the y position.
-     */
+    
     public int getY() {
         return y;
     }
-
-    /**
-     * Sets the title.
-     *
-     * @param title the title.
-     */
+    
     public void setTitle(String title) {
         glfwSetWindowTitle(handle, this.title = title);
     }
-
-    /**
-     * Sets the width (in pixels).
-     *
-     * @param width the width (in pixels).
-     */
+    
     public void setWidth(int width) {
         glfwSetWindowSize(handle, width, height);
     }
-
-    /**
-     * Sets the height (in pixels).
-     *
-     * @param height the height (in pixels).
-     */
+    
     public void setHeight(int height) {
         glfwSetWindowSize(handle, width, height);
     }
-
-    /**
-     * Sets whether vertical synchronization is enabled.
-     *
-     * @param vSync whether vertical synchronization is enabled.
-     */
+    
     public void setVSync(boolean vSync) {
         this.vSync = vSync;
     }
-
-    /**
-     * Sets the x position.
-     *
-     * @param x the x position.
-     */
+    
     public void setX(int x) {
         glfwSetWindowPos(handle, x, y);
     }
-
-    /**
-     * Sets the y position.
-     *
-     * @param y the y position.
-     */
+    
     public void setY(int y) {
         glfwSetWindowPos(handle, x, y);
-    }
-
-    /**
-     * Updates the {@code Window} and input.
-     */
-    public void update() {
-        glfwSwapBuffers(handle);
-        glfwPollEvents();
-    }
-
-    /**
-     * Deletes the {@code Window} and frees all memory allocations.
-     */
-    public void delete() {
-        glfwDestroyWindow(handle);
-        glfwFreeCallbacks(handle);
-        glfwTerminate();
     }
 
     /**
@@ -268,12 +187,32 @@ public class Window {
         glfwSetMouseButtonCallback(handle, (handle, mouseButtonCode, action, mods) -> {
             Input.mouseButtonCallback(this, MouseButton.getFromGLFWType(mouseButtonCode), action);
         });
+        glfwSetCursorEnterCallback(handle, (window, entered) -> {
+            Input.mouseCursorEnterCallback(this, entered);
+        });
         glfwSetCursorPosCallback(handle, (handle, x, y) -> {
-            Input.cursorCallback(this, x, y);
+            Input.mouseCursorMoveCallback(this, new Vector2((float) x, (float) y));
         });
         glfwSetScrollCallback(handle, (handle, x, y) -> {
-            Input.scrollCallback(this, x, y);
+            Input.mouseWheelScrollCallback(this, new Vector2((float) x, (float) y));
         });
+    }
+
+    /**
+     * Updates the {@code Window}.
+     */
+    public void update() {
+        glfwSwapBuffers(handle);
+        glfwPollEvents();
+    }
+
+    /**
+     * Deletes the {@code Window} and frees all memory allocations.
+     */
+    public void delete() {
+        glfwDestroyWindow(handle);
+        glfwFreeCallbacks(handle);
+        glfwTerminate();
     }
 
 }
