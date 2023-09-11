@@ -4,7 +4,7 @@ import com.codex.nexus.core.Window;
 import com.codex.nexus.core.Key;
 
 /**
- * A {@code KeyReleaseEvent} notifies a subscriber when a {@code Key} is released.
+ * A {@code KeyReleaseEvent} notifies subscribers when a {@code Key} is released.
  *
  * @author Christopher Ruley
  */
