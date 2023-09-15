@@ -1,28 +1,104 @@
 package com.codex.nexus.math;
 
+/**
+ * A {@code Matrix4} represents a 4 X 4 element matrix in column major ordering.
+ *
+ * @author Christopher Ruley
+ */
 public class Matrix4 extends Matrix {
 
+    /**
+     * The first element in the first column.
+     */
     public float element00;
+
+    /**
+     * The second element in the first column.
+     */
     public float element01;
+
+    /**
+     * The third element in the first column.
+     */
     public float element02;
+
+    /**
+     * The fourth element in the first column.
+     */
     public float element03;
+
+    /**
+     * The first element in the second column.
+     */
     public float element10;
+
+    /**
+     * The second element in the second column.
+     */
     public float element11;
+
+    /**
+     * The third element in the second column.
+     */
     public float element12;
+
+    /**
+     * The fourth element in the second column.
+     */
     public float element13;
+
+    /**
+     * The firth element in the third column.
+     */
     public float element20;
+
+    /**
+     * The second element in the third column.
+     */
     public float element21;
+
+    /**
+     * The third element in the third column.
+     */
     public float element22;
+
+    /**
+     * The fourth element in the third column.
+     */
     public float element23;
+
+    /**
+     * The first element in the fourth column.
+     */
     public float element30;
+
+    /**
+     * The second element in the fourth column.
+     */
     public float element31;
+
+    /**
+     * The third element in the fourth column.
+     */
     public float element32;
+
+    /**
+     * The fourth element in the fourth column.
+     */
     public float element33;
 
+    /**
+     * Instantiates a {@code Matrix4} and sets it to the identity.
+     */
     public Matrix4() {
         setIdentity();
     }
 
+    /**
+     * Instantiates a {@code Matrix4} copy from another.
+     *
+     * @param other the {@code Matrix4} to copy from.
+     */
     public Matrix4(Matrix4 other) {
         element00 = other.element00;
         element01 = other.element01;
@@ -42,27 +118,11 @@ public class Matrix4 extends Matrix {
         element33 = other.element33;
     }
 
-    public Matrix4(float element00, float element01, float element02, float element03, float element10, float element11,
-                   float element12, float element13, float element20, float element21, float element22, float element23,
-                   float element30, float element31, float element32, float element33) {
-        this.element00 = element00;
-        this.element01 = element01;
-        this.element02 = element02;
-        this.element03 = element03;
-        this.element10 = element10;
-        this.element11 = element11;
-        this.element12 = element12;
-        this.element13 = element13;
-        this.element20 = element20;
-        this.element21 = element21;
-        this.element22 = element22;
-        this.element23 = element23;
-        this.element30 = element30;
-        this.element31 = element31;
-        this.element32 = element32;
-        this.element33 = element33;
-    }
-
+    /**
+     * Gets the determinant.
+     *
+     * @return this {@code Matrix4}.
+     */
     public float getDeterminant() {
         float determinant = element00 * ((element11 * element22 * element33 + element12 * element23 * element31
             + element13 * element21 * element32) - element13 * element22 * element31
@@ -81,6 +141,11 @@ public class Matrix4 extends Matrix {
         return determinant;
     }
 
+    /**
+     * Sets this {@code Matrix4} to the zero.
+     *
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 setZero() {
         element00 = 0.0F;
         element01 = 0.0F;
@@ -102,6 +167,11 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Sets this {@code Matrix4} to the identity.
+     *
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 setIdentity() {
         element00 = 1.0F;
         element01 = 0.0F;
@@ -123,6 +193,14 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Sets this {@code Matrix4} to a transformation matrix.
+     *
+     * @param translation the rendered object's translation.
+     * @param rotation    the rendered object's rotation (in degrees).
+     * @param scale       the rendered object's scale.
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 setTransformation(Vector3 translation, Vector3 rotation, Vector3 scale) {
         setIdentity();
         translate(translation);
@@ -134,6 +212,13 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Sets this {@code Matrix4} to a view matrix.
+     *
+     * @param translation the translation.
+     * @param rotation    the rotation.
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 setView(Vector3 translation, Vector3 rotation) {
         setIdentity();
         rotate(rotation.x, new Vector3(1.0F, 0.0F, 0.0F));
@@ -144,24 +229,41 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
-    public Matrix4 setProjection(int width, int height, float fieldOfView, float nearPlane, float farPlane) {
-        setIdentity();
-
+    /**
+     * Sets this {@code Matrix4} to a perspective projection matrix, projecting 3-D vertices in a scene into a 2-D
+     * viewport with a perspective divide.
+     *
+     * @param width       the drawing area's width (in pixels), used to calculate the aspect ratio.
+     * @param height      the drawing area's height (in pixels), used to calculate the aspect ratio.
+     * @param fieldOfView the field of view, or the angular extent of scene.
+     * @param nearPlane   the minimum visible depth of the scene.
+     * @param farPlane    the maximum visible depth of the scene.
+     * @return this {@code Matrix4}.
+     */
+    public Matrix4 setPerspectiveProjection(int width, int height, float fieldOfView, float nearPlane, float farPlane) {
         float aspectRatio = (float) width / (float) height;
-        float yScale = (float) (1.0F / Math.tan(Math.toRadians(fieldOfView / 2.0F)) * aspectRatio);
+        float yScale = (float) (1.0F / Math.tan(Math.toRadians(fieldOfView / 2.0F)));
         float xScale = yScale / aspectRatio;
         float frustumLength = farPlane - nearPlane;
 
+        setIdentity();
+
         element00 = xScale;
         element11 = yScale;
-        element22 = -((nearPlane + farPlane) / frustumLength);
+        element22 = -(farPlane + nearPlane) / frustumLength;
         element23 = -1.0F;
-        element32 = -(2.0F * nearPlane * farPlane / frustumLength);
+        element32 = -(2.0F * farPlane * nearPlane) / frustumLength;
         element33 = 0.0F;
 
         return this;
     }
 
+    /**
+     * Calculates the sum of this and another {@code Matrix4}.
+     *
+     * @param other the other {@code Matrix4} to add.
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 add(Matrix4 other) {
         element00 += other.element00;
         element01 += other.element01;
@@ -183,6 +285,12 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Calculates the difference of this and another {@code Matrix4}.
+     *
+     * @param other the other {@code Matrix4} to subtract.
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 subtract(Matrix4 other) {
         element00 -= other.element00;
         element01 -= other.element01;
@@ -204,6 +312,12 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Calculates the product of this and another {@code Matrix4}.
+     *
+     * @param other the other {@code Matrix4} to multiply by.
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 multiply(Matrix4 other) {
         float value00 = element00 * other.element00 + element10 * other.element01 + element20 * other.element02
             + element30 * other.element03;
@@ -258,6 +372,11 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Negates this {@code Matrix4}.
+     *
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 negate() {
         element00 = -element00;
         element01 = -element01;
@@ -279,6 +398,11 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Inverts this {@code Matrix4}.
+     *
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 invert() {
         float determinant = getDeterminant();
 
@@ -338,6 +462,12 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Translates this {@code Matrix4}.
+     *
+     * @param translation the translation.
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 translate(Vector3 translation) {
         element30 += element00 * translation.x + element10 * translation.y + element20 * translation.z;
         element31 += element01 * translation.x + element11 * translation.y + element21 * translation.z;
@@ -347,6 +477,13 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Rotates this {@code Matrix4}.
+     *
+     * @param angle the angle (in degrees) to rotate by.
+     * @param axis  the axis to rotate.
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 rotate(float angle, Vector3 axis) {
         float cosine = (float) Math.cos(Math.toRadians(angle));
         float sine = (float) Math.sin(Math.toRadians(angle));
@@ -395,6 +532,12 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * Scales this {@code Matrix4}.
+     *
+     * @param scale the scale.
+     * @return this {@code Matrix4}.
+     */
     public Matrix4 scale(Vector3 scale) {
         element00 *= scale.x;
         element01 *= scale.x;
@@ -412,6 +555,9 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public float[] toArray() {
         return new float[] {
@@ -434,6 +580,11 @@ public class Matrix4 extends Matrix {
         };
     }
 
+    /**
+     * Gets a {@code String} representation of this {@code Matrix4}.
+     *
+     * @return a {@code String} representation of this {@code Matrix4}.
+     */
     @Override
     public String toString() {
         String row1 = "Row 1: [" + element00 + ", " + element10 + ", " + element20 + ", " + element30 + "]";
