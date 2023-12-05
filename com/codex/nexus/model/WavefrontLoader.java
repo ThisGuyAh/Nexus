@@ -10,6 +10,7 @@ import com.codex.nexus.memory.VertexArray;
 import com.codex.nexus.memory.VertexBuffer;
 import com.codex.nexus.memory.VertexElement;
 import com.codex.nexus.memory.VertexLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,11 +170,18 @@ public class WavefrontLoader {
             }
         }
 
-        VertexLayout vertexLayout = new VertexLayout(new VertexElement[] {
-            new VertexElement("position", DataType.FLOAT3, false),
-            new VertexElement("texcoord", DataType.FLOAT2, false),
-            new VertexElement("normal", DataType.FLOAT3, false)
-        });
+        List<VertexElement> vertexElements = new ArrayList<>();
+
+        vertexElements.add(new VertexElement("position", DataType.FLOAT3, false));
+
+        if (hasTexcoords) {
+            vertexElements.add(new VertexElement("texcoord", DataType.FLOAT2, false));
+        }
+        if (hasNormals) {
+            vertexElements.add(new VertexElement("normal", DataType.FLOAT3, false));
+        }
+
+        VertexLayout vertexLayout = new VertexLayout(vertexElements.toArray(new VertexElement[0]));
         VertexBuffer vertexBuffer = new VertexBuffer(vertices.toArray(new Vector[0]), vertexLayout);
         IndexBuffer indexBuffer = new IndexBuffer(positionIndices.stream().mapToInt(i -> i).toArray());
         VertexArray vertexArray = new VertexArray(vertexBuffer);
