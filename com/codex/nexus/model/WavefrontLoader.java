@@ -10,7 +10,6 @@ import com.codex.nexus.memory.VertexArray;
 import com.codex.nexus.memory.VertexBuffer;
 import com.codex.nexus.memory.VertexElement;
 import com.codex.nexus.memory.VertexLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
