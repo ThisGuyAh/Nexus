@@ -74,17 +74,24 @@ public class WavefrontLoader {
             String[] tokens = line.split("\\s+");
 
             switch (tokens[0]) {
-                case MTL_NEWMTL -> name = tokens[1];
-                case MTL_KA ->
+                case MTL_NEWMTL -> {
+                    name = tokens[1];
+                }
+                case MTL_KA -> {
                     ambientColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]),
                         1.0F);
-                case MTL_KD ->
+                }
+                case MTL_KD -> {
                     diffuseColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]),
                         1.0F);
-                case MTL_KS ->
+                }
+                case MTL_KS -> {
                     specularColor = new Vector4(parseFloat(tokens[1]), parseFloat(tokens[2]), parseFloat(tokens[3]),
                         1.0F);
-                case MTL_NS -> shininess = parseFloat(tokens[1]);
+                }
+                case MTL_NS -> {
+                    shininess = parseFloat(tokens[1]);
+                }
             }
         }
 
