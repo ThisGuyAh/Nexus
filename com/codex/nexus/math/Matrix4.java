@@ -88,14 +88,14 @@ public class Matrix4 extends Matrix {
     public float element33;
 
     /**
-     * Instantiates a {@code Matrix4} and sets it to the identity.
+     * Constructs a {@code Matrix4}.
      */
     public Matrix4() {
         setIdentity();
     }
 
     /**
-     * Instantiates a {@code Matrix4} copy from another.
+     * Constructs a {@code Matrix4}.
      *
      * @param other the {@code Matrix4} to copy from.
      */
@@ -116,6 +116,47 @@ public class Matrix4 extends Matrix {
         element31 = other.element31;
         element32 = other.element32;
         element33 = other.element33;
+    }
+
+    /**
+     * Constructs a {@code Matrix4}.
+     * 
+     * @param element00 the first element in the first column.
+     * @param element01 the second element in the first column.
+     * @param element02 the third element in the first column.
+     * @param element03 the fourth element in the first column.
+     * @param element10 the first element in the second column.
+     * @param element11 the second element in the second column.
+     * @param element12 the third element in the second column.
+     * @param element13 the fourth element in the second column.
+     * @param element20 the first element in the third column.
+     * @param element21 the second element in the third column.
+     * @param element22 the third element in the third column.
+     * @param element23 the fourth element in the third column.
+     * @param element30 the first element in the fourth column.
+     * @param element31 the second element in the fourth column.
+     * @param element32 the third element in the fourth column.
+     * @param element33 the fourth element in the fourth column.
+     */
+    public Matrix4(float element00, float element01, float element02, float element03, float element10, float element11, 
+                   float element12, float element13, float element20, float element21, float element22, float element23,
+                   float element30, float element31, float element32, float element33) {
+        this.element00 = element00;
+        this.element01 = element01;
+        this.element02 = element02;
+        this.element03 = element03;
+        this.element10 = element10;
+        this.element11 = element11;
+        this.element12 = element12;
+        this.element13 = element13;
+        this.element20 = element20;
+        this.element21 = element21;
+        this.element22 = element22;
+        this.element23 = element23;
+        this.element30 = element30;
+        this.element31 = element31;
+        this.element32 = element32;
+        this.element33 = element33;
     }
 
     /**
