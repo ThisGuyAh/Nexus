@@ -2,6 +2,8 @@ package com.codex.nexus.math;
 
 /**
  * A {@code Matrix3} represents a 3X3 matrix in column major ordering.
+ *
+ * @author Christopher Ruley
  */
 public class Matrix3 extends Matrix {
 
