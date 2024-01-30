@@ -395,55 +395,38 @@ public class Matrix4 extends Matrix {
             destination = new Matrix4();
         }
 
-        float value00 = left.element00 * right.element00 + left.element10 * right.element01 + left.element20
+        destination.element00 = left.element00 * right.element00 + left.element10 * right.element01 + left.element20
             * right.element02 + left.element30 * right.element03;
-        float value01 = left.element01 * right.element00 + left.element11 * right.element01 + left.element21
+        destination.element01 = left.element01 * right.element00 + left.element11 * right.element01 + left.element21
             * right.element02 + left.element31 * right.element03;
-        float value02 = left.element02 * right.element00 + left.element12 * right.element01 + left.element22
+        destination.element02 = left.element02 * right.element00 + left.element12 * right.element01 + left.element22
             * right.element02 + left.element32 * right.element03;
-        float value03 = left.element03 * right.element00 + left.element13 * right.element01 + left.element23
+        destination.element03 = left.element03 * right.element00 + left.element13 * right.element01 + left.element23
             * right.element02 + left.element33 * right.element03;
-        float value10 = left.element00 * right.element10 + left.element10 * right.element11 + left.element20
+        destination.element10 = left.element00 * right.element10 + left.element10 * right.element11 + left.element20
             * right.element12 + left.element30 * right.element13;
-        float value11 = left.element01 * right.element10 + left.element11 * right.element11 + left.element21
+        destination.element11 = left.element01 * right.element10 + left.element11 * right.element11 + left.element21
             * right.element12 + left.element31 * right.element13;
-        float value12 = left.element02 * right.element10 + left.element12 * right.element11 + left.element22
+        destination.element12 = left.element02 * right.element10 + left.element12 * right.element11 + left.element22
             * right.element12 + left.element32 * right.element13;
-        float value13 = left.element03 * right.element10 + left.element13 * right.element11 + left.element23
+        destination.element13 = left.element03 * right.element10 + left.element13 * right.element11 + left.element23
             * right.element12 + left.element33 * right.element13;
-        float value20 = left.element00 * right.element20 + left.element10 * right.element21 + left.element20
+        destination.element20 = left.element00 * right.element20 + left.element10 * right.element21 + left.element20
             * right.element22 + left.element30 * right.element23;
-        float value21 = left.element01 * right.element20 + left.element11 * right.element21 + left.element21
+        destination.element21 = left.element01 * right.element20 + left.element11 * right.element21 + left.element21
             * right.element22 + left.element31 * right.element23;
-        float value22 = left.element02 * right.element20 + left.element12 * right.element21 + left.element22
+        destination.element22 = left.element02 * right.element20 + left.element12 * right.element21 + left.element22
             * right.element22 + left.element32 * right.element23;
-        float value23 = left.element03 * right.element20 + left.element13 * right.element21 + left.element23
+        destination.element23 = left.element03 * right.element20 + left.element13 * right.element21 + left.element23
             * right.element22 + left.element33 * right.element23;
-        float value30 = left.element00 * right.element30 + left.element10 * right.element31 + left.element20
+        destination.element30 = left.element00 * right.element30 + left.element10 * right.element31 + left.element20
             * right.element32 + left.element30 * right.element33;
-        float value31 = left.element01 * right.element30 + left.element11 * right.element31 + left.element21
+        destination.element31 = left.element01 * right.element30 + left.element11 * right.element31 + left.element21
             * right.element32 + left.element31 * right.element33;
-        float value32 = left.element02 * right.element30 + left.element12 * right.element31 + left.element22
+        destination.element32 = left.element02 * right.element30 + left.element12 * right.element31 + left.element22
             * right.element32 + left.element32 * right.element33;
-        float value33 = left.element03 * right.element30 + left.element13 * right.element31 + left.element23
+        destination.element33 = left.element03 * right.element30 + left.element13 * right.element31 + left.element23
             * right.element32 + left.element33 * right.element33;
-
-        destination.element00 = value00;
-        destination.element01 = value01;
-        destination.element02 = value02;
-        destination.element03 = value03;
-        destination.element10 = value10;
-        destination.element11 = value11;
-        destination.element12 = value12;
-        destination.element13 = value13;
-        destination.element20 = value20;
-        destination.element21 = value21;
-        destination.element22 = value22;
-        destination.element23 = value23;
-        destination.element30 = value30;
-        destination.element31 = value31;
-        destination.element32 = value32;
-        destination.element33 = value33;
 
         return destination;
     }
