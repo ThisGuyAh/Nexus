@@ -2,6 +2,8 @@ package com.codex.nexus.math;
 
 /**
  * A {@code Matrix} is a base for a matrix representation.
+ * 
+ * @author Christopher Ruley
  */
 public abstract class Matrix {
 
