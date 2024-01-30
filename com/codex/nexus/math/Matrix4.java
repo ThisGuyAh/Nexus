@@ -183,10 +183,9 @@ public class Matrix4 extends Matrix {
     }
 
     /**
-     * Sets this {@code Matrix4} to the zero.
-     *
-     * @return this {@code Matrix4}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix4 setZero() {
         element00 = 0.0F;
         element01 = 0.0F;
@@ -209,10 +208,9 @@ public class Matrix4 extends Matrix {
     }
 
     /**
-     * Sets this {@code Matrix4} to the identity.
-     *
-     * @return this {@code Matrix4}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix4 setIdentity() {
         element00 = 1.0F;
         element01 = 0.0F;
@@ -498,10 +496,9 @@ public class Matrix4 extends Matrix {
     }
 
     /**
-     * Negates this {@code Matrix4}.
-     *
-     * @return this {@code Matrix4}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix4 negate() {
         return negate(this, this);
     }
@@ -539,10 +536,9 @@ public class Matrix4 extends Matrix {
     }
 
     /**
-     * Inverts this {@code Matrix4}.
-     *
-     * @return this {@code Matrix4}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix4 invert() {
         return invert(this, this);
     }
