@@ -1,7 +1,7 @@
 package com.codex.nexus.math;
 
 /**
- * A {@code Matrix4} represents a 4 X 4 element matrix in column major ordering.
+ * A {@code Matrix4} represents a 4X4 element matrix in column major ordering.
  *
  * @author Christopher Ruley
  */
@@ -229,13 +229,41 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
+    public Matrix4 setLookAt(Vector3 position, Vector3 target, Vector3 up) {
+        Vector3 forward = new Vector3();
+        Vector3 right = new Vector3();
+        Vector3 newUp = new Vector3();
+
+        Vector3.subtract(target, position, forward);
+        Vector3.normalize(forward);
+        Vector3.cross(forward, up, right);
+        Vector3.normalize(right);
+        Vector3.cross(right, forward, newUp);
+        Vector3.negate(forward);
+        setIdentity();
+
+        element00 = right.x;
+        element01 = right.y;
+        element02 = right.z;
+        element10 = newUp.x;
+        element11 = newUp.y;
+        element12 = newUp.z;
+        element20 = forward.x;
+        element21 = forward.y;
+        element22 = forward.z;
+
+        translate(new Vector3(position).negate());
+
+        return this;
+    }
+
     /**
      * Sets this {@code Matrix4} to a perspective projection matrix, projecting 3-D vertices in a scene into a 2-D
      * viewport with a perspective divide.
      *
      * @param width       the drawing area's width (in pixels), used to calculate the aspect ratio.
      * @param height      the drawing area's height (in pixels), used to calculate the aspect ratio.
-     * @param fieldOfView the field of view, or the angular extent of scene.
+     * @param fieldOfView the field of view (in degrees), or the angular extent of scene.
      * @param nearPlane   the minimum visible depth of the scene.
      * @param farPlane    the maximum visible depth of the scene.
      * @return this {@code Matrix4}.
@@ -259,117 +287,165 @@ public class Matrix4 extends Matrix {
     }
 
     /**
-     * Calculates the sum of this and another {@code Matrix4}.
+     * Calculates the sum of this {@code Matrix4} and another.
      *
      * @param other the other {@code Matrix4} to add.
      * @return this {@code Matrix4}.
      */
     public Matrix4 add(Matrix4 other) {
-        element00 += other.element00;
-        element01 += other.element01;
-        element02 += other.element02;
-        element03 += other.element03;
-        element10 += other.element10;
-        element11 += other.element11;
-        element12 += other.element12;
-        element13 += other.element13;
-        element20 += other.element20;
-        element21 += other.element21;
-        element22 += other.element22;
-        element23 += other.element23;
-        element30 += other.element30;
-        element31 += other.element31;
-        element32 += other.element32;
-        element33 += other.element33;
-
-        return this;
+        return add(this, other, this);
     }
 
     /**
-     * Calculates the difference of this and another {@code Matrix4}.
+     * Calculates the sum of a {@code Matrix4} and another.
+     *
+     * @param left        the left {@code Matrix4} to add.
+     * @param right       the right {@code Matrix4} to add.
+     * @param destination the destination {@code Matrix4}.
+     * @return a {@code Matrix4} containing the result.
+     */
+    public static Matrix4 add(Matrix4 left, Matrix4 right, Matrix4 destination) {
+        if (destination == null) {
+            destination = new Matrix4();
+        }
+
+        destination.element00 = left.element00 + right.element00;
+        destination.element01 = left.element01 + right.element01;
+        destination.element02 = left.element02 + right.element02;
+        destination.element03 = left.element03 + right.element03;
+        destination.element10 = left.element10 + right.element10;
+        destination.element11 = left.element11 + right.element11;
+        destination.element12 = left.element12 + right.element12;
+        destination.element13 = left.element13 + right.element13;
+        destination.element20 = left.element20 + right.element20;
+        destination.element21 = left.element21 + right.element21;
+        destination.element22 = left.element22 + right.element22;
+        destination.element23 = left.element23 + right.element23;
+        destination.element30 = left.element30 + right.element30;
+        destination.element31 = left.element31 + right.element31;
+        destination.element32 = left.element32 + right.element32;
+        destination.element33 = left.element33 + right.element33;
+
+        return destination;
+    }
+
+    /**
+     * Calculates the difference of this {@code Matrix4} and another.
      *
      * @param other the other {@code Matrix4} to subtract.
      * @return this {@code Matrix4}.
      */
     public Matrix4 subtract(Matrix4 other) {
-        element00 -= other.element00;
-        element01 -= other.element01;
-        element02 -= other.element02;
-        element03 -= other.element03;
-        element10 -= other.element10;
-        element11 -= other.element11;
-        element12 -= other.element12;
-        element13 -= other.element13;
-        element20 -= other.element20;
-        element21 -= other.element21;
-        element22 -= other.element22;
-        element23 -= other.element23;
-        element30 -= other.element30;
-        element31 -= other.element31;
-        element32 -= other.element32;
-        element33 -= other.element33;
-
-        return this;
+        return subtract(this, other, this);
     }
 
     /**
-     * Calculates the product of this and another {@code Matrix4}.
+     * Calculates the difference of a {@code Matrix4} and another.
+     *
+     * @param left        the left {@code Matrix4} to subtract.
+     * @param right       the right {@code Matrix4} to subtract.
+     * @param destination the {@code Matrix4} to store the result in.
+     * @return a {@code Matrix4} containing the result.
+     */
+    public static Matrix4 subtract(Matrix4 left, Matrix4 right, Matrix4 destination) {
+        if (destination == null) {
+            destination = new Matrix4();
+        }
+
+        destination.element00 = left.element00 - right.element00;
+        destination.element01 = left.element01 - right.element01;
+        destination.element02 = left.element02 - right.element02;
+        destination.element03 = left.element03 - right.element03;
+        destination.element10 = left.element10 - right.element10;
+        destination.element11 = left.element11 - right.element11;
+        destination.element12 = left.element12 - right.element12;
+        destination.element13 = left.element13 - right.element13;
+        destination.element20 = left.element20 - right.element20;
+        destination.element21 = left.element21 - right.element21;
+        destination.element22 = left.element22 - right.element22;
+        destination.element23 = left.element23 - right.element23;
+        destination.element30 = left.element30 - right.element30;
+        destination.element31 = left.element31 - right.element31;
+        destination.element32 = left.element32 - right.element32;
+        destination.element33 = left.element33 - right.element33;
+
+        return destination;
+    }
+
+    /**
+     * Calculates the product of this {@code Matrix4} and another.
      *
      * @param other the other {@code Matrix4} to multiply by.
      * @return this {@code Matrix4}.
      */
     public Matrix4 multiply(Matrix4 other) {
-        float value00 = element00 * other.element00 + element10 * other.element01 + element20 * other.element02
-            + element30 * other.element03;
-        float value01 = element01 * other.element00 + element11 * other.element01 + element21 * other.element02
-            + element31 * other.element03;
-        float value02 = element02 * other.element00 + element12 * other.element01 + element22 * other.element02
-            + element32 * other.element03;
-        float value03 = element03 * other.element00 + element13 * other.element01 + element23 * other.element02
-            + element33 * other.element03;
-        float value10 = element00 * other.element10 + element10 * other.element11 + element20 * other.element12
-            + element30 * other.element13;
-        float value11 = element01 * other.element10 + element11 * other.element11 + element21 * other.element12
-            + element31 * other.element13;
-        float value12 = element02 * other.element10 + element12 * other.element11 + element22 * other.element12
-            + element32 * other.element13;
-        float value13 = element03 * other.element10 + element13 * other.element11 + element23 * other.element12
-            + element33 * other.element13;
-        float value20 = element00 * other.element20 + element10 * other.element21 + element20 * other.element22
-            + element30 * other.element23;
-        float value21 = element01 * other.element20 + element11 * other.element21 + element21 * other.element22
-            + element31 * other.element23;
-        float value22 = element02 * other.element20 + element12 * other.element21 + element22 * other.element22
-            + element32 * other.element23;
-        float value23 = element03 * other.element20 + element13 * other.element21 + element23 * other.element22
-            + element33 * other.element23;
-        float value30 = element00 * other.element30 + element10 * other.element31 + element20 * other.element32
-            + element30 * other.element33;
-        float value31 = element01 * other.element30 + element11 * other.element31 + element21 * other.element32
-            + element31 * other.element33;
-        float value32 = element02 * other.element30 + element12 * other.element31 + element22 * other.element32
-            + element32 * other.element33;
-        float value33 = element03 * other.element30 + element13 * other.element31 + element23 * other.element32
-            + element33 * other.element33;
+        return multiply(this, other, this);
+    }
 
-        element00 = value00;
-        element01 = value01;
-        element02 = value02;
-        element03 = value03;
-        element10 = value10;
-        element11 = value11;
-        element12 = value12;
-        element13 = value13;
-        element20 = value20;
-        element21 = value21;
-        element22 = value22;
-        element23 = value23;
-        element30 = value30;
-        element31 = value31;
-        element32 = value32;
-        element33 = value33;
+    /**
+     * Calculates the product of a {@code Matrix4} and another.
+     *
+     * @param left        the left {@code Matrix4} to multiply by.
+     * @param right       the right {@code Matrix4} to multiply by.
+     * @param destination the {@code Matrix4} to store the result in.
+     * @return a {@code Matrix4} containing the result.
+     */
+    public static Matrix4 multiply(Matrix4 left, Matrix4 right, Matrix4 destination) {
+        if (destination == null) {
+            destination = new Matrix4();
+        }
 
-        return this;
+        float value00 = left.element00 * right.element00 + left.element10 * right.element01 + left.element20
+            * right.element02 + left.element30 * right.element03;
+        float value01 = left.element01 * right.element00 + left.element11 * right.element01 + left.element21
+            * right.element02 + left.element31 * right.element03;
+        float value02 = left.element02 * right.element00 + left.element12 * right.element01 + left.element22
+            * right.element02 + left.element32 * right.element03;
+        float value03 = left.element03 * right.element00 + left.element13 * right.element01 + left.element23
+            * right.element02 + left.element33 * right.element03;
+        float value10 = left.element00 * right.element10 + left.element10 * right.element11 + left.element20
+            * right.element12 + left.element30 * right.element13;
+        float value11 = left.element01 * right.element10 + left.element11 * right.element11 + left.element21
+            * right.element12 + left.element31 * right.element13;
+        float value12 = left.element02 * right.element10 + left.element12 * right.element11 + left.element22
+            * right.element12 + left.element32 * right.element13;
+        float value13 = left.element03 * right.element10 + left.element13 * right.element11 + left.element23
+            * right.element12 + left.element33 * right.element13;
+        float value20 = left.element00 * right.element20 + left.element10 * right.element21 + left.element20
+            * right.element22 + left.element30 * right.element23;
+        float value21 = left.element01 * right.element20 + left.element11 * right.element21 + left.element21
+            * right.element22 + left.element31 * right.element23;
+        float value22 = left.element02 * right.element20 + left.element12 * right.element21 + left.element22
+            * right.element22 + left.element32 * right.element23;
+        float value23 = left.element03 * right.element20 + left.element13 * right.element21 + left.element23
+            * right.element22 + left.element33 * right.element23;
+        float value30 = left.element00 * right.element30 + left.element10 * right.element31 + left.element20
+            * right.element32 + left.element30 * right.element33;
+        float value31 = left.element01 * right.element30 + left.element11 * right.element31 + left.element21
+            * right.element32 + left.element31 * right.element33;
+        float value32 = left.element02 * right.element30 + left.element12 * right.element31 + left.element22
+            * right.element32 + left.element32 * right.element33;
+        float value33 = left.element03 * right.element30 + left.element13 * right.element31 + left.element23
+            * right.element32 + left.element33 * right.element33;
+
+        destination.element00 = value00;
+        destination.element01 = value01;
+        destination.element02 = value02;
+        destination.element03 = value03;
+        destination.element10 = value10;
+        destination.element11 = value11;
+        destination.element12 = value12;
+        destination.element13 = value13;
+        destination.element20 = value20;
+        destination.element21 = value21;
+        destination.element22 = value22;
+        destination.element23 = value23;
+        destination.element30 = value30;
+        destination.element31 = value31;
+        destination.element32 = value32;
+        destination.element33 = value33;
+
+        return destination;
     }
 
     /**
@@ -378,24 +454,39 @@ public class Matrix4 extends Matrix {
      * @return this {@code Matrix4}.
      */
     public Matrix4 negate() {
-        element00 = -element00;
-        element01 = -element01;
-        element02 = -element02;
-        element03 = -element03;
-        element10 = -element10;
-        element11 = -element11;
-        element12 = -element12;
-        element13 = -element13;
-        element20 = -element20;
-        element21 = -element21;
-        element22 = -element22;
-        element23 = -element23;
-        element30 = -element30;
-        element31 = -element31;
-        element32 = -element32;
-        element33 = -element33;
+        return negate(this, this);
+    }
 
-        return this;
+    /**
+     * Negates a {@code Matrix4}.
+     *
+     * @param source      the {@code Matrix4} to negate.
+     * @param destination the {@code Matrix4} to store the result in.
+     * @return a {@code Matrix4} containing the result.
+     */
+    public static Matrix4 negate(Matrix4 source, Matrix4 destination) {
+        if (destination == null) {
+            destination = new Matrix4();
+        }
+
+        destination.element00 = -source.element00;
+        destination.element01 = -source.element01;
+        destination.element02 = -source.element02;
+        destination.element03 = -source.element03;
+        destination.element10 = -source.element10;
+        destination.element11 = -source.element11;
+        destination.element12 = -source.element12;
+        destination.element13 = -source.element13;
+        destination.element20 = -source.element20;
+        destination.element21 = -source.element21;
+        destination.element22 = -source.element22;
+        destination.element23 = -source.element23;
+        destination.element30 = -source.element30;
+        destination.element31 = -source.element31;
+        destination.element32 = -source.element32;
+        destination.element33 = -source.element33;
+
+        return destination;
     }
 
     /**
