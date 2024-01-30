@@ -28,6 +28,19 @@ public class Matrix3 extends Matrix {
         element22 = other.element22;
     }
 
+    public Matrix3(float element00, float element01, float element02, float element10, float element11, float element12,
+                   float element20, float element21, float element22) {
+        this.element00 = element00;
+        this.element01 = element01;
+        this.element02 = element02;
+        this.element10 = element10;
+        this.element11 = element11;
+        this.element12 = element12;
+        this.element20 = element20;
+        this.element21 = element21;
+        this.element22 = element22;
+    }
+
     public float getDeterminant() {
         return element00 * (element11 * element22 - element12 * element21)
             + element01 * (element12 * element20 - element10 * element22)
