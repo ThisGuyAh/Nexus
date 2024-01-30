@@ -112,10 +112,9 @@ public class Matrix3 extends Matrix {
     }
 
     /**
-     * Sets this {@code Matrix3} to zero.
-     *
-     * @return this {@code Matrix3}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix3 setZero() {
         element00 = 0.0F;
         element01 = 0.0F;
@@ -131,10 +130,9 @@ public class Matrix3 extends Matrix {
     }
 
     /**
-     * Sets this {@code Matrix3} to the identity.
-     *
-     * @return this {@code Matrix3}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix3 setIdentity() {
         element00 = 1.0F;
         element01 = 0.0F;
@@ -267,10 +265,9 @@ public class Matrix3 extends Matrix {
     }
 
     /**
-     * Negates this {@code Matrix3}.
-     *
-     * @return this {@code Matrix3}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix3 negate() {
         return negate(this, this);
     }
@@ -300,10 +297,9 @@ public class Matrix3 extends Matrix {
     }
 
     /**
-     * Inverts this {@code Matrix3}.
-     *
-     * @return this {@code Matrix3}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix3 invert() {
         return invert(this, this);
     }
