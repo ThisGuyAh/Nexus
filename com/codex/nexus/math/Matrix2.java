@@ -2,6 +2,8 @@ package com.codex.nexus.math;
 
 /**
  * A {@code Matrix2} represents a 2X2 matrix in column major ordering.
+ *
+ * @author Christopher Ruley
  */
 public class Matrix2 extends Matrix {
 
