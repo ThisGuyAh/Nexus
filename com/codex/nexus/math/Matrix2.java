@@ -69,10 +69,9 @@ public class Matrix2 extends Matrix {
     }
 
     /**
-     * Sets this {@code Matrix2} to zero.
-     *
-     * @return this {@code Matrix2}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix2 setZero() {
         element00 = 0.0F;
         element01 = 0.0F;
@@ -83,10 +82,9 @@ public class Matrix2 extends Matrix {
     }
 
     /**
-     * Sets this {@code Matrix2} to the identity.
-     *
-     * @return this {@code Matrix2}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix2 setIdentity() {
         element00 = 1.0F;
         element01 = 0.0F;
@@ -190,10 +188,9 @@ public class Matrix2 extends Matrix {
     }
 
     /**
-     * Negates this {@code Matrix2}.
-     *
-     * @return this {@code Matrix2}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix2 negate() {
         element00 = -element00;
         element01 = -element01;
@@ -224,10 +221,9 @@ public class Matrix2 extends Matrix {
     }
 
     /**
-     * Inverts this {@code Matrix2}.
-     *
-     * @return this {@code Matrix2}.
+     * {@inheritDoc}
      */
+    @Override
     public Matrix2 invert() {
         return invert(this, this);
     }
