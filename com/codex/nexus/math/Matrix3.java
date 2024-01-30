@@ -1,21 +1,67 @@
 package com.codex.nexus.math;
 
+/**
+ * A {@code Matrix3} represents a 3X3 matrix in column major ordering.
+ */
 public class Matrix3 extends Matrix {
 
+    /**
+     * The first element in the first column.
+     */
     public float element00;
+
+    /**
+     * The second element in the first column.
+     */
     public float element01;
+
+    /**
+     * The third element in the first column.
+     */
     public float element02;
+
+    /**
+     * The first element in the second column.
+     */
     public float element10;
+
+    /**
+     * The second element in the second column.
+     */
     public float element11;
+
+    /**
+     * The third element in the second column.
+     */
     public float element12;
+
+    /**
+     * The first element in the third column.
+     */
     public float element20;
+
+    /**
+     * The second element in the third column.
+     */
     public float element21;
+
+    /**
+     * The third element in the third column.
+     */
     public float element22;
 
+    /**
+     * Constructs a {@code Matrix3}.
+     */
     public Matrix3() {
         setIdentity();
     }
 
+    /**
+     * Constructs a {@code Matrix3}.
+     *
+     * @param other the {@code Matrix3} to copy from.
+     */
     public Matrix3(Matrix3 other) {
         element00 = other.element00;
         element01 = other.element01;
@@ -28,6 +74,19 @@ public class Matrix3 extends Matrix {
         element22 = other.element22;
     }
 
+    /**
+     * Constructs a {@code Matrix3}.
+     *
+     * @param element00 the first element in the first column.
+     * @param element01 the second element in the first column.
+     * @param element02 the third element in the first column.
+     * @param element10 the first element in the second column.
+     * @param element11 the second element in the second column.
+     * @param element12 the third element in the second column.
+     * @param element20 the first element in the third column.
+     * @param element21 the second element in the third column.
+     * @param element22 the third element in the third column.
+     */
     public Matrix3(float element00, float element01, float element02, float element10, float element11, float element12,
                    float element20, float element21, float element22) {
         this.element00 = element00;
@@ -41,12 +100,22 @@ public class Matrix3 extends Matrix {
         this.element22 = element22;
     }
 
+    /**
+     * Gets the determinant.
+     *
+     * @return the determinant.
+     */
     public float getDeterminant() {
         return element00 * (element11 * element22 - element12 * element21)
             + element01 * (element12 * element20 - element10 * element22)
             + element02 * (element10 * element21 - element11 * element20);
     }
 
+    /**
+     * Sets this {@code Matrix3} to zero.
+     *
+     * @return this {@code Matrix3}.
+     */
     public Matrix3 setZero() {
         element00 = 0.0F;
         element01 = 0.0F;
@@ -61,6 +130,11 @@ public class Matrix3 extends Matrix {
         return this;
     }
 
+    /**
+     * Sets this {@code Matrix3} to the identity.
+     *
+     * @return this {@code Matrix3}.
+     */
     public Matrix3 setIdentity() {
         element00 = 1.0F;
         element01 = 0.0F;
@@ -75,10 +149,24 @@ public class Matrix3 extends Matrix {
         return this;
     }
 
+    /**
+     * Calculates the sum of this {@code Matrix3} and another.
+     *
+     * @param other the {@code Matrix3} to add.
+     * @return this {@code Matrix3}.
+     */
     public Matrix3 add(Matrix3 other) {
         return add(this, other, this);
     }
 
+    /**
+     * Calculates the sum of a {@code Matrix3} and another.
+     *
+     * @param left        the left {@code Matrix3} to add.
+     * @param right       the right {@code Matrix3} to add.
+     * @param destination the {@code Matrix3} to store the result in.
+     * @return a {@code Matrix3} containing the result.
+     */
     public static Matrix3 add(Matrix3 left, Matrix3 right, Matrix3 destination) {
         if (destination == null) {
             destination = new Matrix3();
@@ -97,10 +185,24 @@ public class Matrix3 extends Matrix {
         return destination;
     }
 
+    /**
+     * Calculates the difference of this {@code Matrix3} and another.
+     *
+     * @param other the {@code Matrix3} to subtract.
+     * @return this {@code Matrix3}.
+     */
     public Matrix3 subtract(Matrix3 other) {
         return subtract(this, other, this);
     }
 
+    /**
+     * Calculates the difference of a {@code Matrix3} and another.
+     *
+     * @param left        the left {@code Matrix3} to subtract.
+     * @param right       the right {@code Matrix3} to subtract.
+     * @param destination the {@code Matrix3} to store the result in.
+     * @return a {@code Matrix3} containing the result.
+     */
     public static Matrix3 subtract(Matrix3 left, Matrix3 right, Matrix3 destination) {
         if (destination == null) {
             destination = new Matrix3();
@@ -119,10 +221,24 @@ public class Matrix3 extends Matrix {
         return destination;
     }
 
+    /**
+     * Calculates the product of this {@code Matrix3} and another.
+     *
+     * @param other the {@code Matrix3} to multiply by.
+     * @return this {@code Matrix3}.
+     */
     public Matrix3 multiply(Matrix3 other) {
         return multiply(this, other, this);
     }
 
+    /**
+     * Calculates the product of a {@code Matrix3} and another.
+     *
+     * @param left        the left {@code Matrix3} to multiply by.
+     * @param right       the right {@code Matrix3} to multiply by.
+     * @param destination the {@code Matrix3} to store the result in.
+     * @return a {@code Matrix3} containing the result.
+     */
     public static Matrix3 multiply(Matrix3 left, Matrix3 right, Matrix3 destination) {
         if (destination == null) {
             destination = new Matrix3();
@@ -150,10 +266,22 @@ public class Matrix3 extends Matrix {
         return destination;
     }
 
+    /**
+     * Negates this {@code Matrix3}.
+     *
+     * @return this {@code Matrix3}.
+     */
     public Matrix3 negate() {
         return negate(this, this);
     }
 
+    /**
+     * Negates a {@code Matrix3}.
+     *
+     * @param source      the {@code Matrix3} to negate.
+     * @param destination the {@code Matrix3} to store the result in.
+     * @return a {@code Matrix3} containing the result.
+     */
     public static Matrix3 negate(Matrix3 source, Matrix3 destination) {
         if (destination == null) {
             destination = new Matrix3();
@@ -171,36 +299,68 @@ public class Matrix3 extends Matrix {
         return destination;
     }
 
+    /**
+     * Inverts this {@code Matrix3}.
+     *
+     * @return this {@code Matrix3}.
+     */
     public Matrix3 invert() {
-        float determinant = getDeterminant();
+        return invert(this, this);
+    }
+
+    /**
+     * Inverts a {@code Matrix3}.
+     *
+     * @param source      the {@code Matrix3} to invert.
+     * @param destination the {@code Matrix3} to store the result in.
+     * @return a {@code Matrix3} containing the result.
+     */
+    public static Matrix3 invert(Matrix3 source, Matrix3 destination) {
+        if (destination == null) {
+            destination = new Matrix3();
+        }
+
+        float determinant = source.getDeterminant();
 
         if (determinant != 0) {
             float inverseDeterminant = 1.0F / determinant;
 
-            float value00 = (element11 * element22 - element12 * element21) * inverseDeterminant;
-            float value01 = (-element10 * element22 + element12 * element20) * inverseDeterminant;
-            float value02 = (element10 * element21 - element11 * element20) * inverseDeterminant;
-            float value10 = (-element01 * element22 + element02 * element21) * inverseDeterminant;
-            float value11 = (element00 * element22 - element02 * element20) * inverseDeterminant;
-            float value12 = (-element00 * element21 + element01 * element20) * inverseDeterminant;
-            float value20 = (element01 * element12 - element02 * element11) * inverseDeterminant;
-            float value21 = (-element00 * element12 + element02 * element10) * inverseDeterminant;
-            float value22 = (element00 * element11 - element01 * element10) * inverseDeterminant;
+            float value00 = (source.element11 * source.element22 - source.element12 * source.element21)
+                * inverseDeterminant;
+            float value01 = (-source.element10 * source.element22 + source.element12 * source.element20)
+                * inverseDeterminant;
+            float value02 = (source.element10 * source.element21 - source.element11 * source.element20)
+                * inverseDeterminant;
+            float value10 = (-source.element01 * source.element22 + source.element02 * source.element21)
+                * inverseDeterminant;
+            float value11 = (source.element00 * source.element22 - source.element02 * source.element20)
+                * inverseDeterminant;
+            float value12 = (-source.element00 * source.element21 + source.element01 * source.element20)
+                * inverseDeterminant;
+            float value20 = (source.element01 * source.element12 - source.element02 * source.element11)
+                * inverseDeterminant;
+            float value21 = (-source.element00 * source.element12 + source.element02 * source.element10)
+                * inverseDeterminant;
+            float value22 = (source.element00 * source.element11 - source.element01 * source.element10)
+                * inverseDeterminant;
 
-            element00 = value00;
-            element11 = value01;
-            element22 = value02;
-            element01 = value10;
-            element10 = value11;
-            element20 = value12;
-            element02 = value20;
-            element12 = value21;
-            element21 = value22;
+            destination.element00 = value00;
+            destination.element11 = value01;
+            destination.element22 = value02;
+            destination.element01 = value10;
+            destination.element10 = value11;
+            destination.element20 = value12;
+            destination.element02 = value20;
+            destination.element12 = value21;
+            destination.element21 = value22;
         }
 
-        return this;
+        return destination;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public float[] toArray() {
         return new float[] {
@@ -216,6 +376,11 @@ public class Matrix3 extends Matrix {
         };
     }
 
+    /**
+     * Gets a {@code String} representation of this {@code Matrix3}.
+     *
+     * @return a {@code String} representation of this {@code Matrix3}.
+     */
     @Override
     public String toString() {
         String row1 = "Row 1: [" + element00 + ", " + element10 + ", " + element20 + "]";
