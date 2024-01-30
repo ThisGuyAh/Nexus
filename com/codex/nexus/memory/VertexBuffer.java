@@ -1,5 +1,8 @@
 package com.codex.nexus.memory;
 
+import com.codex.nexus.math.Vector;
+
+import static com.codex.nexus.utility.Arrays.*;
 import static com.codex.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL15.*;
 
@@ -41,6 +44,16 @@ public class VertexBuffer {
     }
 
     /**
+     * Constructs a {@code VertexBuffer}.
+     *
+     * @param data         the data to store.
+     * @param vertexLayout the {@code VertexLayout}.
+     */
+    public VertexBuffer(Vector[] data, VertexLayout vertexLayout) {
+        this(getFromVectors(data), vertexLayout);
+    }
+
+    /**
      * Gets the stored data.
      *
      * @return the stored data.
@@ -65,6 +78,22 @@ public class VertexBuffer {
      */
     public int getHandle() {
         return handle;
+    }
+
+    /**
+     * Gets a float array from a {@code Vector} array.
+     *
+     * @param vectors the data to convert.
+     * @return a float array from a {@code Vector} array.
+     */
+    private static float[] getFromVectors(Vector[] vectors) {
+        float[] output = new float[0];
+
+        for (var vector : vectors) {
+            output = add(output, vector.toArray());
+        }
+
+        return output;
     }
 
     /**
