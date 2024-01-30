@@ -28,19 +28,6 @@ public class Matrix3 extends Matrix {
         element22 = other.element22;
     }
 
-    public Matrix3(float element00, float element01, float element02, float element10, float element11, float element12,
-                   float element20, float element21, float element22) {
-        this.element00 = element00;
-        this.element01 = element01;
-        this.element02 = element02;
-        this.element10 = element10;
-        this.element11 = element11;
-        this.element12 = element12;
-        this.element20 = element20;
-        this.element21 = element21;
-        this.element22 = element22;
-    }
-
     public float getDeterminant() {
         return element00 * (element11 * element22 - element12 * element21)
             + element01 * (element12 * element20 - element10 * element22)
@@ -76,69 +63,99 @@ public class Matrix3 extends Matrix {
     }
 
     public Matrix3 add(Matrix3 other) {
-        element00 += other.element00;
-        element01 += other.element01;
-        element02 += other.element02;
-        element10 += other.element10;
-        element11 += other.element11;
-        element12 += other.element12;
-        element20 += other.element20;
-        element21 += other.element21;
-        element22 += other.element22;
-
-        return this;
+        return add(this, other, this);
     }
 
-    public Matrix3 subtrtact(Matrix3 other) {
-        element00 -= other.element00;
-        element01 -= other.element01;
-        element02 -= other.element02;
-        element10 -= other.element10;
-        element11 -= other.element11;
-        element12 -= other.element12;
-        element20 -= other.element20;
-        element21 -= other.element21;
-        element22 -= other.element22;
+    public static Matrix3 add(Matrix3 left, Matrix3 right, Matrix3 destination) {
+        if (destination == null) {
+            destination = new Matrix3();
+        }
 
-        return this;
+        destination.element00 = left.element00 + right.element00;
+        destination.element01 = left.element01 + right.element01;
+        destination.element02 = left.element02 + right.element02;
+        destination.element10 = left.element10 + right.element10;
+        destination.element11 = left.element11 + right.element11;
+        destination.element12 = left.element12 + right.element12;
+        destination.element20 = left.element20 + right.element20;
+        destination.element21 = left.element21 + right.element21;
+        destination.element22 = left.element22 + right.element22;
+
+        return destination;
+    }
+
+    public Matrix3 subtract(Matrix3 other) {
+        return subtract(this, other, this);
+    }
+
+    public static Matrix3 subtract(Matrix3 left, Matrix3 right, Matrix3 destination) {
+        if (destination == null) {
+            destination = new Matrix3();
+        }
+
+        destination.element00 = left.element00 - right.element00;
+        destination.element01 = left.element01 - right.element01;
+        destination.element02 = left.element02 - right.element02;
+        destination.element10 = left.element10 - right.element10;
+        destination.element11 = left.element11 - right.element11;
+        destination.element12 = left.element12 - right.element12;
+        destination.element20 = left.element20 - right.element20;
+        destination.element21 = left.element21 - right.element21;
+        destination.element22 = left.element22 - right.element22;
+
+        return destination;
     }
 
     public Matrix3 multiply(Matrix3 other) {
-        float value00 = element00 * other.element00 + element10 * other.element01 + element20 * other.element02;
-        float value01 = element01 * other.element00 + element11 * other.element01 + element21 * other.element02;
-        float value02 = element02 * other.element00 + element12 * other.element01 + element22 * other.element02;
-        float value10 = element00 * other.element10 + element10 * other.element11 + element20 * other.element12;
-        float value11 = element01 * other.element10 + element11 * other.element11 + element21 * other.element12;
-        float value12 = element02 * other.element10 + element12 * other.element11 + element22 * other.element12;
-        float value20 = element00 * other.element20 + element10 * other.element21 + element20 * other.element22;
-        float value21 = element01 * other.element20 + element11 * other.element21 + element21 * other.element22;
-        float value22 = element02 * other.element20 + element12 * other.element21 + element22 * other.element22;
+        return multiply(this, other, this);
+    }
 
-        element00 = value00;
-        element01 = value01;
-        element02 = value02;
-        element10 = value10;
-        element11 = value11;
-        element12 = value12;
-        element20 = value20;
-        element21 = value21;
-        element22 = value22;
+    public static Matrix3 multiply(Matrix3 left, Matrix3 right, Matrix3 destination) {
+        if (destination == null) {
+            destination = new Matrix3();
+        }
 
-        return this;
+        destination.element00 = left.element00 * right.element00 + left.element10 * right.element01 + left.element20
+            * right.element02;
+        destination.element01 = left.element01 * right.element00 + left.element11 * right.element01 + left.element21
+            * right.element02;
+        destination.element02 = left.element02 * right.element00 + left.element12 * right.element01 + left.element22
+            * right.element02;
+        destination.element10 = left.element00 * right.element10 + left.element10 * right.element11 + left.element20
+            * right.element12;
+        destination.element11 = left.element01 * right.element10 + left.element11 * right.element11 + left.element21
+            * right.element12;
+        destination.element12 = left.element02 * right.element10 + left.element12 * right.element11 + left.element22
+            * right.element12;
+        destination.element20 = left.element00 * right.element20 + left.element10 * right.element21 + left.element20
+            * right.element22;
+        destination.element21 = left.element01 * right.element20 + left.element11 * right.element21 + left.element21
+            * right.element22;
+        destination.element22 = left.element02 * right.element20 + left.element12 * right.element21 + left.element22
+            * right.element22;
+
+        return destination;
     }
 
     public Matrix3 negate() {
-        element00 = -element00;
-        element01 = -element01;
-        element02 = -element02;
-        element10 = -element10;
-        element11 = -element11;
-        element12 = -element12;
-        element20 = -element20;
-        element21 = -element21;
-        element22 = -element22;
+        return negate(this, this);
+    }
 
-        return this;
+    public static Matrix3 negate(Matrix3 source, Matrix3 destination) {
+        if (destination == null) {
+            destination = new Matrix3();
+        }
+        destination.element00 = -source.element00;
+        destination.element01 = -source.element01;
+        destination.element02 = -source.element02;
+        destination.element10 = -source.element10;
+        destination.element11 = -source.element11;
+        destination.element12 = -source.element12;
+        destination.element20 = -source.element20;
+        destination.element21 = -source.element21;
+        destination.element22 = -source.element22;
+
+        return destination;
     }
 
     public Matrix3 invert() {
