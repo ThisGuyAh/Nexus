@@ -120,7 +120,7 @@ public class Matrix4 extends Matrix {
 
     /**
      * Constructs a {@code Matrix4}.
-     * 
+     *
      * @param element00 the first element in the first column.
      * @param element01 the second element in the first column.
      * @param element02 the third element in the first column.
@@ -138,7 +138,7 @@ public class Matrix4 extends Matrix {
      * @param element32 the third element in the fourth column.
      * @param element33 the fourth element in the fourth column.
      */
-    public Matrix4(float element00, float element01, float element02, float element03, float element10, float element11, 
+    public Matrix4(float element00, float element01, float element02, float element03, float element10, float element11,
                    float element12, float element13, float element20, float element21, float element22, float element23,
                    float element30, float element31, float element32, float element33) {
         this.element00 = element00;
@@ -162,7 +162,7 @@ public class Matrix4 extends Matrix {
     /**
      * Gets the determinant.
      *
-     * @return this {@code Matrix4}.
+     * @return the determinant.
      */
     public float getDeterminant() {
         float determinant = element00 * ((element11 * element22 * element33 + element12 * element23 * element31
@@ -270,17 +270,25 @@ public class Matrix4 extends Matrix {
         return this;
     }
 
-    public Matrix4 setLookAt(Vector3 position, Vector3 target, Vector3 up) {
+    /**
+     * Sets this {@code Matrix4} to a look-at matrix.
+     *
+     * @param translation the translation.
+     * @param target      the target.
+     * @param up          the up direction.
+     * @return this {@code Matrix4}.
+     */
+    public Matrix4 setLookAt(Vector3 translation, Vector3 target, Vector3 up) {
         Vector3 forward = new Vector3();
         Vector3 right = new Vector3();
         Vector3 newUp = new Vector3();
 
-        Vector3.subtract(target, position, forward);
-        Vector3.normalize(forward);
+        Vector3.subtract(target, translation, forward);
+        forward.normalize();
         Vector3.cross(forward, up, right);
-        Vector3.normalize(right);
+        right.normalize();
         Vector3.cross(right, forward, newUp);
-        Vector3.negate(forward);
+        forward.negate();
         setIdentity();
 
         element00 = right.x;
@@ -293,7 +301,7 @@ public class Matrix4 extends Matrix {
         element21 = forward.y;
         element22 = forward.z;
 
-        translate(new Vector3(position).negate());
+        translate(new Vector3(translation).negate());
 
         return this;
     }
@@ -436,38 +444,55 @@ public class Matrix4 extends Matrix {
             destination = new Matrix4();
         }
 
-        destination.element00 = left.element00 * right.element00 + left.element10 * right.element01 + left.element20
+        float value00 = left.element00 * right.element00 + left.element10 * right.element01 + left.element20
             * right.element02 + left.element30 * right.element03;
-        destination.element01 = left.element01 * right.element00 + left.element11 * right.element01 + left.element21
+        float value01 = left.element01 * right.element00 + left.element11 * right.element01 + left.element21
             * right.element02 + left.element31 * right.element03;
-        destination.element02 = left.element02 * right.element00 + left.element12 * right.element01 + left.element22
+        float value02 = left.element02 * right.element00 + left.element12 * right.element01 + left.element22
             * right.element02 + left.element32 * right.element03;
-        destination.element03 = left.element03 * right.element00 + left.element13 * right.element01 + left.element23
+        float value03 = left.element03 * right.element00 + left.element13 * right.element01 + left.element23
             * right.element02 + left.element33 * right.element03;
-        destination.element10 = left.element00 * right.element10 + left.element10 * right.element11 + left.element20
+        float value10 = left.element00 * right.element10 + left.element10 * right.element11 + left.element20
             * right.element12 + left.element30 * right.element13;
-        destination.element11 = left.element01 * right.element10 + left.element11 * right.element11 + left.element21
+        float value11 = left.element01 * right.element10 + left.element11 * right.element11 + left.element21
             * right.element12 + left.element31 * right.element13;
-        destination.element12 = left.element02 * right.element10 + left.element12 * right.element11 + left.element22
+        float value12 = left.element02 * right.element10 + left.element12 * right.element11 + left.element22
             * right.element12 + left.element32 * right.element13;
-        destination.element13 = left.element03 * right.element10 + left.element13 * right.element11 + left.element23
+        float value13 = left.element03 * right.element10 + left.element13 * right.element11 + left.element23
             * right.element12 + left.element33 * right.element13;
-        destination.element20 = left.element00 * right.element20 + left.element10 * right.element21 + left.element20
+        float value20 = left.element00 * right.element20 + left.element10 * right.element21 + left.element20
             * right.element22 + left.element30 * right.element23;
-        destination.element21 = left.element01 * right.element20 + left.element11 * right.element21 + left.element21
+        float value21 = left.element01 * right.element20 + left.element11 * right.element21 + left.element21
             * right.element22 + left.element31 * right.element23;
-        destination.element22 = left.element02 * right.element20 + left.element12 * right.element21 + left.element22
+        float value22 = left.element02 * right.element20 + left.element12 * right.element21 + left.element22
             * right.element22 + left.element32 * right.element23;
-        destination.element23 = left.element03 * right.element20 + left.element13 * right.element21 + left.element23
+        float value23 = left.element03 * right.element20 + left.element13 * right.element21 + left.element23
             * right.element22 + left.element33 * right.element23;
-        destination.element30 = left.element00 * right.element30 + left.element10 * right.element31 + left.element20
+        float value30 = left.element00 * right.element30 + left.element10 * right.element31 + left.element20
             * right.element32 + left.element30 * right.element33;
-        destination.element31 = left.element01 * right.element30 + left.element11 * right.element31 + left.element21
+        float value31 = left.element01 * right.element30 + left.element11 * right.element31 + left.element21
             * right.element32 + left.element31 * right.element33;
-        destination.element32 = left.element02 * right.element30 + left.element12 * right.element31 + left.element22
+        float value32 = left.element02 * right.element30 + left.element12 * right.element31 + left.element22
             * right.element32 + left.element32 * right.element33;
-        destination.element33 = left.element03 * right.element30 + left.element13 * right.element31 + left.element23
+        float value33 = left.element03 * right.element30 + left.element13 * right.element31 + left.element23
             * right.element32 + left.element33 * right.element33;
+
+        destination.element00 = value00;
+        destination.element01 = value01;
+        destination.element02 = value02;
+        destination.element03 = value03;
+        destination.element10 = value10;
+        destination.element11 = value11;
+        destination.element12 = value12;
+        destination.element13 = value13;
+        destination.element20 = value20;
+        destination.element21 = value21;
+        destination.element22 = value22;
+        destination.element23 = value23;
+        destination.element30 = value30;
+        destination.element31 = value31;
+        destination.element32 = value32;
+        destination.element33 = value33;
 
         return destination;
     }
@@ -519,62 +544,93 @@ public class Matrix4 extends Matrix {
      * @return this {@code Matrix4}.
      */
     public Matrix4 invert() {
-        float determinant = getDeterminant();
+        return invert(this, this);
+    }
+
+    /**
+     * Inverts a {@code Matrix4}.
+     *
+     * @param source      the {@code Matrix4} to invert.
+     * @param destination the {@code Matrix4} to store the result in.
+     * @return a {@code Matrix4} containing the result.
+     */
+    public static Matrix4 invert(Matrix4 source, Matrix4 destination) {
+        if (destination == null) {
+            destination = new Matrix4();
+        }
+
+        float determinant = source.getDeterminant();
 
         if (determinant != 0) {
             float inverseDeterminant = 1.0F / determinant;
-            float value00 = new Matrix3(element11, element12, element13, element21, element22, element23, element31,
-                element32, element33).getDeterminant() * inverseDeterminant;
-            float value01 = -new Matrix3(element10, element12, element13, element20, element22, element23, element30,
-                element32, element33).getDeterminant() * inverseDeterminant;
-            float value02 = new Matrix3(element10, element11, element13, element20, element21, element23, element30,
-                element31, element33).getDeterminant() * inverseDeterminant;
-            float value03 = -new Matrix3(element10, element11, element12, element20, element21, element22, element30,
-                element31, element32).getDeterminant() * inverseDeterminant;
-            float value10 = -new Matrix3(element01, element02, element03, element21, element22, element23, element31,
-                element32, element33).getDeterminant() * inverseDeterminant;
-            float value11 = new Matrix3(element00, element02, element03, element20, element22, element23, element30,
-                element32, element33).getDeterminant() * inverseDeterminant;
-            float value12 = -new Matrix3(element00, element01, element03, element20, element21, element23, element30,
-                element31, element33).getDeterminant() * inverseDeterminant;
-            float value13 = new Matrix3(element00, element01, element02, element20, element21, element22, element30,
-                element31, element32).getDeterminant() * inverseDeterminant;
-            float value20 = new Matrix3(element01, element02, element03, element11, element12, element13, element31,
-                element32, element33).getDeterminant() * inverseDeterminant;
-            float value21 = -new Matrix3(element00, element02, element03, element10, element12, element13, element30,
-                element32, element33).getDeterminant() * inverseDeterminant;
-            float value22 = new Matrix3(element00, element01, element03, element10, element11, element13, element30,
-                element31, element33).getDeterminant() * inverseDeterminant;
-            float value23 = -new Matrix3(element00, element01, element02, element10, element11, element12, element30,
-                element31, element32).getDeterminant() * inverseDeterminant;
-            float value30 = -new Matrix3(element01, element02, element03, element11, element12, element13, element21,
-                element22, element23).getDeterminant() * inverseDeterminant;
-            float value31 = new Matrix3(element00, element02, element03, element10, element12, element13, element20,
-                element22, element23).getDeterminant() * inverseDeterminant;
-            float value32 = -new Matrix3(element00, element01, element03, element10, element11, element13, element20,
-                element21, element23).getDeterminant() * inverseDeterminant;
-            float value33 = new Matrix3(element00, element01, element02, element10, element11, element12, element20,
-                element21, element22).getDeterminant() * inverseDeterminant;
+            float value00 = new Matrix3(source.element11, source.element12, source.element13, source.element21,
+                source.element22, source.element23, source.element31, source.element32, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value01 = -new Matrix3(source.element10, source.element12, source.element13, source.element20,
+                source.element22, source.element23, source.element30, source.element32, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value02 = new Matrix3(source.element10, source.element11, source.element13, source.element20,
+                source.element21, source.element23, source.element30, source.element31, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value03 = -new Matrix3(source.element10, source.element11, source.element12, source.element20,
+                source.element21, source.element22, source.element30, source.element31, source.element32)
+                .getDeterminant() * inverseDeterminant;
+            float value10 = -new Matrix3(source.element01, source.element02, source.element03, source.element21,
+                source.element22, source.element23, source.element31, source.element32, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value11 = new Matrix3(source.element00, source.element02, source.element03, source.element20,
+                source.element22, source.element23, source.element30, source.element32, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value12 = -new Matrix3(source.element00, source.element01, source.element03, source.element20,
+                source.element21, source.element23, source.element30, source.element31, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value13 = new Matrix3(source.element00, source.element01, source.element02, source.element20,
+                source.element21, source.element22, source.element30, source.element31, source.element32)
+                .getDeterminant() * inverseDeterminant;
+            float value20 = new Matrix3(source.element01, source.element02, source.element03, source.element11,
+                source.element12, source.element13, source.element31, source.element32, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value21 = -new Matrix3(source.element00, source.element02, source.element03, source.element10,
+                source.element12, source.element13, source.element30, source.element32, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value22 = new Matrix3(source.element00, source.element01, source.element03, source.element10,
+                source.element11, source.element13, source.element30, source.element31, source.element33)
+                .getDeterminant() * inverseDeterminant;
+            float value23 = -new Matrix3(source.element00, source.element01, source.element02, source.element10,
+                source.element11, source.element12, source.element30, source.element31, source.element32)
+                .getDeterminant() * inverseDeterminant;
+            float value30 = -new Matrix3(source.element01, source.element02, source.element03, source.element11,
+                source.element12, source.element13, source.element21, source.element22, source.element23)
+                .getDeterminant() * inverseDeterminant;
+            float value31 = new Matrix3(source.element00, source.element02, source.element03, source.element10,
+                source.element12, source.element13, source.element20, source.element22, source.element23)
+                .getDeterminant() * inverseDeterminant;
+            float value32 = -new Matrix3(source.element00, source.element01, source.element03, source.element10,
+                source.element11, source.element13, source.element20, source.element21, source.element23)
+                .getDeterminant() * inverseDeterminant;
+            float value33 = new Matrix3(source.element00, source.element01, source.element02, source.element10,
+                source.element11, source.element12, source.element20, source.element21, source.element22)
+                .getDeterminant() * inverseDeterminant;
 
-            element00 = value00;
-            element01 = value01;
-            element02 = value02;
-            element03 = value03;
-            element10 = value10;
-            element11 = value11;
-            element12 = value12;
-            element13 = value13;
-            element20 = value20;
-            element21 = value21;
-            element22 = value22;
-            element23 = value23;
-            element30 = value30;
-            element31 = value31;
-            element32 = value32;
-            element33 = value33;
+            destination.element00 = value00;
+            destination.element01 = value01;
+            destination.element02 = value02;
+            destination.element03 = value03;
+            destination.element10 = value10;
+            destination.element11 = value11;
+            destination.element12 = value12;
+            destination.element13 = value13;
+            destination.element20 = value20;
+            destination.element21 = value21;
+            destination.element22 = value22;
+            destination.element23 = value23;
+            destination.element30 = value30;
+            destination.element31 = value31;
+            destination.element32 = value32;
+            destination.element33 = value33;
         }
 
-        return this;
+        return destination;
     }
 
     /**
@@ -584,12 +640,32 @@ public class Matrix4 extends Matrix {
      * @return this {@code Matrix4}.
      */
     public Matrix4 translate(Vector3 translation) {
-        element30 += element00 * translation.x + element10 * translation.y + element20 * translation.z;
-        element31 += element01 * translation.x + element11 * translation.y + element21 * translation.z;
-        element32 += element02 * translation.x + element12 * translation.y + element22 * translation.z;
-        element33 += element03 * translation.x + element13 * translation.y + element23 * translation.z;
+        return translate(translation, this, this);
+    }
 
-        return this;
+    /**
+     * Translates a {@code Matrix4}.
+     *
+     * @param translation the translation.
+     * @param source      the {@code Matrix4} to translate.
+     * @param destination the {@code Matrix4} to store the result in.
+     * @return a {@code Matrix4} containing the result.
+     */
+    public static Matrix4 translate(Vector3 translation, Matrix4 source, Matrix4 destination) {
+        if (destination == null) {
+            destination = new Matrix4();
+        }
+
+        destination.element30 += source.element00 * translation.x + source.element10 * translation.y + source.element20
+            * translation.z;
+        destination.element31 += source.element01 * translation.x + source.element11 * translation.y + source.element21
+            * translation.z;
+        destination.element32 += source.element02 * translation.x + source.element12 * translation.y + source.element22
+            * translation.z;
+        destination.element33 += source.element03 * translation.x + source.element13 * translation.y + source.element23
+            * translation.z;
+
+        return destination;
     }
 
     /**
@@ -600,6 +676,23 @@ public class Matrix4 extends Matrix {
      * @return this {@code Matrix4}.
      */
     public Matrix4 rotate(float angle, Vector3 axis) {
+        return rotate(angle, axis, this, this);
+    }
+
+    /**
+     * Rotates a {@code Matrix4}.
+     *
+     * @param angle       the angle (in degrees) to rotate by.
+     * @param axis        the axis to rotate.
+     * @param source      the {@code Matrix4} to rotate.
+     * @param destination the {@code Matrix4} to store the result in.
+     * @return a {@code Matrix4} containing the result.
+     */
+    public static Matrix4 rotate(float angle, Vector3 axis, Matrix4 source, Matrix4 destination) {
+        if (destination == null) {
+            destination = new Matrix4();
+        }
+
         float cosine = (float) Math.cos(Math.toRadians(angle));
         float sine = (float) Math.sin(Math.toRadians(angle));
         float oneMinusCosine = 1.0f - cosine;
@@ -618,33 +711,33 @@ public class Matrix4 extends Matrix {
         float factor20 = xz * oneMinusCosine + ys;
         float factor21 = yz * oneMinusCosine - xs;
         float factor22 = axis.z * axis.z * oneMinusCosine + cosine;
-        float value00 = element00 * factor00 + element10 * factor01 + element20 * factor02;
-        float value01 = element01 * factor00 + element11 * factor01 + element21 * factor02;
-        float value02 = element02 * factor00 + element12 * factor01 + element22 * factor02;
-        float value03 = element03 * factor00 + element13 * factor01 + element23 * factor02;
-        float value10 = element00 * factor10 + element10 * factor11 + element20 * factor12;
-        float value11 = element01 * factor10 + element11 * factor11 + element21 * factor12;
-        float value12 = element02 * factor10 + element12 * factor11 + element22 * factor12;
-        float value13 = element03 * factor10 + element13 * factor11 + element23 * factor12;
-        float value20 = element00 * factor20 + element10 * factor21 + element20 * factor22;
-        float value21 = element01 * factor20 + element11 * factor21 + element21 * factor22;
-        float value22 = element02 * factor20 + element12 * factor21 + element22 * factor22;
-        float value23 = element03 * factor20 + element13 * factor21 + element23 * factor22;
+        float value00 = source.element00 * factor00 + source.element10 * factor01 + source.element20 * factor02;
+        float value01 = source.element01 * factor00 + source.element11 * factor01 + source.element21 * factor02;
+        float value02 = source.element02 * factor00 + source.element12 * factor01 + source.element22 * factor02;
+        float value03 = source.element03 * factor00 + source.element13 * factor01 + source.element23 * factor02;
+        float value10 = source.element00 * factor10 + source.element10 * factor11 + source.element20 * factor12;
+        float value11 = source.element01 * factor10 + source.element11 * factor11 + source.element21 * factor12;
+        float value12 = source.element02 * factor10 + source.element12 * factor11 + source.element22 * factor12;
+        float value13 = source.element03 * factor10 + source.element13 * factor11 + source.element23 * factor12;
+        float value20 = source.element00 * factor20 + source.element10 * factor21 + source.element20 * factor22;
+        float value21 = source.element01 * factor20 + source.element11 * factor21 + source.element21 * factor22;
+        float value22 = source.element02 * factor20 + source.element12 * factor21 + source.element22 * factor22;
+        float value23 = source.element03 * factor20 + source.element13 * factor21 + source.element23 * factor22;
 
-        element00 = value00;
-        element01 = value01;
-        element02 = value02;
-        element03 = value03;
-        element10 = value10;
-        element11 = value11;
-        element12 = value12;
-        element13 = value13;
-        element20 = value20;
-        element21 = value21;
-        element22 = value22;
-        element23 = value23;
+        destination.element00 = value00;
+        destination.element01 = value01;
+        destination.element02 = value02;
+        destination.element03 = value03;
+        destination.element10 = value10;
+        destination.element11 = value11;
+        destination.element12 = value12;
+        destination.element13 = value13;
+        destination.element20 = value20;
+        destination.element21 = value21;
+        destination.element22 = value22;
+        destination.element23 = value23;
 
-        return this;
+        return destination;
     }
 
     /**
@@ -654,20 +747,36 @@ public class Matrix4 extends Matrix {
      * @return this {@code Matrix4}.
      */
     public Matrix4 scale(Vector3 scale) {
-        element00 *= scale.x;
-        element01 *= scale.x;
-        element02 *= scale.x;
-        element03 *= scale.x;
-        element10 *= scale.y;
-        element11 *= scale.y;
-        element12 *= scale.y;
-        element13 *= scale.y;
-        element20 *= scale.z;
-        element21 *= scale.z;
-        element22 *= scale.z;
-        element23 *= scale.z;
+        return scale(scale, this, this);
+    }
 
-        return this;
+    /**
+     * Scales a {@code Matrix4}.
+     *
+     * @param scale       the scale.
+     * @param source      the {@code Matrix4} to scale.
+     * @param destination the {@code Matrix4} to store the result in.
+     * @return a {@code Matrix4} containing the result.
+     */
+    public static Matrix4 scale(Vector3 scale, Matrix4 source, Matrix4 destination) {
+        if (destination == null) {
+            destination = new Matrix4();
+        }
+
+        destination.element00 = source.element00 * scale.x;
+        destination.element01 = source.element01 * scale.x;
+        destination.element02 = source.element02 * scale.x;
+        destination.element03 = source.element03 * scale.x;
+        destination.element10 = source.element10 * scale.y;
+        destination.element11 = source.element11 * scale.y;
+        destination.element12 = source.element12 * scale.y;
+        destination.element13 = source.element13 * scale.y;
+        destination.element20 = source.element20 * scale.z;
+        destination.element21 = source.element21 * scale.z;
+        destination.element22 = source.element22 * scale.z;
+        destination.element23 = source.element23 * scale.z;
+
+        return destination;
     }
 
     /**
