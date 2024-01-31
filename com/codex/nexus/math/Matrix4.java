@@ -336,7 +336,7 @@ public class Matrix4 extends Matrix {
     /**
      * Calculates the sum of this {@code Matrix4} and another.
      *
-     * @param other the other {@code Matrix4} to add.
+     * @param other the {@code Matrix4} to add.
      * @return this {@code Matrix4}.
      */
     public Matrix4 add(Matrix4 other) {
@@ -379,7 +379,7 @@ public class Matrix4 extends Matrix {
     /**
      * Calculates the difference of this {@code Matrix4} and another.
      *
-     * @param other the other {@code Matrix4} to subtract.
+     * @param other the {@code Matrix4} to subtract.
      * @return this {@code Matrix4}.
      */
     public Matrix4 subtract(Matrix4 other) {
@@ -422,7 +422,7 @@ public class Matrix4 extends Matrix {
     /**
      * Calculates the product of this {@code Matrix4} and another.
      *
-     * @param other the other {@code Matrix4} to multiply by.
+     * @param other the {@code Matrix4} to multiply by.
      * @return this {@code Matrix4}.
      */
     public Matrix4 multiply(Matrix4 other) {
