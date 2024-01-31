@@ -99,7 +99,7 @@ public class Matrix2 extends Matrix {
     /**
      * Calculates the sum of this {@code Matrix2} and another.
      *
-     * @param other the other {@code Matrix2} to add.
+     * @param other the {@code Matrix2} to add.
      * @return this {@code Matrix2}.
      */
     public Matrix2 add(Matrix2 other) {
@@ -130,7 +130,7 @@ public class Matrix2 extends Matrix {
     /**
      * Calculates the difference of this {@code Matrix2} and another.
      *
-     * @param other the other {@code Matrix2} to subtract.
+     * @param other the {@code Matrix2} to subtract.
      * @return this {@code Matrix2}.
      */
     public Matrix2 subtract(Matrix2 other) {
@@ -161,7 +161,7 @@ public class Matrix2 extends Matrix {
     /**
      * Calculates the product of this {@code Matrix2} and another.
      *
-     * @param other the other {@code Matrix2} to multiply by.
+     * @param other the {@code Matrix2} to multiply by.
      * @return this {@code Matrix2}.
      */
     public Matrix2 multiply(Matrix2 other) {
