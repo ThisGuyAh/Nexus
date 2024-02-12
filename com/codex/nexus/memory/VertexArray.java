@@ -4,7 +4,7 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
 /**
- * Stores one or more {@code VertexBuffer}s (and optionally) an {@code IndexBuffer}.
+ * A {@code VertexArray} stores one or more {@code VertexBuffer}s (and optionally) an {@code IndexBuffer}.
  *
  * @author Christopher Ruley
  */
