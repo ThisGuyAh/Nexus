@@ -1,7 +1,7 @@
 package com.codex.nexus.math;
 
 /**
- * A {@code Matrix3} represents a 3X3 matrix in column major ordering.
+ * A {@code Matrix3} represents a 3X3 element matrix in column major ordering.
  *
  * @author Christopher Ruley
  */
