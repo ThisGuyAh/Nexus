@@ -7,7 +7,6 @@ import com.codex.nexus.event.WindowFocusEvent;
 import com.codex.nexus.event.WindowMaximizeEvent;
 import com.codex.nexus.event.WindowMoveEvent;
 import com.codex.nexus.event.WindowResizeEvent;
-import com.codex.nexus.math.Vector2;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
 import java.nio.IntBuffer;
@@ -17,6 +16,11 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
+/**
+ * A {@code Window} is a graphical control element occupying an area of the screen used to display information.
+ *
+ * @author Christopher Ruley
+ */
 public class Window {
 
     /**
@@ -55,6 +59,21 @@ public class Window {
     private int y;
 
     /**
+     * The instance count.
+     */
+    private static int instanceCount;
+
+    /**
+     * Constructs a {@code Window}.
+     */
+    public Window() {
+        title = "";
+        width = 960;
+        height = 540;
+        vSync = false;
+    }
+
+    /**
      * Constructs a {@code Window}.
      *
      * @param title  the title.
@@ -67,82 +86,64 @@ public class Window {
         this.width = width;
         this.height = height;
         this.vSync = vSync;
-
-        glfwInit();
-        glfwDefaultWindowHints();
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-
-        handle = glfwCreateWindow(width, height, title, NULL, NULL);
-
-        setCallbacks();
-
-        try (MemoryStack memoryStack = stackPush()) {
-            IntBuffer storedWidth = memoryStack.mallocInt(1);
-            IntBuffer storedHeight = memoryStack.mallocInt(1);
-            GLFWVidMode glfwVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            glfwGetWindowSize(handle, storedWidth, storedHeight);
-
-            x = (glfwVidMode.width() - storedWidth.get(0)) / 2;
-            y = (glfwVidMode.height() - storedHeight.get(0)) / 2;
-
-            glfwSetWindowPos(handle, x, y);
-        }
-
-        glfwMakeContextCurrent(handle);
-        glfwSwapInterval(vSync ? 1 : 0);
-        glfwShowWindow(handle);
     }
-    
+
     public String getTitle() {
         return title;
     }
-    
+
     public int getWidth() {
         return width;
     }
-    
+
     public int getHeight() {
         return height;
     }
-    
+
     public boolean isVSync() {
         return vSync;
     }
-    
+
     public long getHandle() {
         return handle;
     }
-    
+
     public int getX() {
         return x;
     }
-    
+
     public int getY() {
         return y;
     }
-    
+
+    public static int getInstanceCount() {
+        return instanceCount;
+    }
+
+    public boolean isRunning() {
+        return !glfwWindowShouldClose(handle);
+    }
+
     public void setTitle(String title) {
         glfwSetWindowTitle(handle, this.title = title);
     }
-    
+
     public void setWidth(int width) {
         glfwSetWindowSize(handle, width, height);
     }
-    
+
     public void setHeight(int height) {
         glfwSetWindowSize(handle, width, height);
     }
-    
+
     public void setVSync(boolean vSync) {
         this.vSync = vSync;
     }
-    
+
     public void setX(int x) {
         glfwSetWindowPos(handle, x, y);
     }
-    
+
     public void setY(int y) {
         glfwSetWindowPos(handle, x, y);
     }
@@ -181,21 +182,43 @@ public class Window {
         glfwSetWindowCloseCallback(handle, handle -> {
             eventBus.publish(new WindowDestroyEvent(this));
         });
-        glfwSetKeyCallback(handle, (handle, keyCode, scanCode, action, mods) -> {
-            Input.keyCallback(this, Key.getFromGLFWType(keyCode), action);
-        });
-        glfwSetMouseButtonCallback(handle, (handle, mouseButtonCode, action, mods) -> {
-            Input.mouseButtonCallback(this, MouseButton.getFromGLFWType(mouseButtonCode), action);
-        });
-        glfwSetCursorEnterCallback(handle, (window, entered) -> {
-            Input.mouseCursorEnterCallback(this, entered);
-        });
-        glfwSetCursorPosCallback(handle, (handle, x, y) -> {
-            Input.mouseCursorMoveCallback(this, new Vector2((float) x, (float) y));
-        });
-        glfwSetScrollCallback(handle, (handle, x, y) -> {
-            Input.mouseWheelScrollCallback(this, new Vector2((float) x, (float) y));
-        });
+    }
+
+    /**
+     * Initializes the {@code Window}.
+     */
+    public void initialize() {
+        if (instanceCount == 0) {
+            glfwInit();
+        }
+
+        glfwDefaultWindowHints();
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+
+        handle = glfwCreateWindow(width, height, title, NULL, NULL);
+        instanceCount++;
+
+        setCallbacks();
+
+        // TODO Add functionality for user to set screen position (i.e. LEFT_CENTER, CENTER, RIGHT_CENTER, etc.)
+
+        try (MemoryStack memoryStack = stackPush()) {
+            IntBuffer storedWidth = memoryStack.mallocInt(1);
+            IntBuffer storedHeight = memoryStack.mallocInt(1);
+            GLFWVidMode glfwVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+            glfwGetWindowSize(handle, storedWidth, storedHeight);
+
+            x = (glfwVidMode.width() - storedWidth.get(0)) / 2;
+            y = (glfwVidMode.height() - storedHeight.get(0)) / 2;
+
+            glfwSetWindowPos(handle, x, y);
+        }
+
+        glfwSwapInterval(vSync ? 1 : 0);
+        glfwMakeContextCurrent(handle);
+        glfwShowWindow(handle);
     }
 
     /**
@@ -207,12 +230,17 @@ public class Window {
     }
 
     /**
-     * Deletes the {@code Window} and frees all memory allocations.
+     * Destroys the {@code Window} and terminates GLFW.
      */
-    public void delete() {
+    public void destroy() {
         glfwDestroyWindow(handle);
         glfwFreeCallbacks(handle);
-        glfwTerminate();
+
+        instanceCount--;
+
+        if (instanceCount == 0) {
+            glfwTerminate();
+        }
     }
 
 }
