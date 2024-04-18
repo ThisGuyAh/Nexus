@@ -41,9 +41,14 @@ public class Application {
     }
 
     public void start(Logical logical) {
+        if (running) {
+            return;
+        }
+        
         this.logical = logical;
         running = true;
 
+        eventBus.register(logical);
         run();
     }
 
