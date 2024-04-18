@@ -125,7 +125,9 @@ public class Window {
     }
 
     public void setTitle(String title) {
-        glfwSetWindowTitle(handle, this.title = title);
+        this.title = title;
+        
+        glfwSetWindowTitle(handle, title);
     }
 
     public void setWidth(int width) {
@@ -138,6 +140,8 @@ public class Window {
 
     public void setVSync(boolean vSync) {
         this.vSync = vSync;
+        
+        glfwSwapInterval(vSync ? 1 : 0);
     }
 
     public void setX(int x) {
