@@ -1,125 +1,70 @@
 package com.codex.nexus.core;
 
-import com.codex.nexus.event.ApplicationInitializeEvent;
-import com.codex.nexus.event.ApplicationRenderEvent;
-import com.codex.nexus.event.ApplicationTerminateEvent;
-import com.codex.nexus.event.ApplicationUpdateEvent;
-import com.codex.nexus.event.Event;
 import com.codex.nexus.event.EventBus;
-import com.codex.nexus.event.WindowCreateEvent;
-import com.codex.nexus.event.WindowDestroyEvent;
 
 public class Application {
 
-    /**
-     * Contains the singleton instance of the {@code Application}.
-     */
-    private static class Singleton {
+    private static class Inner {
 
-        /**
-         * The singleton instance of the {@code Application}.
-         */
-        private static final Application INSTANCE = new Application();
+        public static final Application INSTANCE = new Application();
 
     }
 
-    /**
-     * Gets the singleton instance of the {@code Application}.
-     *
-     * @return the singleton instance of the {@code Application}.
-     */
-    public static Application getInstance() {
-        return Singleton.INSTANCE;
-    }
-
-    /**
-     * The {@code EventBus}.
-     */
     private EventBus eventBus;
 
-    /**
-     * The {@code Window}.
-     */
     private Window window;
 
-    /**
-     * Whether the {@code Application} is running.
-     */
+    private Logical logical;
+
     private boolean running;
 
-    /**
-     * Cannot instantiate {@code Application}.
-     */
     private Application() {
         eventBus = new EventBus();
-
-        eventBus.register(this);
+        window = new Window();
+        running = false;
     }
 
-    /**
-     * Gets the {@code EventBus}.
-     *
-     * @return the {@code EventBus}.
-     */
+    public static Application getInstance() {
+        return Inner.INSTANCE;
+    }
+
     public EventBus getEventBus() {
         return eventBus;
     }
 
-    /**
-     * Gets the {@code Window}.
-     *
-     * @return the {@code Window}.
-     */
     public Window getWindow() {
         return window;
     }
 
-    /**
-     * Starts the {@code Application}.
-     */
-    public void start() {
+    public Logical getLogical() {
+        return logical;
+    }
+
+    public void start(Logical logical) {
+        this.logical = logical;
         running = true;
 
-        eventBus.publish(new ApplicationInitializeEvent());
-        loop();
-        eventBus.publish(new ApplicationTerminateEvent());
+        run();
     }
 
-    /**
-     * Stops the {@code Application}.
-     */
     public void stop() {
         running = false;
-
-        window.delete();
     }
 
-    /**
-     * The main loop of the {@code Application}.
-     */
-    private void loop() {
-        while (running) {
-            eventBus.publish(new ApplicationUpdateEvent());
-            eventBus.publish(new ApplicationRenderEvent());
-            Input.update();
+    private void run() {
+        logical.onInitialize();
+        window.initialize();
+
+        // TODO Add functionality to continue running until all windows are closed, and main loop logic.
+        while (running && window.isRunning()) {
+            logical.onInput();
+            logical.onUpdate();
+            logical.onRender();
             window.update();
         }
-    }
 
-    // May be changed later
-    @Event
-    public void onEvent(WindowCreateEvent event) {
-        if (window == null) {
-            window = event.getWindow();
-        }
-    }
-
-    // May be changed later
-    @Event
-    public void onEvent(WindowDestroyEvent event) {
-        if (window.equals(event.getWindow())) {
-            stop();
-        }
+        logical.onDestroy();
+        window.destroy();
     }
 
 }
