@@ -126,7 +126,7 @@ public class Window {
 
     public void setTitle(String title) {
         this.title = title;
-        
+
         glfwSetWindowTitle(handle, title);
     }
 
@@ -140,7 +140,7 @@ public class Window {
 
     public void setVSync(boolean vSync) {
         this.vSync = vSync;
-        
+
         glfwSwapInterval(vSync ? 1 : 0);
     }
 
@@ -188,10 +188,20 @@ public class Window {
         });
     }
 
+    private void setPosition(int xOffset, int yOffset) {
+        try (var memoryStack = stackPush()) {
+            IntBuffer storedWidth = memoryStack.mallocInt(1);
+            IntBuffer storedHeight = memoryStack.mallocInt(1);
+            GLFWVidMode glfwVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+            glfwGetWindowSize(handle, storedWidth, storedHeight);
+        }
+    }
+
     /**
      * Initializes the {@code Window}.
      */
-    public void initialize() {
+    public void create() {
         if (instanceCount == 0) {
             glfwInit();
         }
@@ -220,8 +230,8 @@ public class Window {
             glfwSetWindowPos(handle, x, y);
         }
 
-        glfwSwapInterval(vSync ? 1 : 0);
         glfwMakeContextCurrent(handle);
+        glfwSwapInterval(vSync ? 1 : 0);
         glfwShowWindow(handle);
     }
 
@@ -234,7 +244,7 @@ public class Window {
     }
 
     /**
-     * Destroys the {@code Window} and terminates GLFW.
+     * Destroys the {@code Window} and terminates GLFW if all instances are destroyed.
      */
     public void destroy() {
         glfwDestroyWindow(handle);
