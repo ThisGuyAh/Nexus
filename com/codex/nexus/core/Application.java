@@ -31,6 +31,10 @@ public class Application {
         return Instance.INSTANCE;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
     public EventBus getEventBus() {
         return eventBus;
     }
