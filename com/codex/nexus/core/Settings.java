@@ -34,7 +34,7 @@ public class Settings {
         this.upsLimit = upsLimit;
     }
 
-    public void setFpsLimit(int fpsLimit) {
+    public void setFPSLimit(int fpsLimit) {
         this.fpsLimit = fpsLimit;
     }
 
