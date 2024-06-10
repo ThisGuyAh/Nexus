@@ -4,6 +4,7 @@ import com.codex.nexus.event.Event;
 import com.codex.nexus.event.EventBus;
 import com.codex.nexus.event.WindowDestroyEvent;
 import com.codex.nexus.event.WindowMaximizeEvent;
+import com.codex.nexus.event.WindowMinimizeEvent;
 
 import static com.codex.nexus.utility.Time.*;
 
@@ -71,6 +72,7 @@ public abstract class Application {
     }
 
     // Is this getter needed?
+
     /**
      * @return whether running.
      */
@@ -79,6 +81,7 @@ public abstract class Application {
     }
 
     // Is this getter needed?
+
     /**
      * @return whether minimized.
      */
@@ -217,17 +220,17 @@ public abstract class Application {
     }
 
     /**
-     * Listens for a {@code WindowMaximizeEvent} for when the {@code Window} is minimized.
+     * Listens for a {@code WindowMinimizeEvent}.
      *
      * @param event the event listened for.
      */
     @Event
-    public void onEvent(WindowMaximizeEvent event) {
-        minimized = !event.isMaximized();
+    public void onEvent(WindowMinimizeEvent event) {
+        minimized = event.isMinimized();
     }
 
     /**
-     * Listens for a {@code WindowDestroyEvent} and stops the {@code Application}.
+     * Listens for a {@code WindowDestroyEvent}.
      *
      * @param event the event listened for.
      */
