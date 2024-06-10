@@ -3,7 +3,6 @@ package com.codex.nexus.core;
 import com.codex.nexus.event.Event;
 import com.codex.nexus.event.EventBus;
 import com.codex.nexus.event.WindowDestroyEvent;
-import com.codex.nexus.event.WindowMaximizeEvent;
 import com.codex.nexus.event.WindowMinimizeEvent;
 
 import static com.codex.nexus.utility.Time.*;
