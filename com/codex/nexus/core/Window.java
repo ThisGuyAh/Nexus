@@ -5,6 +5,7 @@ import com.codex.nexus.event.WindowCreateEvent;
 import com.codex.nexus.event.WindowDestroyEvent;
 import com.codex.nexus.event.WindowFocusEvent;
 import com.codex.nexus.event.WindowMaximizeEvent;
+import com.codex.nexus.event.WindowMinimizeEvent;
 import com.codex.nexus.event.WindowMoveEvent;
 import com.codex.nexus.event.WindowResizeEvent;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -164,6 +165,9 @@ public class Window {
         });
         glfwSetWindowMaximizeCallback(handle, (handle, maximized) -> {
             eventBus.publish((new WindowMaximizeEvent(this, maximized)));
+        });
+        glfwSetWindowIconifyCallback(handle, (handle, minimized) -> {
+            eventBus.publish(new WindowMinimizeEvent(this, minimized));
         });
         glfwSetWindowPosCallback(handle, (handle, x, y) -> {
             int oldX = this.x;
