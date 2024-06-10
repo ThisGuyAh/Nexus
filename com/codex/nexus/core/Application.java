@@ -1,92 +1,175 @@
 package com.codex.nexus.core;
 
+import com.codex.nexus.event.Event;
 import com.codex.nexus.event.EventBus;
+import com.codex.nexus.event.WindowDestroyEvent;
+import com.codex.nexus.event.WindowMaximizeEvent;
 
 import static com.codex.nexus.utility.Time.*;
 
-public class Application {
+/**
+ * {@code Application} ...
+ *
+ * @author Christopher Ruley
+ */
+public abstract class Application {
 
-    private static class Instance {
-        public static final Application INSTANCE = new Application();
-    }
-
+    /**
+     * The {@code Settings}.
+     */
     private Settings settings;
-    private EventBus eventBus;
+
+    /**
+     * The {@code Window}.
+     */
     private Window window;
-    private Logical logical;
+
+    /**
+     * Whether running.
+     */
     private boolean running;
+
+    /**
+     * Whether minimized.
+     */
+    private boolean minimized;
+
+    /**
+     * The updates-per-second.
+     */
     private int ups;
+
+    /**
+     * The frames-per-second.
+     */
     private int fps;
 
-    private Application() {
+    /**
+     * Instantiates an {@code Application}.
+     */
+    protected Application() {
         settings = new Settings();
-        eventBus = new EventBus();
         window = new Window();
         running = false;
+        minimized = false;
         ups = 0;
         fps = 0;
     }
 
-    public static Application getInstance() {
-        return Instance.INSTANCE;
-    }
-
+    /**
+     * @return the {@code Settings}.
+     */
     public Settings getSettings() {
         return settings;
     }
 
-    public EventBus getEventBus() {
-        return eventBus;
-    }
-
+    /**
+     * @return the {@code Window}.
+     */
     public Window getWindow() {
         return window;
     }
 
-    public Logical getLogical() {
-        return logical;
+    // Is this getter needed?
+    /**
+     * @return whether running.
+     */
+    public boolean isRunning() {
+        return running;
     }
 
+    // Is this getter needed?
+    /**
+     * @return whether minimized.
+     */
+    public boolean isMinimized() {
+        return minimized;
+    }
+
+    /**
+     * @return the updates-per-second.
+     */
     public int getUPS() {
         return ups;
     }
 
+    /**
+     * @return the frames-per-second.
+     */
     public int getFPS() {
         return fps;
     }
 
-    public void start(Logical logical) {
+    /**
+     * The creation stage.
+     */
+    protected abstract void onCreate();
+
+    /**
+     * The input-polling stage.
+     */
+    protected abstract void onInput();
+
+    /**
+     * The updating stage.
+     */
+    protected abstract void onUpdate();
+
+    /**
+     * The rendering stage.
+     */
+    protected abstract void onRender(double alpha);
+
+    /**
+     * The destruction stage.
+     */
+    protected abstract void onDestroy();
+
+    /**
+     * Starts the {@code Application}.
+     */
+    public final void start() {
         if (running) {
             return;
         }
 
-        //TODO add functionality to reset application and assign new Logical object
-
         running = true;
-        this.logical = logical;
 
-        eventBus.register(logical);
         run();
     }
 
-    public void stop() {
+    /**
+     * Restarts the {@code Application}.
+     */
+    public final void restart() {
+        stop();
+        start();
+    }
+
+    /**
+     * Stops the {@code Application}.
+     */
+    public final void stop() {
         running = false;
     }
 
+    /**
+     * Runs the {@code Application}.
+     */
     private void run() {
-        logical.onCreate();
+        EventBus.getInstance().register(this);
+        onCreate();
         window.create();
 
         final double maxFrameTime = 0.25D;
         final double updateInterval = 1.0D / settings.getUPSLimit();
-
         double previousTime = getCurrentTimeSeconds();
         double accumulator = 0.0D;
         double counter = 0.0D;
         int upsCounter = 0;
         int fpsCounter = 0;
 
-        while (running && window.isRunning()) {
+        while (running) {
             double currentTime = getCurrentTimeSeconds();
             double elapsedTime = currentTime - previousTime;
 
@@ -99,35 +182,58 @@ public class Application {
             counter += elapsedTime;
 
             while (accumulator >= updateInterval) {
-                logical.onInput();
-                logical.onUpdate(updateInterval);
+                onInput();
+
+                // Should the fixed delta time be passed to the onUpdate() method?
+                onUpdate();
 
                 upsCounter++;
                 accumulator -= updateInterval;
             }
 
-            double alpha = accumulator / updateInterval;
+            if (!minimized) {
+                onRender(accumulator / updateInterval);
+            }
 
-            logical.onRender(alpha);
             window.update();
 
             fpsCounter++;
 
-            if (counter >= 1.0) {
+            if (counter >= 1.0D) {
                 ups = upsCounter;
                 fps = fpsCounter;
                 upsCounter = 0;
                 fpsCounter = 0;
                 counter = 0;
             }
-
+            // TODO glfwSwapInterval is not updated.
             if (!settings.isVSync()) {
                 sync(settings.getFPSLimit());
             }
         }
 
-        logical.onDestroy();
+        onDestroy();
         window.destroy();
+    }
+
+    /**
+     * Listens for a {@code WindowMaximizeEvent} for when the {@code Window} is minimized.
+     *
+     * @param event the event listened for.
+     */
+    @Event
+    public void onEvent(WindowMaximizeEvent event) {
+        minimized = !event.isMaximized();
+    }
+
+    /**
+     * Listens for a {@code WindowDestroyEvent} and stops the {@code Application}.
+     *
+     * @param event the event listened for.
+     */
+    @Event
+    public void onEvent(WindowDestroyEvent event) {
+        stop();
     }
 
 }
