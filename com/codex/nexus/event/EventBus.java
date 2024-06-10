@@ -11,10 +11,20 @@ import static com.codex.nexus.utility.Methods.*;
 
 public class EventBus {
 
+    private static class Instance {
+
+        public static final EventBus INSTANCE = new EventBus();
+
+    }
+
     private Map<Class<?>, Set<Invocation>> subscribers;
 
-    public EventBus() {
+    private EventBus() {
         subscribers = new ConcurrentHashMap<>();
+    }
+
+    public static EventBus getInstance() {
+        return Instance.INSTANCE;
     }
 
     public void register(Object object) {
