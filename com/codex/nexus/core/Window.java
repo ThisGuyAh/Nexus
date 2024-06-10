@@ -156,7 +156,7 @@ public class Window {
      * Sets the callbacks.
      */
     private void setCallbacks() {
-        EventBus eventBus = Application.getInstance().getEventBus();
+        EventBus eventBus = EventBus.getInstance();
 
         eventBus.publish(new WindowCreateEvent(this));
         glfwSetWindowFocusCallback(handle, (handle, focused) -> {
