@@ -23,11 +23,11 @@ public class WindowMinimizeEvent {
      * Instantiates a {@code WindowMaximizeEvent}.
      *
      * @param window    the {@code Window}.
-     * @param maximized whether the {@code Window} was maximized or restored.
+     * @param minimized whether the {@code Window} was minimized or restored.
      */
-    public WindowMinimizeEvent(Window window, boolean maximized) {
+    public WindowMinimizeEvent(Window window, boolean minimized) {
         this.window = window;
-        this.minimized = maximized;
+        this.minimized = minimized;
     }
 
     public Window getWindow() {
