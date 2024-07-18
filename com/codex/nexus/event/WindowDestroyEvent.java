@@ -15,7 +15,7 @@ public class WindowDestroyEvent {
     private Window window;
 
     /**
-     * Instantiates a {@code WindowDestroyEvent}.
+     * Constructs a {@code WindowDestroyEvent}.
      *
      * @param window the {@code Window}.
      */
