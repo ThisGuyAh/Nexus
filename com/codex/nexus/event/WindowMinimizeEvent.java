@@ -20,7 +20,7 @@ public class WindowMinimizeEvent {
     private boolean minimized;
 
     /**
-     * Instantiates a {@code WindowMaximizeEvent}.
+     * Constructs a {@code WindowMaximizeEvent}.
      *
      * @param window    the {@code Window}.
      * @param minimized whether the {@code Window} was minimized or restored.
