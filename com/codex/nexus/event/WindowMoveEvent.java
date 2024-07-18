@@ -15,44 +15,44 @@ public class WindowMoveEvent {
     private Window window;
 
     /**
-     * The old x position.
+     * The previous x position.
      */
-    private int oldX;
+    private int previousX;
 
     /**
-     * The old y position.
+     * The previous y position.
      */
-    private int oldY;
+    private int previousY;
 
     /**
-     * Instantiates a {@code WindowMoveEvent}.
+     * Constructs a {@code WindowMoveEvent}.
      *
-     * @param window the {@code Window}.
-     * @param oldX   the old x position.
-     * @param oldY   the old y position.
+     * @param window    the {@code Window}.
+     * @param previousX the x position before moving.
+     * @param previousY the y position before moving.
      */
-    public WindowMoveEvent(Window window, int oldX, int oldY) {
+    public WindowMoveEvent(Window window, int previousX, int previousY) {
         this.window = window;
-        this.oldX = oldX;
-        this.oldY = oldY;
+        this.previousX = previousX;
+        this.previousY = previousY;
     }
 
     public Window getWindow() {
         return window;
     }
 
-    public int getOldX() {
-        return oldX;
+    public int getPreviousX() {
+        return previousX;
     }
 
-    public int getOldY() {
-        return oldY;
+    public int getPreviousY() {
+        return previousY;
     }
 
     @Override
     public String toString() {
         return "WindowMoveEvent: Window = " + window.getTitle() + ", X = " + window.getX() + ", Y = " + window.getY()
-            + ", OldX = " + oldX + ", OldY = " + oldY;
+            + ", Previous X = " + previousX + ", Previous Y = " + previousY;
     }
 
 }
