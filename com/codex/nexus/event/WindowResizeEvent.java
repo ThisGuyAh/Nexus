@@ -15,44 +15,44 @@ public class WindowResizeEvent {
     private Window window;
 
     /**
-     * The old width.
+     * The previous width.
      */
-    private int oldWidth;
+    private int previousWidth;
 
     /**
-     * The old height.
+     * The previous height.
      */
-    private int oldHeight;
+    private int previousHeight;
 
     /**
-     * Instantiates a {@code WindowResizeEvent}.
+     * Constructs a {@code WindowResizeEvent}.
      *
-     * @param window    the {@code Window}.
-     * @param oldWidth  the old width.
-     * @param oldHeight the old height.
+     * @param window         the {@code Window}.
+     * @param previousWidth  the width before resizing.
+     * @param previousHeight the height before resizing.
      */
-    public WindowResizeEvent(Window window, int oldWidth, int oldHeight) {
+    public WindowResizeEvent(Window window, int previousWidth, int previousHeight) {
         this.window = window;
-        this.oldWidth = oldWidth;
-        this.oldHeight = oldHeight;
+        this.previousWidth = previousWidth;
+        this.previousHeight = previousHeight;
     }
 
     public Window getWindow() {
         return window;
     }
 
-    public int getOldWidth() {
-        return oldWidth;
+    public int getPreviousWidth() {
+        return previousWidth;
     }
 
-    public int getOldHeight() {
-        return oldHeight;
+    public int getPreviousHeight() {
+        return previousHeight;
     }
 
     @Override
     public String toString() {
         return "WindowResizeEvent: Window = " + window.getTitle() + ", Width = " + window.getWidth() + ", Height = "
-            + window.getHeight() + ", OldWidth = " + oldWidth + ", OldHeight = " + oldHeight;
+            + window.getHeight() + ", Previous Width = " + previousWidth + ", Previous Height = " + previousHeight;
     }
 
 }
