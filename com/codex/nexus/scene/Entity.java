@@ -9,12 +9,16 @@ public class Entity {
     private Vector3 position;
     private Vector3 rotation;
     private Vector3 scale;
+    private Vector3 previousPosition;
+    private Vector3 previousRotation;
 
     public Entity(Model model, Vector3 position, Vector3 rotation, Vector3 scale) {
         this.model = model;
         this.position = position;
         this.rotation = rotation;
         this.scale = scale;
+        previousPosition = position;
+        previousRotation = rotation;
     }
 
     public Model getModel() {
@@ -31,6 +35,19 @@ public class Entity {
 
     public Vector3 getScale() {
         return scale;
+    }
+
+    public Vector3 getPreviousPosition() {
+        return previousPosition;
+    }
+
+    public Vector3 getPreviousRotation() {
+        return previousRotation;
+    }
+
+    public void update() {
+        previousPosition = position;
+        previousRotation = rotation;
     }
 
 }
