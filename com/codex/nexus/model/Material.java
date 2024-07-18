@@ -2,6 +2,11 @@ package com.codex.nexus.model;
 
 import com.codex.nexus.math.Vector4;
 
+/**
+ * A {@code Material}...
+ * 
+ * @author Christopher Ruley
+ */
 public class Material {
 
     /**
@@ -36,6 +41,17 @@ public class Material {
 
     /**
      * Constructs a {@code Material}.
+     */
+    public Material() {
+        name = "Default";
+        ambientColor = new Vector4();
+        diffuseColor = new Vector4();
+        specularColor = new Vector4();
+        shininess = 0.0F;
+    }
+
+    /**
+     * Constructs a {@code Material}.
      *
      * @param name          the name.
      * @param ambientColor  the color that is reflected under ambient lighting.
@@ -47,6 +63,7 @@ public class Material {
         this.ambientColor = ambientColor;
         this.diffuseColor = diffuseColor;
         this.specularColor = specularColor;
+        this.shininess = shininess;
     }
 
     /**
