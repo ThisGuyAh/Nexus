@@ -160,8 +160,8 @@ public abstract class Application {
      */
     private void run() {
         EventBus.getInstance().register(this);
-        onCreate();
         window.create();
+        onCreate();
 
         final double maxFrameTime = 0.25D;
         final double updateInterval = 1.0D / settings.getUPSLimit();
