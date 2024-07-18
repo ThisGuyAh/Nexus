@@ -20,7 +20,7 @@ public class WindowFocusEvent {
     private boolean focused;
 
     /**
-     * Instantiates a {@code WindowFocusEvent}.
+     * Constructs a {@code WindowFocusEvent}.
      *
      * @param window  the {@code Window}.
      * @param focused whether the {@code Window} has gained or lost focus.
