@@ -4,7 +4,7 @@ import com.codex.nexus.core.Window;
 
 /**
  * A {@code WindowCreateEvent} notifies subscribers when a {@code Window} is created.
- * 
+ *
  * @author Christopher Ruley
  */
 public class WindowCreateEvent {
@@ -15,8 +15,8 @@ public class WindowCreateEvent {
     private Window window;
 
     /**
-     * Instantiates a {@code WindowCreateEvent}.
-     * 
+     * Constructs a {@code WindowCreateEvent}.
+     *
      * @param window the {@code Window}.
      */
     public WindowCreateEvent(Window window) {
