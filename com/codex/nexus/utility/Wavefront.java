@@ -160,6 +160,7 @@ public class Wavefront {
         }
 
         reduce(positionIndices);
+        
         if (hasTexcoords) {
             reduce(texcoordIndices);
             reorder(texcoords, positionIndices, texcoordIndices);
