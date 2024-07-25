@@ -144,28 +144,42 @@ public class Wavefront {
                     positionIndices.add(parseInt(vertexData1[0]) - 1);
                     positionIndices.add(parseInt(vertexData2[0]) - 1);
                     positionIndices.add(parseInt(vertexData3[0]) - 1);
-                    texcoordIndices.add(parseInt(vertexData1[1]) - 1);
-                    texcoordIndices.add(parseInt(vertexData2[1]) - 1);
-                    texcoordIndices.add(parseInt(vertexData3[1]) - 1);
-                    normalIndices.add(parseInt(vertexData1[2]) - 1);
-                    normalIndices.add(parseInt(vertexData2[2]) - 1);
-                    normalIndices.add(parseInt(vertexData3[2]) - 1);
+
+                    if (hasTexcoords) {
+                        texcoordIndices.add(parseInt(vertexData1[1]) - 1);
+                        texcoordIndices.add(parseInt(vertexData2[1]) - 1);
+                        texcoordIndices.add(parseInt(vertexData3[1]) - 1);
+                    }
+                    if (hasNormals) {
+                        normalIndices.add(parseInt(vertexData1[2]) - 1);
+                        normalIndices.add(parseInt(vertexData2[2]) - 1);
+                        normalIndices.add(parseInt(vertexData3[2]) - 1);
+                    }
                 }
             }
         }
 
         reduce(positionIndices);
-        reduce(texcoordIndices);
-        reorder(texcoords, positionIndices, texcoordIndices);
-        reduce(normalIndices);
-        reorder(normals, positionIndices, normalIndices);
+        if (hasTexcoords) {
+            reduce(texcoordIndices);
+            reorder(texcoords, positionIndices, texcoordIndices);
+        }
+        if (hasNormals) {
+            reduce(normalIndices);
+            reorder(normals, positionIndices, normalIndices);
+        }
 
         List<Vector> vertices = new ArrayList<>();
 
         for (int i = 0; i < positions.size(); i++) {
             vertices.add(positions.get(i));
-            vertices.add(texcoords.get(i));
-            vertices.add(normals.get(i));
+
+            if (hasTexcoords) {
+                vertices.add(texcoords.get(i));
+            }
+            if (hasNormals) {
+                vertices.add(normals.get(i));
+            }
         }
 
         List<VertexElement> vertexElements = new ArrayList<>();
