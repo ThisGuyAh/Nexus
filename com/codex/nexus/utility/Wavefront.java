@@ -137,23 +137,17 @@ public class Wavefront {
                     }
                 }
                 case OBJ_F -> {
-                    String[] vertexData1 = tokens[1].split("/");
-                    String[] vertexData2 = tokens[2].split("/");
-                    String[] vertexData3 = tokens[3].split("/");
+                    for (int i = 1; i < 4; i++) {
+                        String[] vertexData = tokens[i].split("/");
 
-                    positionIndices.add(parseInt(vertexData1[0]) - 1);
-                    positionIndices.add(parseInt(vertexData2[0]) - 1);
-                    positionIndices.add(parseInt(vertexData3[0]) - 1);
+                        positionIndices.add(parseInt(vertexData[0]) - 1);
 
-                    if (hasTexcoords) {
-                        texcoordIndices.add(parseInt(vertexData1[1]) - 1);
-                        texcoordIndices.add(parseInt(vertexData2[1]) - 1);
-                        texcoordIndices.add(parseInt(vertexData3[1]) - 1);
-                    }
-                    if (hasNormals) {
-                        normalIndices.add(parseInt(vertexData1[2]) - 1);
-                        normalIndices.add(parseInt(vertexData2[2]) - 1);
-                        normalIndices.add(parseInt(vertexData3[2]) - 1);
+                        if (hasTexcoords) {
+                            texcoordIndices.add(parseInt(vertexData[1]) - 1);
+                        }
+                        if (hasNormals) {
+                            normalIndices.add(parseInt(vertexData[2]) - 1);
+                        }
                     }
                 }
             }
@@ -161,10 +155,14 @@ public class Wavefront {
 
         reduce(positionIndices);
         
-        if (hasTexcoords) {
+        /* Notice texture support is commented out - there is a bug associated with supporting textures when a model
+           has zero texture indices. The bug causes the normals to be distorted.
+         */
+
+        /*if (hasTexcoords) {
             reduce(texcoordIndices);
             reorder(texcoords, positionIndices, texcoordIndices);
-        }
+        }*/
         if (hasNormals) {
             reduce(normalIndices);
             reorder(normals, positionIndices, normalIndices);
@@ -175,9 +173,9 @@ public class Wavefront {
         for (int i = 0; i < positions.size(); i++) {
             vertices.add(positions.get(i));
 
-            if (hasTexcoords) {
-                vertices.add(texcoords.get(i));
-            }
+            /*if (hasTexcoords) {
+                //vertices.add(texcoords.get(i));
+            }*/
             if (hasNormals) {
                 vertices.add(normals.get(i));
             }
@@ -187,9 +185,9 @@ public class Wavefront {
 
         vertexElements.add(new VertexElement("position", DataType.FLOAT3, false));
 
-        if (hasTexcoords) {
-            vertexElements.add(new VertexElement("texcoord", DataType.FLOAT2, false));
-        }
+        /*if (hasTexcoords) {
+           // vertexElements.add(new VertexElement("texcoord", DataType.FLOAT2, false));
+        }*/
         if (hasNormals) {
             vertexElements.add(new VertexElement("normal", DataType.FLOAT3, false));
         }
