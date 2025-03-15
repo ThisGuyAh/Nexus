@@ -143,7 +143,7 @@ public class ShaderProgram {
      * @return the array of {@code Shader}s.
      */
     private static Shader[] getShadersFromFile(String path) {
-        List<List<String>> groups = split("#type", read(path));
+        List<List<String>> groups = split("#type", readFile(path));
         List<Shader> shaders = new ArrayList<>();
 
         for (var group : groups) {
