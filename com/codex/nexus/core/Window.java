@@ -145,16 +145,26 @@ public class Window {
         glfwSwapInterval(vSync ? 1 : 0);
     }
 
+    /**
+     * Sets the x position. The field is updated with the new value in the callback.
+     *
+     * @param x the new x position
+     */
     public void setX(int x) {
         glfwSetWindowPos(handle, x, y);
     }
 
+    /**
+     * Sets the y position. The field is updated with the new value in the callback.
+     *
+     * @param y the new y position.
+     */
     public void setY(int y) {
         glfwSetWindowPos(handle, x, y);
     }
 
     /**
-     * Sets the callbacks.
+     * Sets each callback and integrates it with the corresponding event.
      */
     private void setCallbacks() {
         EventBus eventBus = EventBus.getInstance();
@@ -192,18 +202,8 @@ public class Window {
         });
     }
 
-    private void setPosition(int xOffset, int yOffset) {
-        try (var memoryStack = stackPush()) {
-            IntBuffer storedWidth = memoryStack.mallocInt(1);
-            IntBuffer storedHeight = memoryStack.mallocInt(1);
-            GLFWVidMode glfwVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            glfwGetWindowSize(handle, storedWidth, storedHeight);
-        }
-    }
-
     /**
-     * Initializes the {@code Window}.
+     * Initializes GLFW and creates the {@code Window}.
      */
     public void create() {
         if (instanceCount == 0) {
@@ -218,9 +218,7 @@ public class Window {
         instanceCount++;
 
         setCallbacks();
-
-        // TODO Add functionality for user to set screen position (i.e. LEFT_CENTER, CENTER, RIGHT_CENTER, etc.)
-
+        
         try (MemoryStack memoryStack = stackPush()) {
             IntBuffer storedWidth = memoryStack.mallocInt(1);
             IntBuffer storedHeight = memoryStack.mallocInt(1);
@@ -240,13 +238,13 @@ public class Window {
     }
 
     /**
-     * Updates the {@code Window}.
+     * Updates the {@code Window}. This method should be called every frame.
      */
     public void update() {
         glfwSwapBuffers(handle);
         glfwPollEvents();
     }
-
+                                                                                     
     /**
      * Destroys the {@code Window} and terminates GLFW if all instances are destroyed.
      */
