@@ -28,7 +28,7 @@ public class Methods {
      * @return a {@code List} containing the methods found.
      */
     public static List<Method> findWithAnnotation(Class<? extends Annotation> annotationClass, Class<?> clazz) {
-        Method[] methods = clazz.getMethods();
+        Method[] methods = clazz.getDeclaredMethods();
 
         return stream(methods).filter(method -> method.isAnnotationPresent(annotationClass)).collect(toList());
     }
@@ -52,7 +52,7 @@ public class Methods {
      * @return a {@code List} containing the methods found.
      */
     public static List<Method> findWithParameterCount(int parameterCount, Class<?> clazz) {
-        Method[] methods = clazz.getMethods();
+        Method[] methods = clazz.getDeclaredMethods();
 
         return stream(methods).filter(method -> method.getParameterCount() == parameterCount).collect(toList());
     }
