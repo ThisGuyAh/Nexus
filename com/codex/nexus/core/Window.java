@@ -248,17 +248,15 @@ public class Window {
     }
 
     /**
-     * Updates the {@code Window}. This method should be called every frame.
+     * Swaps the front and back buffers.
      */
-    public void update() {
-        glfwSwapBuffers(handle);
-        glfwPollEvents();
-    }
-
     public void swapBuffers() {
         glfwSwapBuffers(handle);
     }
 
+    /**
+     * Processes pending events.
+     */
     public void pollEvents() {
         glfwPollEvents();
     }
