@@ -7,9 +7,9 @@ import com.codex.nexus.event.WindowFocusEvent;
 import com.codex.nexus.event.WindowMaximizeEvent;
 import com.codex.nexus.event.WindowMinimizeEvent;
 import com.codex.nexus.event.WindowMoveEvent;
+import com.codex.nexus.event.WindowRefreshEvent;
 import com.codex.nexus.event.WindowResizeEvent;
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.system.MemoryStack;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
@@ -164,20 +164,44 @@ public class Window {
     }
 
     /**
+     * Sets the x and y position relative to center.
+     */
+    public void setCentered() {
+        try (var memoryStack = stackPush()) {
+            IntBuffer storedWidth = memoryStack.mallocInt(1);
+            IntBuffer storedHeight = memoryStack.mallocInt(1);
+            GLFWVidMode glfwVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+            glfwGetWindowSize(handle, storedWidth, storedHeight);
+
+            x = (glfwVidMode.width() - storedWidth.get(0)) / 2;
+            y = (glfwVidMode.height() - storedHeight.get(0)) / 2;
+
+            glfwSetWindowPos(handle, x, y);
+        }
+    }
+
+    /**
      * Sets each callback and integrates it with the corresponding event.
      */
     private void setCallbacks() {
         EventBus eventBus = EventBus.getInstance();
 
         eventBus.publish(new WindowCreateEvent(this));
+        glfwSetWindowCloseCallback(handle, handle -> {
+            eventBus.publish(new WindowDestroyEvent(this));
+        });
         glfwSetWindowFocusCallback(handle, (handle, focused) -> {
             eventBus.publish(new WindowFocusEvent(this, focused));
         });
         glfwSetWindowMaximizeCallback(handle, (handle, maximized) -> {
-            eventBus.publish((new WindowMaximizeEvent(this, maximized)));
+            eventBus.publish(new WindowMaximizeEvent(this, maximized));
         });
         glfwSetWindowIconifyCallback(handle, (handle, minimized) -> {
             eventBus.publish(new WindowMinimizeEvent(this, minimized));
+        });
+        glfwSetWindowRefreshCallback(handle, (handle) -> {
+            eventBus.publish(new WindowRefreshEvent(this));
         });
         glfwSetWindowPosCallback(handle, (handle, x, y) -> {
             int oldX = this.x;
@@ -197,9 +221,6 @@ public class Window {
 
             eventBus.publish(new WindowResizeEvent(this, oldWidth, oldHeight));
         });
-        glfwSetWindowCloseCallback(handle, handle -> {
-            eventBus.publish(new WindowDestroyEvent(this));
-        });
     }
 
     /**
@@ -207,7 +228,9 @@ public class Window {
      */
     public void create() {
         if (instanceCount == 0) {
-            glfwInit();
+            if (!glfwInit()) {
+                throw new IllegalStateException("Failed to initialize GLFW.");
+            }
         }
 
         glfwDefaultWindowHints();
@@ -218,20 +241,7 @@ public class Window {
         instanceCount++;
 
         setCallbacks();
-        
-        try (MemoryStack memoryStack = stackPush()) {
-            IntBuffer storedWidth = memoryStack.mallocInt(1);
-            IntBuffer storedHeight = memoryStack.mallocInt(1);
-            GLFWVidMode glfwVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            glfwGetWindowSize(handle, storedWidth, storedHeight);
-
-            x = (glfwVidMode.width() - storedWidth.get(0)) / 2;
-            y = (glfwVidMode.height() - storedHeight.get(0)) / 2;
-
-            glfwSetWindowPos(handle, x, y);
-        }
-
+        setCentered();
         glfwMakeContextCurrent(handle);
         glfwSwapInterval(vSync ? 1 : 0);
         glfwShowWindow(handle);
@@ -244,7 +254,15 @@ public class Window {
         glfwSwapBuffers(handle);
         glfwPollEvents();
     }
-                                                                                     
+
+    public void swapBuffers() {
+        glfwSwapBuffers(handle);
+    }
+
+    public void pollEvents() {
+        glfwPollEvents();
+    }
+
     /**
      * Destroys the {@code Window} and terminates GLFW if all instances are destroyed.
      */
