@@ -164,24 +164,6 @@ public class Window {
     }
 
     /**
-     * Sets the x and y position relative to center.
-     */
-    public void setCentered() {
-        try (var memoryStack = stackPush()) {
-            IntBuffer storedWidth = memoryStack.mallocInt(1);
-            IntBuffer storedHeight = memoryStack.mallocInt(1);
-            GLFWVidMode glfwVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            glfwGetWindowSize(handle, storedWidth, storedHeight);
-
-            x = (glfwVidMode.width() - storedWidth.get(0)) / 2;
-            y = (glfwVidMode.height() - storedHeight.get(0)) / 2;
-
-            glfwSetWindowPos(handle, x, y);
-        }
-    }
-
-    /**
      * Sets each callback and integrates it with the corresponding event.
      */
     private void setCallbacks() {
@@ -224,7 +206,36 @@ public class Window {
     }
 
     /**
-     * Initializes GLFW and creates the {@code Window}.
+     * Sets the x and y position relative to center.
+     */
+    public void setCentered() {
+        try (var memoryStack = stackPush()) {
+            IntBuffer storedWidth = memoryStack.mallocInt(1);
+            IntBuffer storedHeight = memoryStack.mallocInt(1);
+            GLFWVidMode glfwVidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+            glfwGetWindowSize(handle, storedWidth, storedHeight);
+
+            x = (glfwVidMode.width() - storedWidth.get(0)) / 2;
+            y = (glfwVidMode.height() - storedHeight.get(0)) / 2;
+
+            glfwSetWindowPos(handle, x, y);
+        }
+    }
+
+    /**
+     * Sets the OpenGL context to either current or detached for the calling {@code Thread}. The OpenGL context should
+     * always be detached after it's {@code Thread} is done executing tasks, ensuring it is made available for a
+     * subsequent thread.
+     *
+     * @param contextCurrent whether the OpenGL context should be current or detached.
+     */
+    public void setContextCurrent(boolean contextCurrent) {
+        glfwMakeContextCurrent(contextCurrent ? handle : NULL);
+    }
+
+    /**
+     * Initializes GLFW and creates the {@code Window}. The 
      */
     public void create() {
         if (instanceCount == 0) {
@@ -242,12 +253,13 @@ public class Window {
 
         setCallbacks();
         setCentered();
-        glfwMakeContextCurrent(handle);
+        setContextCurrent(true);
         glfwSwapInterval(vSync ? 1 : 0);
         glfwShowWindow(handle);
+        setContextCurrent(false);
     }
 
-    /**
+    /** 
      * Swaps the front and back buffers.
      */
     public void swapBuffers() {
