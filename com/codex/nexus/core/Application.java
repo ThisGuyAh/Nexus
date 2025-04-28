@@ -4,126 +4,115 @@ import com.codex.nexus.event.Event;
 import com.codex.nexus.event.EventBus;
 import com.codex.nexus.event.WindowDestroyEvent;
 import com.codex.nexus.event.WindowMinimizeEvent;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static com.codex.nexus.utility.Time.*;
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
- * {@code Application} ...
- *
  * @author Christopher Ruley
  */
 public abstract class Application {
 
     /**
-     * The {@code Settings}.
-     */
-    private Settings settings;
-
-    /**
-     * The {@code Window}.
+     * The main {@code Window} for the {@code Application}.
      */
     private Window window;
 
     /**
-     * Whether running.
+     * The creation {@code Thread}.
      */
-    private boolean running;
+    private Thread createThread;
 
     /**
-     * Whether minimized.
+     * The rendering {@code Thread}.
      */
-    private boolean minimized;
+    private Thread renderThread;
+
+    /**
+     * The context {@code ReentrantLock}.
+     */
+    private ReentrantLock contextReentrantLock;
+
+    /**
+     * Whether the {@code Application} is running.
+     */
+    private volatile boolean running;
+
+    /**
+     * Whether the {@code Application} is minimized.
+     */
+    private volatile boolean minimized;
 
     /**
      * The updates-per-second.
      */
-    private int ups;
+    private volatile int ups;
 
     /**
      * The frames-per-second.
      */
-    private int fps;
+    private volatile int fps;
 
     /**
-     * Instantiates an {@code Application}.
+     * The value used for rendering according to updates.
+     */
+    private volatile double interpolation;
+
+    /**
+     * Constructs an {@code Application}.
      */
     protected Application() {
-        settings = new Settings();
         window = new Window();
+        createThread = new Thread(this::create);
+        renderThread = new Thread(this::render);
+        contextReentrantLock = new ReentrantLock();
         running = false;
         minimized = false;
         ups = 0;
         fps = 0;
+        interpolation = 0.0D;
     }
 
-    /**
-     * @return the {@code Settings}.
-     */
-    public Settings getSettings() {
-        return settings;
-    }
-
-    /**
-     * @return the {@code Window}.
-     */
-    public Window getWindow() {
+    public final Window getWindow() {
         return window;
     }
 
-    // Is this getter needed?
-
-    /**
-     * @return whether running.
-     */
-    public boolean isRunning() {
+    public final boolean isRunning() {
         return running;
     }
 
-    // Is this getter needed?
-
-    /**
-     * @return whether minimized.
-     */
-    public boolean isMinimized() {
+    public final boolean isMinimized() {
         return minimized;
     }
 
-    /**
-     * @return the updates-per-second.
-     */
-    public int getUPS() {
+    public final int getUPS() {
         return ups;
     }
 
-    /**
-     * @return the frames-per-second.
-     */
-    public int getFPS() {
+    public final int getFPS() {
         return fps;
     }
 
     /**
-     * The creation stage.
+     * The user-implemented method for the creation stage. Called on the create {@code Thread}.
      */
     protected abstract void onCreate();
 
     /**
-     * The input-polling stage.
-     */
-    protected abstract void onInput();
-
-    /**
-     * The updating stage.
+     * The user-implemented method for the updating stage. Called on the main {@code Thread}.
      */
     protected abstract void onUpdate();
 
     /**
-     * The rendering stage.
+     * The user-implemented method for the rendering stage. Called on the render {@code Thread}.
+     *
+     * @param interpolation the value used for rendering according to updates.
      */
-    protected abstract void onRender(double alpha);
+    protected abstract void onRender(double interpolation);
 
     /**
-     * The destruction stage.
+     * The user-implemented method for the destruction stage. Called on the main {@code Thread}.
      */
     protected abstract void onDestroy();
 
@@ -141,6 +130,13 @@ public abstract class Application {
     }
 
     /**
+     * Stops the {@code Application}.
+     */
+    public final void stop() {
+        running = false;
+    }
+
+    /**
      * Restarts the {@code Application}.
      */
     public final void restart() {
@@ -149,27 +145,47 @@ public abstract class Application {
     }
 
     /**
-     * Stops the {@code Application}.
-     */
-    public final void stop() {
-        running = false;
-    }
-
-    /**
      * Runs the {@code Application}.
      */
     private void run() {
         EventBus.getInstance().register(this);
-        window.create();
-        onCreate();
 
+        if (!glfwInit()) {
+            throw new IllegalStateException("Failed to initialize GLFW");
+        }
+
+        window.create();
+        createThread.start();
+        renderThread.start();
+        update();
+        destroy();
+    }
+
+    /**
+     * The creation stage. Called on the create {@code Thread}.
+     */
+    private void create() {
+        contextReentrantLock.lock();
+
+        try {
+            window.setContextCurrent(true);
+            onCreate();
+        } finally {
+            window.setContextCurrent(false);
+            contextReentrantLock.unlock();
+        }
+    }
+
+    /**
+     * The updating stage. Called on the main {@code Thread}.
+     */
+    private void update() {
         final double maxFrameTime = 0.25D;
-        final double updateInterval = 1.0D / settings.getUPSLimit();
+        final double updateInterval = 1.0D / 60.0D; // TODO Add functionality for changing this value
         double previousTime = getCurrentTimeSeconds();
         double accumulator = 0.0D;
         double counter = 0.0D;
         int upsCounter = 0;
-        int fpsCounter = 0;
 
         while (running) {
             double currentTime = getCurrentTimeSeconds();
@@ -184,58 +200,83 @@ public abstract class Application {
             counter += elapsedTime;
 
             while (accumulator >= updateInterval) {
-                onInput();
-
-                // Should the fixed delta time be passed to the onUpdate() method?
                 onUpdate();
 
                 upsCounter++;
                 accumulator -= updateInterval;
             }
 
-            if (!minimized) {
-                onRender(accumulator / updateInterval);
-            }
-
-            window.update();
-
-            fpsCounter++;
-
-            if (counter >= 1.0D) {
+            if (counter >= 1.0) {
                 ups = upsCounter;
-                fps = fpsCounter;
                 upsCounter = 0;
-                fpsCounter = 0;
                 counter = 0;
             }
-            // TODO glfwSwapInterval is not updated.
-            if (!settings.isVSync()) {
-                sync(settings.getFPSLimit());
-            }
-        }
 
+            interpolation = accumulator / updateInterval;
+
+            glfwPollEvents();
+        }
+    }
+
+    /**
+     * The rendering stage. Called on the render {@code Thread}.
+     */
+    private void render() {
+        contextReentrantLock.lock();
+
+        // TODO Add fps calculation
+        
+        try {
+            window.setContextCurrent(true);
+
+            while (running) {
+                if (!minimized) {
+                    onRender(interpolation);
+                    window.swapBuffers();
+                }
+                if (!window.isVSync()) {
+                    sync(120); // TODO Add functionality for changing this value
+                }
+            }
+        } finally {
+            window.setContextCurrent(false);
+            contextReentrantLock.unlock();
+        }
+    }
+
+    /**
+     * The destruction stage. Called on the main {@code Thread}.
+     */
+    private void destroy() {
         onDestroy();
         window.destroy();
+        glfwTerminate();
+
+        // TODO Tidy up threads?
     }
 
     /**
-     * Listens for a {@code WindowMinimizeEvent}.
+     * Listens for a {@code WindowMinimizeEvent} and updates the {@code Application} minimized state.
      *
-     * @param event the event listened for.
+     * @param event the event listed for.
      */
     @Event
-    public void onEvent(WindowMinimizeEvent event) {
-        minimized = event.isMinimized();
+    private void onEvent(WindowMinimizeEvent event) {
+        if (event.getWindow().equals(window)) {
+            minimized = event.isMinimized();
+        }
     }
 
     /**
-     * Listens for a {@code WindowDestroyEvent}.
+     * Listens for a {@code WindowDestroyEvent} and updates the {@code Application} running state.
      *
-     * @param event the event listened for.
+     * @param event the event listed for.
      */
     @Event
-    public void onEvent(WindowDestroyEvent event) {
-        stop();
+    private void onEvent(WindowDestroyEvent event) {
+        if (event.getWindow().equals(window)) {
+            stop();
+        }
     }
 
 }
