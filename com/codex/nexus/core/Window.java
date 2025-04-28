@@ -14,6 +14,7 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -58,11 +59,6 @@ public class Window {
      * The y position.
      */
     private int y;
-
-    /**
-     * The instance count.
-     */
-    private static int instanceCount;
 
     /**
      * Constructs a {@code Window}.
@@ -115,10 +111,6 @@ public class Window {
 
     public int getY() {
         return y;
-    }
-
-    public static int getInstanceCount() {
-        return instanceCount;
     }
 
     public boolean isRunning() {
@@ -231,35 +223,31 @@ public class Window {
      * @param contextCurrent whether the OpenGL context should be current or detached.
      */
     public void setContextCurrent(boolean contextCurrent) {
-        glfwMakeContextCurrent(contextCurrent ? handle : NULL);
+        if (contextCurrent) {
+            glfwMakeContextCurrent(handle);
+            createCapabilities();
+        } else {
+            glfwMakeContextCurrent(NULL);
+        }
     }
 
     /**
-     * Initializes GLFW and creates the {@code Window}. The 
+     * Creates the {@code Window}.
      */
     public void create() {
-        if (instanceCount == 0) {
-            if (!glfwInit()) {
-                throw new IllegalStateException("Failed to initialize GLFW.");
-            }
-        }
-
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
         handle = glfwCreateWindow(width, height, title, NULL, NULL);
-        instanceCount++;
 
         setCallbacks();
         setCentered();
-        setContextCurrent(true);
         glfwSwapInterval(vSync ? 1 : 0);
         glfwShowWindow(handle);
-        setContextCurrent(false);
     }
 
-    /** 
+    /**
      * Swaps the front and back buffers.
      */
     public void swapBuffers() {
@@ -279,12 +267,6 @@ public class Window {
     public void destroy() {
         glfwDestroyWindow(handle);
         glfwFreeCallbacks(handle);
-
-        instanceCount--;
-
-        if (instanceCount == 0) {
-            glfwTerminate();
-        }
     }
 
 }
