@@ -1,1 +1,1 @@
-<img width="512" height="512" alt="CreateX Logo 1" src="https://github.com/user-attachments/assets/63af1594-96ef-49c6-b9e8-ae59f2d3d5f1" />
+<img width="1280" height="640" alt="CreateX Logo 2" src="https://github.com/user-attachments/assets/60b963ac-add6-4a76-afca-113f21d62e27" />
