@@ -61,6 +61,16 @@ public class Window {
     private int y;
 
     /**
+     * Whether visible or hidden.
+     */
+    private boolean visible;
+
+    /**
+     * Whether the OpenGL context is current.
+     */
+    private boolean contextCurrent;
+
+    /**
      * Constructs a {@code Window}.
      */
     public Window() {
@@ -156,6 +166,40 @@ public class Window {
     }
 
     /**
+     * Sets the visibility, which is false by default. This is particularly useful for changing the default values of
+     * the {@code Window} before it becomes visible.
+     *
+     * @param visible whether visible or hidden.
+     */
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+
+        if (visible) {
+            glfwShowWindow(handle);
+        } else {
+            glfwHideWindow(handle);
+        }
+    }
+
+    /**
+     * Sets the OpenGL context to either current or detached for the calling {@code Thread}. The OpenGL context should
+     * always be detached after it's {@code Thread} is done executing tasks, ensuring it is made available for a
+     * subsequent thread.
+     *
+     * @param contextCurrent whether the OpenGL context should be current or detached.
+     */
+    public void setContextCurrent(boolean contextCurrent) {
+        this.contextCurrent = contextCurrent;
+
+        if (contextCurrent) {
+            glfwMakeContextCurrent(handle);
+            createCapabilities();
+        } else {
+            glfwMakeContextCurrent(NULL);
+        }
+    }
+
+    /**
      * Sets each callback and integrates it with the corresponding event.
      */
     private void setCallbacks() {
@@ -216,22 +260,6 @@ public class Window {
     }
 
     /**
-     * Sets the OpenGL context to either current or detached for the calling {@code Thread}. The OpenGL context should
-     * always be detached after it's {@code Thread} is done executing tasks, ensuring it is made available for a
-     * subsequent thread.
-     *
-     * @param contextCurrent whether the OpenGL context should be current or detached.
-     */
-    public void setContextCurrent(boolean contextCurrent) {
-        if (contextCurrent) {
-            glfwMakeContextCurrent(handle);
-            createCapabilities();
-        } else {
-            glfwMakeContextCurrent(NULL);
-        }
-    }
-
-    /**
      * Creates the {@code Window}.
      */
     public void create() {
@@ -244,7 +272,6 @@ public class Window {
         setCallbacks();
         setCentered();
         glfwSwapInterval(vSync ? 1 : 0);
-        glfwShowWindow(handle);
     }
 
     /**

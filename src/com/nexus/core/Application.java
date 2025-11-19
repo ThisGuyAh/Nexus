@@ -1,3 +1,4 @@
+
 package com.nexus.core;
 
 import com.nexus.event.Event;
@@ -13,6 +14,8 @@ import static org.lwjgl.glfw.GLFW.*;
  * @author Christopher Ruley
  */
 public abstract class Application {
+
+    // TODO Add multiple window functionality safely with context ownership for rendering.
 
     /**
      * The main {@code Window} for the {@code Application}.
@@ -225,7 +228,7 @@ public abstract class Application {
         contextReentrantLock.lock();
 
         // TODO Add fps calculation
-        
+
         try {
             window.setContextCurrent(true);
 
@@ -252,7 +255,12 @@ public abstract class Application {
         window.destroy();
         glfwTerminate();
 
-        // TODO Tidy up threads?
+        try {
+            createThread.join();
+            renderThread.join();
+        } catch (InterruptedException exception) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     /**

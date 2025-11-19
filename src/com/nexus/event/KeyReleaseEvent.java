@@ -1,7 +1,7 @@
 package com.nexus.event;
 
 import com.nexus.core.Window;
-import com.nexus.core.Key;
+import com.nexus.input.Key;
 
 /**
  * A {@code KeyReleaseEvent} notifies subscribers when a {@code Key} is released.

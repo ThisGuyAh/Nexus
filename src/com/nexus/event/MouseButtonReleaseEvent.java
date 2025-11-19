@@ -1,7 +1,7 @@
 package com.nexus.event;
 
 import com.nexus.core.Window;
-import com.nexus.core.MouseButton;
+import com.nexus.input.MouseButton;
 
 /**
  * A {@code MouseButtonReleaseEvent} notifies subscribers when a {@code MouseButton} is released.
