@@ -1,4 +1,4 @@
-package com.createx.nexus.memory;
+package com.nexus.memory;
 
 import static org.lwjgl.opengl.GL11.*;
 

@@ -1,4 +1,4 @@
-package com.createx.nexus.math;
+package com.nexus.math;
 
 /**
  * A {@code Vector2} represents a 2-component vector.

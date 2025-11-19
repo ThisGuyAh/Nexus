@@ -1,14 +1,14 @@
-package com.createx.nexus.core;
+package com.nexus.core;
 
-import com.createx.nexus.event.EventBus;
-import com.createx.nexus.event.WindowCreateEvent;
-import com.createx.nexus.event.WindowDestroyEvent;
-import com.createx.nexus.event.WindowFocusEvent;
-import com.createx.nexus.event.WindowMaximizeEvent;
-import com.createx.nexus.event.WindowMinimizeEvent;
-import com.createx.nexus.event.WindowMoveEvent;
-import com.createx.nexus.event.WindowRefreshEvent;
-import com.createx.nexus.event.WindowResizeEvent;
+import com.nexus.event.EventBus;
+import com.nexus.event.WindowCreateEvent;
+import com.nexus.event.WindowDestroyEvent;
+import com.nexus.event.WindowFocusEvent;
+import com.nexus.event.WindowMaximizeEvent;
+import com.nexus.event.WindowMinimizeEvent;
+import com.nexus.event.WindowMoveEvent;
+import com.nexus.event.WindowRefreshEvent;
+import com.nexus.event.WindowResizeEvent;
 import org.lwjgl.glfw.GLFWVidMode;
 import java.nio.IntBuffer;
 

@@ -1,18 +1,18 @@
-package com.createx.nexus.render;
+package com.nexus.render;
 
-import com.createx.nexus.math.Matrix2;
-import com.createx.nexus.math.Matrix3;
-import com.createx.nexus.math.Matrix4;
-import com.createx.nexus.math.Vector2;
-import com.createx.nexus.math.Vector3;
-import com.createx.nexus.math.Vector4;
+import com.nexus.math.Matrix2;
+import com.nexus.math.Matrix3;
+import com.nexus.math.Matrix4;
+import com.nexus.math.Vector2;
+import com.nexus.math.Vector3;
+import com.nexus.math.Vector4;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.createx.nexus.utility.Documents.*;
-import static com.createx.nexus.utility.Memory.*;
+import static com.nexus.utility.Documents.*;
+import static com.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 

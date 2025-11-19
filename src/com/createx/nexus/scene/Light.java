@@ -1,7 +1,7 @@
-package com.createx.nexus.scene;
+package com.nexus.scene;
 
-import com.createx.nexus.math.Vector3;
-import com.createx.nexus.math.Vector4;
+import com.nexus.math.Vector3;
+import com.nexus.math.Vector4;
 
 public class Light {
 

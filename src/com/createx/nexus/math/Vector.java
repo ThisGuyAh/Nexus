@@ -1,4 +1,4 @@
-package com.createx.nexus.math;
+package com.nexus.math;
 
 /**
  * A {@code Vector} is a base for a vector representation.

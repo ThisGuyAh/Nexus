@@ -1,4 +1,4 @@
-package com.createx.nexus.memory;
+package com.nexus.memory;
 
 /**
  * A {@code VertexElement} is a characteristic of a vertex, commonly being a position, normal, or texture coordinate.

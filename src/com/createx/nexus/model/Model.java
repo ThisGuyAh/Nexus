@@ -1,4 +1,4 @@
-package com.createx.nexus.model;
+package com.nexus.model;
 
 public class Model {
 

@@ -1,4 +1,4 @@
-package com.createx.nexus.math;
+package com.nexus.math;
 
 /**
  * A {@code Vector3} represents a 3-component vector.

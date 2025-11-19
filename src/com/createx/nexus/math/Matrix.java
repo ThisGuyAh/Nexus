@@ -1,4 +1,4 @@
-package com.createx.nexus.math;
+package com.nexus.math;
 
 /**
  * A {@code Matrix} is a base for a matrix representation.

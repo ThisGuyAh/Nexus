@@ -1,4 +1,4 @@
-package com.createx.nexus.math;
+package com.nexus.math;
 
 /**
  * A {@code Vector4} represents a 4-component vector.

@@ -1,4 +1,4 @@
-package com.createx.nexus.memory;
+package com.nexus.memory;
 
 /**
  * A {@code VertexLayout} stores one or more {@code VertexElement}s to provide an interpretation of vertex data stored

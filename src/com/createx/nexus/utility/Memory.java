@@ -1,7 +1,7 @@
-package com.createx.nexus.utility;
+package com.nexus.utility;
 
-import com.createx.nexus.math.Matrix;
-import com.createx.nexus.math.Vector;
+import com.nexus.math.Matrix;
+import com.nexus.math.Vector;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;

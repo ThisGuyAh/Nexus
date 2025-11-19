@@ -1,4 +1,4 @@
-package com.createx.nexus.event;
+package com.nexus.event;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import static com.createx.nexus.utility.Methods.*;
+import static com.nexus.utility.Methods.*;
 
 public class EventBus {
 

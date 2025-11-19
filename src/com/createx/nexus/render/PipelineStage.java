@@ -1,4 +1,4 @@
-package com.createx.nexus.render;
+package com.nexus.render;
 
 import static org.lwjgl.opengl.GL43.*;
 

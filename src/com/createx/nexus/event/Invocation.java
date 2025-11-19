@@ -1,4 +1,4 @@
-package com.createx.nexus.event;
+package com.nexus.event;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

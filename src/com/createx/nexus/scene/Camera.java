@@ -1,6 +1,6 @@
-package com.createx.nexus.scene;
+package com.nexus.scene;
 
-import com.createx.nexus.math.Vector3;
+import com.nexus.math.Vector3;
 
 public class Camera {
 

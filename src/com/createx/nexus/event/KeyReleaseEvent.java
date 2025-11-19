@@ -1,7 +1,7 @@
-package com.createx.nexus.event;
+package com.nexus.event;
 
-import com.createx.nexus.core.Window;
-import com.createx.nexus.core.Key;
+import com.nexus.core.Window;
+import com.nexus.core.Key;
 
 /**
  * A {@code KeyReleaseEvent} notifies subscribers when a {@code Key} is released.

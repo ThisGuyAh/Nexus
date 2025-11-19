@@ -1,7 +1,7 @@
-package com.createx.nexus.event;
+package com.nexus.event;
 
-import com.createx.nexus.core.Window;
-import com.createx.nexus.core.MouseButton;
+import com.nexus.core.Window;
+import com.nexus.core.MouseButton;
 
 /**
  * A {@code MouseButtonPressEvent} notifies subscribers when a {@code MouseButton} is pressed.

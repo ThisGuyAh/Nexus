@@ -1,6 +1,6 @@
-package com.createx.nexus.model;
+package com.nexus.model;
 
-import com.createx.nexus.memory.VertexArray;
+import com.nexus.memory.VertexArray;
 
 public class Mesh {
 

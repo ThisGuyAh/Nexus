@@ -1,6 +1,6 @@
-package com.createx.nexus.model;
+package com.nexus.model;
 
-import com.createx.nexus.math.Vector4;
+import com.nexus.math.Vector4;
 
 /**
  * A {@code Material}...

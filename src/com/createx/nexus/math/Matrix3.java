@@ -1,4 +1,4 @@
-package com.createx.nexus.math;
+package com.nexus.math;
 
 /**
  * A {@code Matrix3} represents a 3X3 element matrix in column major ordering.

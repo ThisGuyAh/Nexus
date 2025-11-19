@@ -1,7 +1,7 @@
-package com.createx.nexus.event;
+package com.nexus.event;
 
-import com.createx.nexus.core.Window;
-import com.createx.nexus.input.MouseButton;
+import com.nexus.core.Window;
+import com.nexus.input.MouseButton;
 
 /**
  * A {@code MouseButtonDownEvent} notifies subscribers when a {@code MouseButton} is held down.

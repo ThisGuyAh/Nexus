@@ -1,6 +1,6 @@
-package com.createx.nexus.memory;
+package com.nexus.memory;
 
-import static com.createx.nexus.utility.Memory.*;
+import static com.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL15.*;
 
 /**

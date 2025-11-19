@@ -1,7 +1,7 @@
-package com.createx.nexus.event;
+package com.nexus.event;
 
-import com.createx.nexus.core.Window;
-import com.createx.nexus.input.Key;
+import com.nexus.core.Window;
+import com.nexus.input.Key;
 
 /**
  * A {@code KeyDownEvent} notifies a subscriber when a {@code Key} is held down.

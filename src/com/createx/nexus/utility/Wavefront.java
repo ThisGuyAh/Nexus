@@ -1,22 +1,22 @@
-package com.createx.nexus.utility;
+package com.nexus.utility;
 
-import com.createx.nexus.math.Vector;
-import com.createx.nexus.math.Vector2;
-import com.createx.nexus.math.Vector3;
-import com.createx.nexus.math.Vector4;
-import com.createx.nexus.memory.DataType;
-import com.createx.nexus.memory.IndexBuffer;
-import com.createx.nexus.memory.VertexArray;
-import com.createx.nexus.memory.VertexBuffer;
-import com.createx.nexus.memory.VertexElement;
-import com.createx.nexus.memory.VertexLayout;
-import com.createx.nexus.model.Material;
-import com.createx.nexus.model.Mesh;
-import com.createx.nexus.model.Model;
+import com.nexus.math.Vector;
+import com.nexus.math.Vector2;
+import com.nexus.math.Vector3;
+import com.nexus.math.Vector4;
+import com.nexus.memory.DataType;
+import com.nexus.memory.IndexBuffer;
+import com.nexus.memory.VertexArray;
+import com.nexus.memory.VertexBuffer;
+import com.nexus.memory.VertexElement;
+import com.nexus.memory.VertexLayout;
+import com.nexus.model.Material;
+import com.nexus.model.Mesh;
+import com.nexus.model.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.createx.nexus.utility.Documents.*;
+import static com.nexus.utility.Documents.*;
 import static java.lang.Float.*;
 import static java.lang.Integer.*;
 

@@ -1,9 +1,9 @@
-package com.createx.nexus.model;
+package com.nexus.model;
 
 import java.awt.image.BufferedImage;
 
-import static com.createx.nexus.utility.Documents.*;
-import static com.createx.nexus.utility.Memory.*;
+import static com.nexus.utility.Documents.*;
+import static com.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Texture {

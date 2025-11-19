@@ -1,6 +1,6 @@
-package com.createx.nexus.event;
+package com.nexus.event;
 
-import com.createx.nexus.core.Window;
+import com.nexus.core.Window;
 
 /**
  * A {@code MouseCursorEnterEvent} notifies subscribers when the mouse cursor enters or leaves the boundaries of a

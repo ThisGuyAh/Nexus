@@ -1,9 +1,9 @@
-package com.createx.nexus.memory;
+package com.nexus.memory;
 
-import com.createx.nexus.math.Vector;
+import com.nexus.math.Vector;
 
-import static com.createx.nexus.utility.Arrays.*;
-import static com.createx.nexus.utility.Memory.*;
+import static com.nexus.utility.Arrays.*;
+import static com.nexus.utility.Memory.*;
 import static org.lwjgl.opengl.GL15.*;
 
 /**

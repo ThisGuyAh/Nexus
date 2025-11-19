@@ -1,12 +1,12 @@
-package com.createx.nexus.core;
+package com.nexus.core;
 
-import com.createx.nexus.event.Event;
-import com.createx.nexus.event.EventBus;
-import com.createx.nexus.event.WindowDestroyEvent;
-import com.createx.nexus.event.WindowMinimizeEvent;
+import com.nexus.event.Event;
+import com.nexus.event.EventBus;
+import com.nexus.event.WindowDestroyEvent;
+import com.nexus.event.WindowMinimizeEvent;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.codex.nexus.utility.Time.*;
+import static com.nexus.utility.Time.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**

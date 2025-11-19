@@ -1,4 +1,4 @@
-package com.createx.nexus.utility;
+package com.nexus.utility;
 
 /**
  * {@code Time} defines methods used to retrieve time (in various measurements) and control its attributes.

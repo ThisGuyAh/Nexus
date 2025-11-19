@@ -1,4 +1,4 @@
-package com.createx.nexus.math;
+package com.nexus.math;
 
 /**
  * A {@code Matrix4} represents a 4X4 element matrix in column major ordering.

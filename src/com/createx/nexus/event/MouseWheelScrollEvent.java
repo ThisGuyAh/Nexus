@@ -1,7 +1,7 @@
-package com.createx.nexus.event;
+package com.nexus.event;
 
-import com.createx.nexus.core.Window;
-import com.createx.nexus.math.Vector2;
+import com.nexus.core.Window;
+import com.nexus.math.Vector2;
 
 /**
  * A {@code MouseWheelScrollEvent} notifies subscribers when the mouse wheel scrolls.
