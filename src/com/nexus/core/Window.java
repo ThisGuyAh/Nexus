@@ -123,6 +123,14 @@ public class Window {
         return y;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public boolean isContextCurrent() {
+        return contextCurrent;
+    }
+
     public boolean isRunning() {
         return !glfwWindowShouldClose(handle);
     }

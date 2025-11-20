@@ -159,6 +159,7 @@ public abstract class Application {
 
         window.create();
         createThread.start();
+        window.setVisible(true);
         renderThread.start();
         update();
         destroy();
