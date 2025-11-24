@@ -20,22 +20,22 @@ public abstract class Application {
     /**
      * The main {@code Window} for the {@code Application}.
      */
-    private Window window;
+    private final Window window;
 
     /**
-     * The creation {@code Thread}.
+     * The context {@code ReentrantLock}.
      */
-    private Thread createThread;
+    private final ReentrantLock contextReentrantLock;
+
+    /**
+     * The updating {@code Thread}.
+     */
+    private Thread updateThread;
 
     /**
      * The rendering {@code Thread}.
      */
     private Thread renderThread;
-
-    /**
-     * The context {@code ReentrantLock}.
-     */
-    private ReentrantLock contextReentrantLock;
 
     /**
      * Whether the {@code Application} is running.
@@ -46,6 +46,11 @@ public abstract class Application {
      * Whether the {@code Application} is minimized.
      */
     private volatile boolean minimized;
+
+    /**
+     * Whether vertical synchronization is enabled.
+     */
+    private volatile boolean vsync;
 
     /**
      * The updates-per-second.
@@ -67,14 +72,7 @@ public abstract class Application {
      */
     protected Application() {
         window = new Window();
-        createThread = new Thread(this::create);
-        renderThread = new Thread(this::render);
         contextReentrantLock = new ReentrantLock();
-        running = false;
-        minimized = false;
-        ups = 0;
-        fps = 0;
-        interpolation = 0.0D;
     }
 
     public final Window getWindow() {
@@ -89,6 +87,10 @@ public abstract class Application {
         return minimized;
     }
 
+    public final boolean isVsync() {
+        return vsync;
+    }
+
     public final int getUPS() {
         return ups;
     }
@@ -98,12 +100,12 @@ public abstract class Application {
     }
 
     /**
-     * The user-implemented method for the creation stage. Called on the create {@code Thread}.
+     * The user-implemented method for the creation stage. Called on the main {@code Thread}.
      */
     protected abstract void onCreate();
 
     /**
-     * The user-implemented method for the updating stage. Called on the main {@code Thread}.
+     * The user-implemented method for the updating stage. Called on the update {@code Thread}.
      */
     protected abstract void onUpdate();
 
@@ -151,37 +153,53 @@ public abstract class Application {
      * Runs the {@code Application}.
      */
     private void run() {
+       try {
+           create();
+       } finally {
+           destroy();
+       }
+    }
+
+    /**
+     * The creation stage. Called on the main {@code Thread}.
+     */
+    private void create() {
         EventBus.getInstance().register(this);
 
         if (!glfwInit()) {
-            throw new IllegalStateException("Failed to initialize GLFW");
+            throw new IllegalStateException("Failed to initialize GLFW!");
         }
 
         window.create();
-        createThread.start();
-        window.setVisible(true);
+
+        if (!window.isCreated()) {
+            throw new IllegalStateException("Failed to create the window!");
+        }
+
+        onCreate();
+
+        if (!window.isVisible()) {
+            window.setVisible(true);
+        }
+
+        updateThread = new Thread(this::update, "Update");
+        renderThread = new Thread(this::render, "Render");
+        minimized = false;
+        vsync = false;
+        ups = 0;
+        fps = 0;
+        interpolation = 0.0D;
+
+        updateThread.start();
         renderThread.start();
-        update();
-        destroy();
-    }
 
-    /**
-     * The creation stage. Called on the create {@code Thread}.
-     */
-    private void create() {
-        contextReentrantLock.lock();
-
-        try {
-            window.setContextCurrent(true);
-            onCreate();
-        } finally {
-            window.setContextCurrent(false);
-            contextReentrantLock.unlock();
+        while (running) {
+            glfwPollEvents();
         }
     }
 
     /**
-     * The updating stage. Called on the main {@code Thread}.
+     * The updating stage. Called on the update {@code Thread}.
      */
     private void update() {
         final double maxFrameTime = 0.25D;
@@ -217,8 +235,6 @@ public abstract class Application {
             }
 
             interpolation = accumulator / updateInterval;
-
-            glfwPollEvents();
         }
     }
 
@@ -228,8 +244,6 @@ public abstract class Application {
     private void render() {
         contextReentrantLock.lock();
 
-        // TODO Add fps calculation
-
         try {
             window.setContextCurrent(true);
 
@@ -238,8 +252,8 @@ public abstract class Application {
                     onRender(interpolation);
                     window.swapBuffers();
                 }
-                if (!window.isVSync()) {
-                    sync(120); // TODO Add functionality for changing this value
+                if (!vsync) {
+                    sync(120); // TODO Add ability to change this during runtime.
                 }
             }
         } finally {
@@ -252,16 +266,22 @@ public abstract class Application {
      * The destruction stage. Called on the main {@code Thread}.
      */
     private void destroy() {
-        onDestroy();
-        window.destroy();
-        glfwTerminate();
+        stop();
 
         try {
-            createThread.join();
-            renderThread.join();
+            if (updateThread != null) {
+                updateThread.join();
+            }
+            if (renderThread != null) {
+                renderThread.join();
+            }
         } catch (InterruptedException exception) {
             Thread.currentThread().interrupt();
         }
+
+        onDestroy();
+        window.destroy();
+        glfwTerminate();
     }
 
     /**

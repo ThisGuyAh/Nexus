@@ -41,11 +41,6 @@ public class Window {
     private int height;
 
     /**
-     * Whether vertical synchronization is enabled.
-     */
-    private boolean vSync;
-
-    /**
      * The unique identification.
      */
     private long handle;
@@ -59,6 +54,11 @@ public class Window {
      * The y position.
      */
     private int y;
+
+    /**
+     * Whether created or failed.
+     */
+    private boolean created;
 
     /**
      * Whether visible or hidden.
@@ -77,7 +77,6 @@ public class Window {
         title = "";
         width = 960;
         height = 540;
-        vSync = false;
     }
 
     /**
@@ -86,13 +85,11 @@ public class Window {
      * @param title  the title.
      * @param width  the width (in pixels).
      * @param height the height (in pixels).
-     * @param vSync  whether vertical synchronization is enabled.
      */
     public Window(String title, int width, int height, boolean vSync) {
         this.title = title;
         this.width = width;
         this.height = height;
-        this.vSync = vSync;
     }
 
     public String getTitle() {
@@ -107,10 +104,6 @@ public class Window {
         return height;
     }
 
-    public boolean isVSync() {
-        return vSync;
-    }
-
     public long getHandle() {
         return handle;
     }
@@ -121,6 +114,10 @@ public class Window {
 
     public int getY() {
         return y;
+    }
+
+    public boolean isCreated() {
+        return created;
     }
 
     public boolean isVisible() {
@@ -147,12 +144,6 @@ public class Window {
 
     public void setHeight(int height) {
         glfwSetWindowSize(handle, width, height);
-    }
-
-    public void setVSync(boolean vSync) {
-        this.vSync = vSync;
-
-        glfwSwapInterval(vSync ? 1 : 0);
     }
 
     /**
@@ -276,10 +267,14 @@ public class Window {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
         handle = glfwCreateWindow(width, height, title, NULL, NULL);
+        created = handle != 0L;
+
+        if (!created) {
+            return;
+        }
 
         setCallbacks();
         setCentered();
-        glfwSwapInterval(vSync ? 1 : 0);
     }
 
     /**
@@ -297,9 +292,13 @@ public class Window {
     }
 
     /**
-     * Destroys the {@code Window} and terminates GLFW if all instances are destroyed.
+     * Destroys the {@code Window}.
      */
     public void destroy() {
+        if (!created) {
+            return;
+        }
+
         glfwDestroyWindow(handle);
         glfwFreeCallbacks(handle);
     }
