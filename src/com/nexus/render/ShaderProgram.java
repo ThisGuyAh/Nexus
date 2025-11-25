@@ -147,9 +147,9 @@ public class ShaderProgram {
         List<Shader> shaders = new ArrayList<>();
 
         for (var group : groups) {
-            String firstLine = group.get(0);
+            String firstLine = group.getFirst();
 
-            group.remove(0);
+            group.removeFirst();
 
             String source = concatenate(group);
 
@@ -218,6 +218,16 @@ public class ShaderProgram {
      */
     public void uploadUniform(String name, float[] value) {
         glUniform1fv(getUniformLocation(name), value);
+    }
+
+    /**
+     * Uploads a boolean uniform to the corresponding {@code Shader}.
+     *
+     * @param name  the name of the uniform.
+     * @param value the boolean value to be uploaded.
+     */
+    public void uploadUniform(String name, boolean value) {
+        glUniform1i(getUniformLocation(name), value ? 1 : 0);
     }
 
     /**

@@ -7,13 +7,13 @@ public class Mesh {
     private String name;
     private VertexArray vertexArray;
     private Material material;
-    private int vertexCount;
+    private int indexCount;
 
     public Mesh(String name, VertexArray vertexArray, Material material) {
         this.name = name;
         this.vertexArray = vertexArray;
         this.material = material;
-        vertexCount = vertexArray.getIndexBuffer().getCount();
+        indexCount = vertexArray.getIndexBuffer().getCount();
     }
 
     public String getName() {
@@ -28,8 +28,8 @@ public class Mesh {
         return material;
     }
 
-    public int getVertexCount() {
-        return vertexCount;
+    public int getIndexCount() {
+        return indexCount;
     }
 
     public void setName(String name) {

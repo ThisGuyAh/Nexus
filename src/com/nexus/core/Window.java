@@ -1,14 +1,8 @@
 package com.nexus.core;
 
-import com.nexus.event.EventBus;
-import com.nexus.event.WindowCreateEvent;
-import com.nexus.event.WindowDestroyEvent;
-import com.nexus.event.WindowFocusEvent;
-import com.nexus.event.WindowMaximizeEvent;
-import com.nexus.event.WindowMinimizeEvent;
-import com.nexus.event.WindowMoveEvent;
-import com.nexus.event.WindowRefreshEvent;
-import com.nexus.event.WindowResizeEvent;
+import com.nexus.event.*;
+import com.nexus.input.Key;
+import com.nexus.input.MouseButton;
 import org.lwjgl.glfw.GLFWVidMode;
 import java.nio.IntBuffer;
 
@@ -66,11 +60,6 @@ public class Window {
     private boolean visible;
 
     /**
-     * Whether the OpenGL context is current.
-     */
-    private boolean contextCurrent;
-
-    /**
      * Constructs a {@code Window}.
      */
     public Window() {
@@ -122,10 +111,6 @@ public class Window {
 
     public boolean isVisible() {
         return visible;
-    }
-
-    public boolean isContextCurrent() {
-        return contextCurrent;
     }
 
     public boolean isRunning() {
@@ -188,8 +173,6 @@ public class Window {
      * @param contextCurrent whether the OpenGL context should be current or detached.
      */
     public void setContextCurrent(boolean contextCurrent) {
-        this.contextCurrent = contextCurrent;
-
         if (contextCurrent) {
             glfwMakeContextCurrent(handle);
             createCapabilities();
@@ -237,6 +220,22 @@ public class Window {
             this.height = height;
 
             eventBus.publish(new WindowResizeEvent(this, oldWidth, oldHeight));
+        });
+        glfwSetKeyCallback(handle, (handle, key, scancode, action, mods) -> {
+            switch (action) {
+                case GLFW_PRESS -> {
+                    eventBus.publish(new KeyPressEvent(this, Key.getFromGLFWType(key), false));
+                }
+                case GLFW_REPEAT -> {
+                    eventBus.publish(new KeyPressEvent(this, Key.getFromGLFWType(key), true));
+                }
+                case GLFW_RELEASE -> {
+                    eventBus.publish(new KeyReleaseEvent(this, Key.getFromGLFWType(key)));
+                }
+            }
+        });
+        glfwSetMouseButtonCallback(handle, (window, button, action, mods) -> {
+            eventBus.publish(new MouseButtonPressEvent(this, MouseButton.getFromGLFWType(button)));
         });
     }
 

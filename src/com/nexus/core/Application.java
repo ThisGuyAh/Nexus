@@ -176,7 +176,9 @@ public abstract class Application {
             throw new IllegalStateException("Failed to create the window!");
         }
 
+        window.setContextCurrent(true);
         onCreate();
+        window.setContextCurrent(false);
 
         if (!window.isVisible()) {
             window.setVisible(true);
