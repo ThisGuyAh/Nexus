@@ -31,7 +31,7 @@ public class MouseCursorMoveEvent {
     private Vector2 delta;
 
     /**
-     * Instantiates a {@code MouseCursorMoveEvent}.
+     * Constructs a {@code MouseCursorMoveEvent}.
      *
      * @param window      the {@code Window}.
      * @param position    the current mouse cursor position.
