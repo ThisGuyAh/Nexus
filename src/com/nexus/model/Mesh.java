@@ -1,55 +1,59 @@
 package com.nexus.model;
 
-import com.nexus.memory.VertexArray;
-
+/**
+ * @author Christopher Ruley
+ */
 public class Mesh {
 
-    private String name;
-    private VertexArray vertexArray;
-    private Material material;
-    private int indexCount;
+    /**
+     * The name.
+     */
+    private final String name;
 
-    public Mesh(String name, VertexArray vertexArray, Material material) {
+    /**
+     * The {@code Material}.
+     */
+    private final Material material;
+
+    /**
+     * The starting position of the indices.
+     */
+    private final int indexOffset;
+
+    /**
+     * The total number of indices.
+     */
+    private final int indexCount;
+
+    /**
+     * Constructs a {@code Mesh}.
+     *
+     * @param name        the name.
+     * @param material    the {@code Material}.
+     * @param indexOffset the starting position of the indices.
+     * @param indexCount  the total number of indices.
+     */
+    public Mesh(String name, Material material, int indexOffset, int indexCount) {
         this.name = name;
-        this.vertexArray = vertexArray;
         this.material = material;
-        indexCount = vertexArray.getIndexBuffer().getCount();
+        this.indexOffset = indexOffset;
+        this.indexCount = indexCount;
     }
 
     public String getName() {
         return name;
     }
 
-    public VertexArray getVertexArray() {
-        return vertexArray;
-    }
-
     public Material getMaterial() {
         return material;
     }
 
+    public int getIndexOffset() {
+        return indexOffset;
+    }
+
     public int getIndexCount() {
         return indexCount;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    public void bind() {
-        vertexArray.bind();
-    }
-
-    public void unbind() {
-        vertexArray.unbind();
-    }
-
-    public void delete() {
-        vertexArray.delete();
     }
 
 }

@@ -4,6 +4,7 @@ import com.nexus.core.Window;
 import com.nexus.math.Matrix4;
 import com.nexus.math.Vector4;
 import com.nexus.model.Material;
+import com.nexus.model.Model;
 import com.nexus.model.Texture;
 import com.nexus.scene.Camera;
 import com.nexus.scene.Entity;
@@ -58,8 +59,13 @@ public class Renderer {
         shaderProgram.uploadUniform("view", view);
         shaderProgram.uploadUniform("projection", projection);
         shaderProgram.uploadUniform("lightPosition", light.getPosition());
+        shaderProgram.uploadUniform("lightColor", light.getColor());
 
-        for (var mesh : entity.getModel().getMeshes()) {
+        Model model = entity.getModel();
+
+        model.bind();
+
+        for (var mesh : model.getMeshes()) {
             Material material = mesh.getMaterial();
             Texture texture = material.getTexture();
             boolean textured = texture != null;
@@ -67,8 +73,8 @@ public class Renderer {
             shaderProgram.uploadUniform("ambientColor", material.getAmbientColor());
             shaderProgram.uploadUniform("diffuseColor", material.getDiffuseColor());
             shaderProgram.uploadUniform("specularColor", material.getSpecularColor());
+            shaderProgram.uploadUniform("shininess", material.getShininess());
             shaderProgram.uploadUniform("textured", textured);
-            shaderProgram.uploadUniform("lightColor", light.getColor());
 
             if (textured) {
                 glActiveTexture(GL_TEXTURE0);
@@ -76,12 +82,12 @@ public class Renderer {
                 texture.bind();
             }
 
-            mesh.bind();
-            glDrawElements(GL_TRIANGLES, mesh.getIndexCount(), GL_UNSIGNED_INT, 0);
-            mesh.unbind();
+            glDrawElements(GL_TRIANGLES, mesh.getIndexCount(), GL_UNSIGNED_INT, (long) mesh.getIndexOffset() * Integer.BYTES);
         }
 
+        model.unbind();
         shaderProgram.unbind();
+
     }
 
     public static void clear() {
