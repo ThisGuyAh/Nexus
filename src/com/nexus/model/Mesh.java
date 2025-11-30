@@ -16,9 +16,9 @@ public class Mesh {
     private final Material material;
 
     /**
-     * The starting position of the indices.
+     * The total number of vertices.
      */
-    private final int indexOffset;
+    private final int vertexCount;
 
     /**
      * The total number of indices.
@@ -26,18 +26,25 @@ public class Mesh {
     private final int indexCount;
 
     /**
+     * The starting position of the indices.
+     */
+    private final int indexOffset;
+
+    /**
      * Constructs a {@code Mesh}.
      *
      * @param name        the name.
      * @param material    the {@code Material}.
-     * @param indexOffset the starting position of the indices.
+     * @param vertexCount the total number of vertices.
      * @param indexCount  the total number of indices.
+     * @param indexOffset the starting position of the indices.
      */
-    public Mesh(String name, Material material, int indexOffset, int indexCount) {
+    public Mesh(String name, Material material, int vertexCount, int indexCount, int indexOffset) {
         this.name = name;
         this.material = material;
-        this.indexOffset = indexOffset;
+        this.vertexCount = vertexCount;
         this.indexCount = indexCount;
+        this.indexOffset = indexOffset;
     }
 
     public String getName() {
@@ -48,12 +55,16 @@ public class Mesh {
         return material;
     }
 
-    public int getIndexOffset() {
-        return indexOffset;
+    public int getVertexCount() {
+        return vertexCount;
     }
 
     public int getIndexCount() {
         return indexCount;
+    }
+
+    public int getIndexOffset() {
+        return indexOffset;
     }
 
 }

@@ -28,4 +28,8 @@ public class Model {
         vertexArray.unbind();
     }
 
+    public void delete() {
+        vertexArray.delete();
+    }
+
 }

@@ -9,6 +9,7 @@ import com.nexus.model.Texture;
 import com.nexus.scene.Camera;
 import com.nexus.scene.Entity;
 import com.nexus.scene.Light;
+import com.nexus.utility.Time;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -19,6 +20,10 @@ public class Renderer {
      * Cannot construct {@code Renderer}.
      */
     private Renderer() {
+    }
+
+    public static void setDepthMask(boolean depthMask) {
+        glDepthMask(depthMask);
     }
 
     public static void setDepthTesting(boolean depthTesting) {
@@ -52,7 +57,7 @@ public class Renderer {
 
         transformation.setTransformation(entity.getPosition(), entity.getRotation(), entity.getScale());
         view.setView(camera.getPosition(), camera.getRotation());
-        projection.setPerspectiveProjection(window.getWidth(), window.getHeight(), 120.0F, 0.1F, 1000.0F);
+        projection.setPerspectiveProjection(window.getWidth(), window.getHeight(), 90.0F, 0.1F, 1000.0F);
 
         shaderProgram.bind();
         shaderProgram.uploadUniform("transformation", transformation);
@@ -82,12 +87,39 @@ public class Renderer {
                 texture.bind();
             }
 
-            glDrawElements(GL_TRIANGLES, mesh.getIndexCount(), GL_UNSIGNED_INT, (long) mesh.getIndexOffset() * Integer.BYTES);
+            if (model.getVertexArray().getIndexBuffer() == null) {
+                glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
+            } else {
+                glDrawElements(GL_TRIANGLES, mesh.getIndexCount(), GL_UNSIGNED_INT, (long) mesh.getIndexOffset() * Integer.BYTES);
+            }
         }
 
         model.unbind();
         shaderProgram.unbind();
+    }
 
+    public static void drawPoints(Window window, ShaderProgram shaderProgram, Camera camera, Model model) {
+        Matrix4 view = new Matrix4();
+        Matrix4 projection = new Matrix4();
+
+        view.setView(camera.getPosition(), camera.getRotation());
+        projection.setPerspectiveProjection(window.getWidth(), window.getHeight(), 90.0F, 0.1F, 1000.0F);
+
+        shaderProgram.bind();
+        shaderProgram.uploadUniform("view", view);
+        shaderProgram.uploadUniform("projection", projection);
+        model.bind();
+
+        for (var mesh : model.getMeshes()) {
+            if (model.getVertexArray().getIndexBuffer() == null) {
+                glDrawArrays(GL_POINTS, 0, mesh.getVertexCount());
+            } else {
+                glDrawElements(GL_POINTS, mesh.getIndexCount(), GL_UNSIGNED_INT, (long) mesh.getIndexOffset() * Integer.BYTES);
+            }
+        }
+
+        model.unbind();
+        shaderProgram.unbind();
     }
 
     public static void clear() {

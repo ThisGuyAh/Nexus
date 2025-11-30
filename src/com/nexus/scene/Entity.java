@@ -37,6 +37,22 @@ public class Entity {
         return scale;
     }
 
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public void setPosition(Vector3 position) {
+        this.position = position;
+    }
+
+    public void setRotation(Vector3 rotation) {
+        this.rotation = rotation;
+    }
+
+    public void setScale(Vector3 scale) {
+        this.scale = scale;
+    }
+
     public Vector3 getPreviousPosition() {
         return previousPosition;
     }
@@ -48,6 +64,10 @@ public class Entity {
     public void update() {
         previousPosition = position;
         previousRotation = rotation;
+    }
+
+    public void delete() {
+        model.delete();
     }
 
 }

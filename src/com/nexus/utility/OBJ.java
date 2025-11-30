@@ -121,7 +121,7 @@ public class OBJ {
 
             switch (tokens[0]) {
                 case OBJ_O -> {
-                    closeCurrentMesh(indices, meshes, currentObjectName, currentMaterial, currentIndexStart);
+                    closeCurrentMesh(vertices, indices, meshes, currentObjectName, currentMaterial, currentIndexStart);
 
                     currentObjectName = tokens[1];
                 }
@@ -137,7 +137,7 @@ public class OBJ {
                     hasNormals = true;
                 }
                 case OBJ_USEMTL -> {
-                    closeCurrentMesh(indices, meshes, currentObjectName, currentMaterial, currentIndexStart);
+                    closeCurrentMesh(vertices, indices, meshes, currentObjectName, currentMaterial, currentIndexStart);
 
                     for (var mat : materials) {
                         if (mat.getName().equals(tokens[1])) {
@@ -180,7 +180,7 @@ public class OBJ {
             }
         }
 
-        closeCurrentMesh(indices, meshes, currentObjectName, currentMaterial, currentIndexStart);
+        closeCurrentMesh(vertices, indices, meshes, currentObjectName, currentMaterial, currentIndexStart);
 
         // Build layout + buffers + model, same as before
         List<VertexElement> vertexElements = new ArrayList<>();
@@ -233,12 +233,12 @@ public class OBJ {
         return newIndex;
     }
 
-    private static void closeCurrentMesh(List<Integer> indices, List<Mesh> meshes, String name, Material material,
+    private static void closeCurrentMesh(List<Vector> vertices, List<Integer> indices, List<Mesh> meshes, String name, Material material,
                                          int indexStart) {
         int currentIndexCount = indices.size() - indexStart;
 
         if (currentIndexCount > 0) {
-            meshes.add(new Mesh(name, material, indexStart, currentIndexCount));
+            meshes.add(new Mesh(name, material, vertices.size(), currentIndexCount, indexStart));
         }
     }
 
