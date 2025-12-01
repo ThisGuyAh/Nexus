@@ -1,14 +1,13 @@
 
 package com.nexus.core;
 
-import com.nexus.event.Event;
-import com.nexus.event.EventBus;
-import com.nexus.event.WindowDestroyEvent;
-import com.nexus.event.WindowMinimizeEvent;
+import com.nexus.event.*;
+
 import java.util.concurrent.locks.ReentrantLock;
 
 import static com.nexus.utility.Time.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * @author Christopher Ruley
@@ -46,6 +45,11 @@ public abstract class Application {
      * Whether the {@code Application} is minimized.
      */
     private volatile boolean minimized;
+
+    /**
+     * Whether the {@code Application} is resized.
+     */
+    private volatile boolean resized;
 
     /**
      * Whether vertical synchronization is enabled.
@@ -187,6 +191,7 @@ public abstract class Application {
         updateThread = new Thread(this::update, "Update");
         renderThread = new Thread(this::render, "Render");
         minimized = false;
+        resized = true;
         vsync = false;
         ups = 0;
         fps = 0;
@@ -250,6 +255,11 @@ public abstract class Application {
             window.setContextCurrent(true);
 
             while (running) {
+                if(resized) {
+                    glViewport(0, 0, window.getWidth(), window.getHeight());
+
+                    resized = false;
+                }
                 if (!minimized) {
                     onRender(interpolation);
                     window.swapBuffers();
@@ -295,6 +305,18 @@ public abstract class Application {
     private void onEvent(WindowMinimizeEvent event) {
         if (event.getWindow().equals(window)) {
             minimized = event.isMinimized();
+        }
+    }
+
+    /**
+     * Listens for a {@code WindowResizeEvent} and updates the {@code Application} resized state.
+     *
+     * @param event the event listed for.
+     */
+    @Event
+    private void onEvent(WindowResizeEvent event) {
+        if (event.getWindow().equals(window)) {
+            resized = true;
         }
     }
 
