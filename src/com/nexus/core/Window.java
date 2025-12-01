@@ -1,6 +1,7 @@
 package com.nexus.core;
 
 import com.nexus.event.*;
+import com.nexus.input.Input;
 import com.nexus.input.Key;
 import com.nexus.input.MouseButton;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -222,6 +223,8 @@ public class Window {
             eventBus.publish(new WindowResizeEvent(this, oldWidth, oldHeight));
         });
         glfwSetKeyCallback(handle, (handle, key, scancode, action, mods) -> {
+            Input.keyCallback(key, scancode, action, mods);
+
             switch (action) {
                 case GLFW_PRESS -> {
                     eventBus.publish(new KeyPressEvent(this, Key.getFromGLFWType(key), false));
@@ -235,6 +238,8 @@ public class Window {
             }
         });
         glfwSetMouseButtonCallback(handle, (window, button, action, mods) -> {
+            Input.mouseButtonCallback(button, action, mods);
+
             eventBus.publish(new MouseButtonPressEvent(this, MouseButton.getFromGLFWType(button)));
         });
     }
