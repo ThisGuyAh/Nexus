@@ -4,37 +4,38 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public final class Input {
 
-    // The update thread may be removed; volatile fields will not be needed as input is only queried in
-    // Application::Update.
-
     private static final int MAX_KEYS = GLFW_KEY_LAST + 1;
     private static final int MAX_MOUSE_BUTTONS = GLFW_MOUSE_BUTTON_LAST + 1;
-    private static final boolean[] keysDown = new boolean[MAX_KEYS];
+    private static final boolean[] keys = new boolean[MAX_KEYS];
     private static final boolean[] mouseButtons = new boolean[MAX_MOUSE_BUTTONS];
-    private static volatile double mouseX;
-    private static volatile double mouseY;
-    private static volatile double mouseDeltaX;
-    private static volatile double mouseDeltaY;
-    private static volatile boolean firstMouse = true;
-    private static volatile double scrollX;
-    private static volatile double scrollY;
+    private static double mouseX;
+    private static double mouseY;
+    private static double mouseDeltaX;
+    private static double mouseDeltaY;
+    private static boolean firstMouse = true;
+    private static double scrollX;
+    private static double scrollY;
 
     private Input() {
+
     }
 
     public static void keyCallback(int key, int scancode, int action, int mods) {
-        if (key < 0 || key >= MAX_KEYS) return;
+        if (key < 0 || key >= MAX_KEYS) {
+            return;
+        }
 
         if (action == GLFW_PRESS) {
-            keysDown[key] = true;
+            keys[key] = true;
         } else if (action == GLFW_RELEASE) {
-            keysDown[key] = false;
+            keys[key] = false;
         }
-        // GLFW_REPEAT is ignored for now
     }
 
     public static void mouseButtonCallback(int button, int action, int mods) {
-        if (button < 0 || button >= MAX_MOUSE_BUTTONS) return;
+        if (button < 0 || button >= MAX_MOUSE_BUTTONS) {
+            return;
+        }
 
         if (action == GLFW_PRESS) {
             mouseButtons[button] = true;
@@ -48,12 +49,12 @@ public final class Input {
             mouseX = x;
             mouseY = y;
             firstMouse = false;
+
             return;
         }
 
         mouseDeltaX += x - mouseX;
         mouseDeltaY += y - mouseY;
-
         mouseX = x;
         mouseY = y;
     }
@@ -63,12 +64,10 @@ public final class Input {
         scrollY += offsetY;
     }
 
-    public static boolean isKeyDown(int key) {
-        return key >= 0 && key < MAX_KEYS && keysDown[key];
-    }
-
     public static boolean isKeyDown(Key key) {
-        return isKeyDown(key.getCode()); // adjust if your enum uses another name
+        int code = key.getCode();
+
+        return code >= 0 && code < MAX_KEYS && keys[code];
     }
 
     public static boolean isMouseButtonDown(int button) {
@@ -83,36 +82,27 @@ public final class Input {
         return mouseY;
     }
 
-    // “Consume” deltas each frame on the update thread
     public static double consumeMouseDeltaX() {
         double dx = mouseDeltaX;
-
         mouseDeltaX = 0.0;
-
         return dx;
     }
 
     public static double consumeMouseDeltaY() {
         double dy = mouseDeltaY;
-
         mouseDeltaY = 0.0;
-
         return dy;
     }
 
     public static double consumeScrollX() {
         double sx = scrollX;
-
         scrollX = 0.0;
-
         return sx;
     }
 
     public static double consumeScrollY() {
         double sy = scrollY;
-
         scrollY = 0.0;
-
         return sy;
     }
 

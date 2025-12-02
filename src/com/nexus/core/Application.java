@@ -119,14 +119,6 @@ public abstract class Application {
     }
 
     /**
-     * Restarts the {@code Application}.
-     */
-    public final void restart() {
-        stop();
-        start();
-    }
-
-    /**
      * Runs the {@code Application}.
      */
     private void run() {
@@ -197,7 +189,6 @@ public abstract class Application {
                 }
             }
         } finally {
-            stop();
             onDestroy();
             window.destroy();
             glfwTerminate();
