@@ -188,9 +188,8 @@ public class Window {
     private void setCallbacks() {
         EventBus eventBus = EventBus.getInstance();
 
-        eventBus.publish(new WindowCreateEvent(this));
         glfwSetWindowCloseCallback(handle, handle -> {
-            eventBus.publish(new WindowDestroyEvent(this));
+            eventBus.publish(new WindowCloseEvent(this));
         });
         glfwSetWindowFocusCallback(handle, (handle, focused) -> {
             eventBus.publish(new WindowFocusEvent(this, focused));
@@ -279,6 +278,7 @@ public class Window {
 
         setCallbacks();
         setCentered();
+        EventBus.getInstance().publish(new WindowCreateEvent(this));
     }
 
     /**
@@ -305,6 +305,7 @@ public class Window {
 
         glfwDestroyWindow(handle);
         glfwFreeCallbacks(handle);
+        EventBus.getInstance().publish(new WindowDestroyEvent(this));
     }
 
 }

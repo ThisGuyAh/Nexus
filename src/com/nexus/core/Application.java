@@ -1,82 +1,55 @@
-
 package com.nexus.core;
 
-import com.nexus.event.*;
-
-import java.util.concurrent.locks.ReentrantLock;
-
-import static com.nexus.utility.Time.*;
+import com.nexus.event.Event;
+import com.nexus.event.EventBus;
+import com.nexus.event.WindowCloseEvent;
+import com.nexus.event.WindowResizeEvent;
+import com.nexus.event.WindowMinimizeEvent;
+import static com.nexus.utility.Time.getCurrentTimeSeconds;
+import static com.nexus.utility.Time.sync;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glViewport;
 
 /**
  * @author Christopher Ruley
  */
 public abstract class Application {
 
-    // TODO Add multiple window functionality safely with context ownership for rendering.
-
     /**
      * The main {@code Window} for the {@code Application}.
      */
-    private final Window window;
-
-    /**
-     * The context {@code ReentrantLock}.
-     */
-    private final ReentrantLock contextReentrantLock;
-
-    /**
-     * The updating {@code Thread}.
-     */
-    private Thread updateThread;
-
-    /**
-     * The rendering {@code Thread}.
-     */
-    private Thread renderThread;
+    private Window window;
 
     /**
      * Whether the {@code Application} is running.
      */
-    private volatile boolean running;
+    private boolean running;
 
     /**
      * Whether the {@code Application} is minimized.
      */
-    private volatile boolean minimized;
-
-    /**
-     * Whether the {@code Application} is resized.
-     */
-    private volatile boolean resized;
+    private boolean minimized;
 
     /**
      * Whether vertical synchronization is enabled.
      */
-    private volatile boolean vsync;
+    private boolean vsync;
 
     /**
      * The updates-per-second.
      */
-    private volatile int ups;
+    private int ups;
 
     /**
      * The frames-per-second.
      */
-    private volatile int fps;
-
-    /**
-     * The value used for rendering according to updates.
-     */
-    private volatile double interpolation;
+    private int fps;
 
     /**
      * Constructs an {@code Application}.
      */
     protected Application() {
         window = new Window();
-        contextReentrantLock = new ReentrantLock();
     }
 
     public final Window getWindow() {
@@ -104,24 +77,24 @@ public abstract class Application {
     }
 
     /**
-     * The user-implemented method for the creation stage. Called on the main {@code Thread}.
+     * The user-implemented method for the creation stage.
      */
     protected abstract void onCreate();
 
     /**
-     * The user-implemented method for the updating stage. Called on the update {@code Thread}.
+     * The user-implemented method for the updating stage.
      */
     protected abstract void onUpdate();
 
     /**
-     * The user-implemented method for the rendering stage. Called on the render {@code Thread}.
+     * The user-implemented method for the rendering stage.
      *
      * @param interpolation the value used for rendering according to updates.
      */
     protected abstract void onRender(double interpolation);
 
     /**
-     * The user-implemented method for the destruction stage. Called on the main {@code Thread}.
+     * The user-implemented method for the destruction stage.
      */
     protected abstract void onDestroy();
 
@@ -157,154 +130,77 @@ public abstract class Application {
      * Runs the {@code Application}.
      */
     private void run() {
-       try {
-           create();
-       } finally {
-           destroy();
-       }
-    }
-
-    /**
-     * The creation stage. Called on the main {@code Thread}.
-     */
-    private void create() {
-        EventBus.getInstance().register(this);
-
-        if (!glfwInit()) {
-            throw new IllegalStateException("Failed to initialize GLFW!");
-        }
-
-        window.create();
-
-        if (!window.isCreated()) {
-            throw new IllegalStateException("Failed to create the window!");
-        }
-
-        window.setContextCurrent(true);
-        onCreate();
-        window.setContextCurrent(false);
-
-        if (!window.isVisible()) {
-            window.setVisible(true);
-        }
-
-        updateThread = new Thread(this::update, "Update");
-        renderThread = new Thread(this::render, "Render");
-        minimized = false;
-        resized = true;
-        vsync = false;
-        ups = 0;
-        fps = 0;
-        interpolation = 0.0D;
-
-        updateThread.start();
-        renderThread.start();
-
-        while (running) {
-            glfwPollEvents();
-        }
-    }
-
-    /**
-     * The updating stage. Called on the update {@code Thread}.
-     */
-    private void update() {
-        final double maxFrameTime = 0.25D;
-        final double updateInterval = 1.0D / 60.0D; // TODO Add functionality for changing this value
-        double previousTime = getCurrentTimeSeconds();
-        double accumulator = 0.0D;
-        double counter = 0.0D;
-        int upsCounter = 0;
-
-        while (running) {
-            double currentTime = getCurrentTimeSeconds();
-            double elapsedTime = currentTime - previousTime;
-
-            if (elapsedTime > maxFrameTime) {
-                elapsedTime = maxFrameTime;
-            }
-
-            previousTime = currentTime;
-            accumulator += elapsedTime;
-            counter += elapsedTime;
-
-            while (accumulator >= updateInterval) {
-                onUpdate();
-
-                upsCounter++;
-                accumulator -= updateInterval;
-            }
-
-            if (counter >= 1.0) {
-                ups = upsCounter;
-                upsCounter = 0;
-                counter = 0;
-            }
-
-            interpolation = accumulator / updateInterval;
-        }
-    }
-
-    /**
-     * The rendering stage. Called on the render {@code Thread}.
-     */
-    private void render() {
-        contextReentrantLock.lock();
-
         try {
+            EventBus.getInstance().register(this);
+
+            if (!glfwInit()) {
+                throw new IllegalStateException("Failed to initialize GLFW!");
+            }
+
+            window.create();
+
+            if (!window.isCreated()) {
+                throw new IllegalStateException("Failed to create the window!");
+            }
+
             window.setContextCurrent(true);
+            onCreate();
+
+            if (!window.isVisible()) {
+                window.setVisible(true);
+            }
+
+            final double maxFrameTime = 0.25D;
+            final double updateInterval = 1.0D / 60.0D; // TODO Add functionality for changing this value
+            double previousTime = getCurrentTimeSeconds();
+            double accumulator = 0.0D;
+            double counter = 0.0D;
+            int upsCounter = 0;
+            int fpsCounter = 0;
 
             while (running) {
-                if(resized) {
-                    glViewport(0, 0, window.getWidth(), window.getHeight());
+                glfwPollEvents();
 
-                    resized = false;
+                double currentTime = getCurrentTimeSeconds();
+                double elapsedTime = currentTime - previousTime;
+
+                if (elapsedTime > maxFrameTime) {
+                    elapsedTime = maxFrameTime;
+                }
+
+                previousTime = currentTime;
+                accumulator += elapsedTime;
+                counter += elapsedTime;
+
+                while (accumulator >= updateInterval) {
+                    onUpdate();
+
+                    upsCounter++;
+                    accumulator -= updateInterval;
+                }
+
+                if (counter >= 1.0) {
+                    ups = upsCounter;
+                    fps = fpsCounter;
+                    upsCounter = 0;
+                    fpsCounter = 0;
+                    counter = 0;
                 }
                 if (!minimized) {
-                    onRender(interpolation);
+                    onRender(accumulator / updateInterval);
                     window.swapBuffers();
+
+                    fpsCounter++;
                 }
                 if (!vsync) {
                     sync(120); // TODO Add ability to change this during runtime.
                 }
             }
         } finally {
-            window.setContextCurrent(false);
-            contextReentrantLock.unlock();
-        }
-    }
-
-    /**
-     * The destruction stage. Called on the main {@code Thread}.
-     */
-    private void destroy() {
-        stop();
-
-        try {
-            if (updateThread != null) {
-                updateThread.join();
-            }
-            if (renderThread != null) {
-                renderThread.join();
-            }
-        } catch (InterruptedException exception) {
-            Thread.currentThread().interrupt();
-        }
-
-        onDestroy();
-        window.destroy();
-        glfwTerminate();
-    }
-
-    /**
-     * Listens for a {@code WindowMinimizeEvent} and updates the {@code Application} minimized state.
-     *
-     * @param event the event listed for.
-     */
-    @Event
-    private void onEvent(WindowMinimizeEvent event) {
-        if (event.getWindow().equals(window)) {
-            minimized = event.isMinimized();
+            stop();
+            onDestroy();
+            window.destroy();
+            glfwTerminate();
         }
     }
 
@@ -315,9 +211,17 @@ public abstract class Application {
      */
     @Event
     private void onEvent(WindowResizeEvent event) {
-        if (event.getWindow().equals(window)) {
-            resized = true;
-        }
+        glViewport(0, 0, window.getWidth(), window.getHeight());
+    }
+
+    /**
+     * Listens for a {@code WindowMinimizeEvent} and updates the {@code Application} minimized state.
+     *
+     * @param event the event listed for.
+     */
+    @Event
+    private void onEvent(WindowMinimizeEvent event) {
+        minimized = event.isMinimized();
     }
 
     /**
@@ -326,10 +230,8 @@ public abstract class Application {
      * @param event the event listed for.
      */
     @Event
-    private void onEvent(WindowDestroyEvent event) {
-        if (event.getWindow().equals(window)) {
-            stop();
-        }
+    private void onEvent(WindowCloseEvent event) {
+        running = false;
     }
 
 }
