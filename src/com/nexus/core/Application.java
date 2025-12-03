@@ -216,7 +216,7 @@ public abstract class Application {
     }
 
     /**
-     * Listens for a {@code WindowDestroyEvent} and updates the {@code Application} running state.
+     * Listens for a {@code WindowCloseEvent} and updates the {@code Application} running state.
      *
      * @param event the event listed for.
      */
