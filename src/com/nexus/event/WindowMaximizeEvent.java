@@ -1,5 +1,6 @@
 package com.nexus.event;
 
+import com.link.event.Event;
 import com.nexus.core.Window;
 
 /**
@@ -7,17 +8,17 @@ import com.nexus.core.Window;
  *
  * @author Christopher Ruley
  */
-public class WindowMaximizeEvent {
+public class WindowMaximizeEvent extends Event {
 
     /**
      * The {@code Window}.
      */
-    private Window window;
+    private final Window window;
 
     /**
      * Whether the {@code Window} was maximized or restored.
      */
-    private boolean maximized;
+    private final boolean maximized;
 
     /**
      * Constructs a {@code WindowMaximizeEvent}.
@@ -36,11 +37,6 @@ public class WindowMaximizeEvent {
 
     public boolean isMaximized() {
         return maximized;
-    }
-
-    @Override
-    public String toString() {
-        return "WindowMaximizeEvent: Window = " + window.getTitle() + ", Maximized = " + maximized;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.nexus.event;
 
+import com.link.event.Event;
 import com.nexus.core.Window;
 
 /**
@@ -7,17 +8,17 @@ import com.nexus.core.Window;
  *
  * @author Christopher Ruley
  */
-public class WindowMinimizeEvent {
+public class WindowMinimizeEvent extends Event {
 
     /**
      * The {@code Window}.
      */
-    private Window window;
+    private final Window window;
 
     /**
      * Whether the {@code Window} was minimized or restored.
      */
-    private boolean minimized;
+    private final boolean minimized;
 
     /**
      * Constructs a {@code WindowMaximizeEvent}.
@@ -36,11 +37,6 @@ public class WindowMinimizeEvent {
 
     public boolean isMinimized() {
         return minimized;
-    }
-
-    @Override
-    public String toString() {
-        return "WindowMinimizeEvent: Window = " + window.getTitle() + ", Minimized = " + minimized;
     }
 
 }

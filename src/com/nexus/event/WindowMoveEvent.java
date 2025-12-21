@@ -1,5 +1,6 @@
 package com.nexus.event;
 
+import com.link.event.Event;
 import com.nexus.core.Window;
 
 /**
@@ -7,22 +8,22 @@ import com.nexus.core.Window;
  *
  * @author Christopher Ruley
  */
-public class WindowMoveEvent {
+public class WindowMoveEvent extends Event {
 
     /**
      * The {@code Window}.
      */
-    private Window window;
+    private final Window window;
 
     /**
      * The previous x position.
      */
-    private int previousX;
+    private final int previousX;
 
     /**
      * The previous y position.
      */
-    private int previousY;
+    private final int previousY;
 
     /**
      * Constructs a {@code WindowMoveEvent}.
@@ -47,12 +48,6 @@ public class WindowMoveEvent {
 
     public int getPreviousY() {
         return previousY;
-    }
-
-    @Override
-    public String toString() {
-        return "WindowMoveEvent: Window = " + window.getTitle() + ", X = " + window.getX() + ", Y = " + window.getY()
-            + ", Previous X = " + previousX + ", Previous Y = " + previousY;
     }
 
 }

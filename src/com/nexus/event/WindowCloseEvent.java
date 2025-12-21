@@ -1,5 +1,6 @@
 package com.nexus.event;
 
+import com.link.event.Event;
 import com.nexus.core.Window;
 
 /**
@@ -7,21 +8,17 @@ import com.nexus.core.Window;
  *
  * @author Christopher Ruley
  */
-public class WindowCloseEvent {
+public class WindowCloseEvent extends Event {
 
-    private Window window;
+    private final Window window;
 
     public WindowCloseEvent(Window window) {
+        super();
         this.window = window;
     }
 
     public Window getWindow() {
         return window;
-    }
-
-    @Override
-    public String toString() {
-        return "WindowCloseEvent: Window = " + window.getTitle();
     }
 
 }

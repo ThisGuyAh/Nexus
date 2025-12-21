@@ -1,5 +1,6 @@
 package com.nexus.event;
 
+import com.link.event.Event;
 import com.nexus.core.Window;
 
 /**
@@ -7,22 +8,22 @@ import com.nexus.core.Window;
  *
  * @author Christopher Ruley
  */
-public class WindowResizeEvent {
+public class WindowResizeEvent extends Event {
 
     /**
      * The {@code Window}.
      */
-    private Window window;
+    private final Window window;
 
     /**
      * The previous width.
      */
-    private int previousWidth;
+    private final int previousWidth;
 
     /**
      * The previous height.
      */
-    private int previousHeight;
+    private final int previousHeight;
 
     /**
      * Constructs a {@code WindowResizeEvent}.
@@ -47,12 +48,6 @@ public class WindowResizeEvent {
 
     public int getPreviousHeight() {
         return previousHeight;
-    }
-
-    @Override
-    public String toString() {
-        return "WindowResizeEvent: Window = " + window.getTitle() + ", Width = " + window.getWidth() + ", Height = "
-            + window.getHeight() + ", Previous Width = " + previousWidth + ", Previous Height = " + previousHeight;
     }
 
 }

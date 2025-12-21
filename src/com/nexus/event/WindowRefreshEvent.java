@@ -1,5 +1,6 @@
 package com.nexus.event;
 
+import com.link.event.Event;
 import com.nexus.core.Window;
 
 /**
@@ -7,12 +8,12 @@ import com.nexus.core.Window;
  *
  * @author Christopher Ruley
  */
-public class WindowRefreshEvent {
+public class WindowRefreshEvent extends Event {
 
     /**
      * The {@code Window}.
      */
-    private Window window;
+    private final Window window;
 
     /**
      * Constructs a {@code WindowRefreshEvent}.

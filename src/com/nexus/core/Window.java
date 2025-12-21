@@ -3,11 +3,10 @@ package com.nexus.core;
 import com.link.event.Bus;
 import com.nexus.event.*;
 import com.nexus.input.Input;
-import com.nexus.input.Key;
-import com.nexus.input.MouseButton;
 import org.lwjgl.glfw.GLFWVidMode;
 import java.nio.IntBuffer;
 
+import static com.link.event.Priority.*;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL.*;
@@ -190,19 +189,19 @@ public class Window {
         Bus bus = Bus.getInstance();
 
         glfwSetWindowCloseCallback(handle, handle -> {
-            bus.publish(new WindowCloseEvent(this));
+            bus.publish(new WindowCloseEvent(this), NORMAL);
         });
         glfwSetWindowFocusCallback(handle, (handle, focused) -> {
-            bus.publish(new WindowFocusEvent(this, focused));
+            bus.publish(new WindowFocusEvent(this, focused), NORMAL);
         });
         glfwSetWindowMaximizeCallback(handle, (handle, maximized) -> {
-            bus.publish(new WindowMaximizeEvent(this, maximized));
+            bus.publish(new WindowMaximizeEvent(this, maximized), NORMAL);
         });
         glfwSetWindowIconifyCallback(handle, (handle, minimized) -> {
-            bus.publish(new WindowMinimizeEvent(this, minimized));
+            bus.publish(new WindowMinimizeEvent(this, minimized), NORMAL);
         });
         glfwSetWindowRefreshCallback(handle, (handle) -> {
-            bus.publish(new WindowRefreshEvent(this));
+            bus.publish(new WindowRefreshEvent(this), NORMAL);
         });
         glfwSetWindowPosCallback(handle, (handle, x, y) -> {
             int oldX = this.x;
@@ -211,7 +210,7 @@ public class Window {
             this.x = x;
             this.y = y;
 
-            bus.publish(new WindowMoveEvent(this, oldX, oldY));
+            bus.publish(new WindowMoveEvent(this, oldX, oldY), NORMAL);
         });
         glfwSetWindowSizeCallback(handle, (handle, width, height) -> {
             int oldWidth = this.width;
@@ -220,27 +219,13 @@ public class Window {
             this.width = width;
             this.height = height;
 
-            bus.publish(new WindowResizeEvent(this, oldWidth, oldHeight));
+            bus.publish(new WindowResizeEvent(this, oldWidth, oldHeight), NORMAL);
         });
         glfwSetKeyCallback(handle, (handle, key, scancode, action, mods) -> {
             Input.keyCallback(key, scancode, action, mods);
-
-            switch (action) {
-                case GLFW_PRESS -> {
-                    bus.publish(new KeyPressEvent(this, Key.getFromGLFWType(key), false));
-                }
-                case GLFW_REPEAT -> {
-                    bus.publish(new KeyPressEvent(this, Key.getFromGLFWType(key), true));
-                }
-                case GLFW_RELEASE -> {
-                    bus.publish(new KeyReleaseEvent(this, Key.getFromGLFWType(key)));
-                }
-            }
         });
         glfwSetMouseButtonCallback(handle, (window, button, action, mods) -> {
             Input.mouseButtonCallback(button, action, mods);
-
-            bus.publish(new MouseButtonPressEvent(this, MouseButton.getFromGLFWType(button)));
         });
     }
 
@@ -279,7 +264,7 @@ public class Window {
 
         setCallbacks();
         setCentered();
-        Bus.getInstance().publish(new WindowCreateEvent(this));
+        Bus.getInstance().publish(new WindowCreateEvent(this), NORMAL);
     }
 
     /**
@@ -306,7 +291,7 @@ public class Window {
 
         glfwDestroyWindow(handle);
         glfwFreeCallbacks(handle);
-        Bus.getInstance().publish(new WindowDestroyEvent(this));
+        Bus.getInstance().publish(new WindowDestroyEvent(this), NORMAL);
     }
 
 }

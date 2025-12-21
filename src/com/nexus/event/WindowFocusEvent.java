@@ -1,5 +1,6 @@
 package com.nexus.event;
 
+import com.link.event.Event;
 import com.nexus.core.Window;
 
 /**
@@ -7,17 +8,17 @@ import com.nexus.core.Window;
  *
  * @author Christopher Ruley
  */
-public class WindowFocusEvent {
+public class WindowFocusEvent extends Event {
 
     /**
      * The {@code Window}.
      */
-    private Window window;
+    private final Window window;
 
     /**
      * Whether the {@code Window} has gained or lost focus.
      */
-    private boolean focused;
+    private final boolean focused;
 
     /**
      * Constructs a {@code WindowFocusEvent}.
@@ -36,11 +37,6 @@ public class WindowFocusEvent {
 
     public boolean isFocused() {
         return focused;
-    }
-
-    @Override
-    public String toString() {
-        return "WindowFocusEvent: Window = " + window.getTitle() + ", Focused = " + focused;
     }
 
 }
