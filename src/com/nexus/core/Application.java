@@ -1,7 +1,7 @@
 package com.nexus.core;
 
-import com.nexus.event.Event;
-import com.nexus.event.EventBus;
+import com.link.event.Bus;
+import com.link.event.Subscribe;
 import com.nexus.event.WindowCloseEvent;
 import com.nexus.event.WindowResizeEvent;
 import com.nexus.event.WindowMinimizeEvent;
@@ -123,7 +123,7 @@ public abstract class Application {
      */
     private void run() {
         try {
-            EventBus.getInstance().register(this);
+            Bus.getInstance().register(this);
 
             if (!glfwInit()) {
                 throw new IllegalStateException("Failed to initialize GLFW!");
@@ -200,7 +200,7 @@ public abstract class Application {
      *
      * @param event the event listed for.
      */
-    @Event
+    @Subscribe
     private void onEvent(WindowResizeEvent event) {
         glViewport(0, 0, window.getWidth(), window.getHeight());
     }
@@ -210,7 +210,7 @@ public abstract class Application {
      *
      * @param event the event listed for.
      */
-    @Event
+    @Subscribe
     private void onEvent(WindowMinimizeEvent event) {
         minimized = event.isMinimized();
     }
@@ -220,7 +220,7 @@ public abstract class Application {
      *
      * @param event the event listed for.
      */
-    @Event
+    @Subscribe
     private void onEvent(WindowCloseEvent event) {
         running = false;
     }
