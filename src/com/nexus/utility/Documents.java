@@ -90,7 +90,7 @@ public class Documents {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (var line : lines) {
-            stringBuilder.append(line + "\n");
+            stringBuilder.append(line).append("\n");
         }
 
         return stringBuilder.toString();
