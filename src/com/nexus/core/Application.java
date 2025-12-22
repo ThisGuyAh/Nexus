@@ -16,6 +16,11 @@ import static org.lwjgl.opengl.GL11.glViewport;
 public abstract class Application {
 
     /**
+     * The main {@code Bus} for the {@code Application}.
+     */
+    private Bus bus;
+
+    /**
      * The main {@code Window} for the {@code Application}.
      */
     private Window window;
@@ -49,7 +54,12 @@ public abstract class Application {
      * Constructs an {@code Application}.
      */
     protected Application() {
-        window = new Window();
+        bus = new Bus();
+        window = new Window(bus);
+    }
+
+    public final Bus getBus() {
+        return bus;
     }
 
     public final Window getWindow() {
@@ -123,7 +133,7 @@ public abstract class Application {
      */
     private void run() {
         try {
-            Bus.getInstance().register(this);
+            bus.register(this);
 
             if (!glfwInit()) {
                 throw new IllegalStateException("Failed to initialize GLFW!");

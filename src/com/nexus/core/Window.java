@@ -21,6 +21,11 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class Window {
 
     /**
+     * The {@code Bus}.
+     */
+    private Bus bus;
+
+    /**
      * The title.
      */
     private String title;
@@ -62,24 +67,30 @@ public class Window {
 
     /**
      * Constructs a {@code Window}.
+     *
+     * @param bus the {@code Bus}.
      */
-    public Window() {
-        title = "";
-        width = 960;
-        height = 540;
+    public Window(Bus bus) {
+        this(bus, "", 960, 540);
     }
 
     /**
      * Constructs a {@code Window}.
      *
+     * @param bus    the {@code Bus}.
      * @param title  the title.
      * @param width  the width (in pixels).
      * @param height the height (in pixels).
      */
-    public Window(String title, int width, int height, boolean vSync) {
+    public Window(Bus bus, String title, int width, int height) {
+        this.bus = bus;
         this.title = title;
         this.width = width;
         this.height = height;
+    }
+
+    public Bus getBus() {
+        return bus;
     }
 
     public String getTitle() {
@@ -116,6 +127,10 @@ public class Window {
 
     public boolean isRunning() {
         return !glfwWindowShouldClose(handle);
+    }
+
+    public void setBus(Bus bus) {
+        this.bus = bus;
     }
 
     public void setTitle(String title) {
@@ -186,8 +201,6 @@ public class Window {
      * Sets each callback and integrates it with the corresponding event.
      */
     private void setCallbacks() {
-        Bus bus = Bus.getInstance();
-
         glfwSetWindowCloseCallback(handle, handle -> {
             bus.publish(new WindowCloseEvent(this), NORMAL);
         });
@@ -264,7 +277,7 @@ public class Window {
 
         setCallbacks();
         setCentered();
-        Bus.getInstance().publish(new WindowCreateEvent(this), NORMAL);
+        bus.publish(new WindowCreateEvent(this), NORMAL);
     }
 
     /**
@@ -291,7 +304,7 @@ public class Window {
 
         glfwDestroyWindow(handle);
         glfwFreeCallbacks(handle);
-        Bus.getInstance().publish(new WindowDestroyEvent(this), NORMAL);
+        bus.publish(new WindowDestroyEvent(this), NORMAL);
     }
 
 }
