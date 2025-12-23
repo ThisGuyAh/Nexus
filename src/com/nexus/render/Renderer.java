@@ -2,6 +2,7 @@ package com.nexus.render;
 
 import com.nexus.core.Window;
 import com.nexus.math.Matrix4;
+import com.nexus.math.Vector3;
 import com.nexus.math.Vector4;
 import com.nexus.model.Material;
 import com.nexus.model.Model;
@@ -9,7 +10,6 @@ import com.nexus.model.Texture;
 import com.nexus.scene.Camera;
 import com.nexus.scene.Entity;
 import com.nexus.scene.Light;
-import com.nexus.utility.Time;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -50,12 +50,20 @@ public class Renderer {
         glViewport(x, y, width, height);
     }
 
-    public static void draw(Window window, ShaderProgram shaderProgram, Camera camera, Entity entity, Light light) {
+    // TODO Fix over-allocation of Vector3 and Matrix4
+    public static void draw(Window window, ShaderProgram shaderProgram, Camera camera, Entity entity, Light light,
+                            float interpolation) {
+        Vector3 interpolatedPosition = new Vector3();
+        Vector3 interpolatedRotation = new Vector3();
+
+        Vector3.lerp(interpolation, entity.getPreviousPosition(), entity.getPosition(), interpolatedPosition);
+        Vector3.lerp(interpolation, entity.getPreviousRotation(), entity.getRotation(), interpolatedRotation);
+
         Matrix4 transformation = new Matrix4();
         Matrix4 view = new Matrix4();
         Matrix4 projection = new Matrix4();
 
-        transformation.setTransformation(entity.getPosition(), entity.getRotation(), entity.getScale());
+        transformation.setTransformation(interpolatedPosition, interpolatedRotation, entity.getScale());
         view.setView(camera.getPosition(), camera.getRotation());
         projection.setPerspectiveProjection(window.getWidth(), window.getHeight(), 90.0F, 0.1F, 1000.0F);
 

@@ -17,8 +17,8 @@ public class Entity {
         this.position = position;
         this.rotation = rotation;
         this.scale = scale;
-        previousPosition = position;
-        previousRotation = rotation;
+        previousPosition = new Vector3(position);
+        previousRotation = new Vector3(rotation);
     }
 
     public Model getModel() {
@@ -62,8 +62,12 @@ public class Entity {
     }
 
     public void update() {
-        previousPosition = position;
-        previousRotation = rotation;
+       previousPosition.x = position.x;
+       previousPosition.y = position.y;
+       previousPosition.z = position.z;
+       previousRotation.x = rotation.x;
+       previousRotation.y = rotation.y;
+       previousRotation.z = rotation.z;
     }
 
     public void delete() {
