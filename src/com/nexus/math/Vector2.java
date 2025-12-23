@@ -18,14 +18,14 @@ public class Vector2 extends Vector {
     public float y;
 
     /**
-     * Constructs a {@code Vector}.
+     * Constructs a {@code Vector2}.
      */
     public Vector2() {
         setZero();
     }
 
     /**
-     * Constructs a {@code Vector}.
+     * Constructs a {@code Vector2}.
      *
      * @param other the {@code Vector2} to copy from.
      */
@@ -35,7 +35,7 @@ public class Vector2 extends Vector {
     }
 
     /**
-     * Constructs a {@code Vector}.
+     * Constructs a {@code Vector2}.
      *
      * @param x the x component.
      * @param y the y component.
@@ -128,6 +128,39 @@ public class Vector2 extends Vector {
 
         destination.x = left.x - right.x;
         destination.y = left.y - right.y;
+
+        return destination;
+    }
+
+    /**
+     * Calculates the linear interpolation between this {@code Vector2} and another.
+     *
+     * @param interpolation the interpolation factor.
+     * @param other         the {@code Vector2} to linearly interpolate with.
+     * @return a {@code Vector2} containing the result.
+     */
+    public Vector2 lerp(float interpolation, Vector2 other) {
+        return lerp(interpolation, this, other, this);
+    }
+
+    /**
+     * Calculates the linear interpolation between a {@code Vector2} and another.
+     *
+     * @param interpolation the interpolation factor.
+     * @param left          the left {@code Vector2} to linearly interpolate with.
+     * @param right         the right {@code Vector2} to linearly interpolate with.
+     * @param destination   the {@code Vector2} to store the result in.
+     * @return a {@code Vector2} containing the result.
+     */
+    public static Vector2 lerp(float interpolation, Vector2 left, Vector2 right, Vector2 destination) {
+        if (destination == null) {
+            destination = new Vector2();
+        }
+
+        float inverseInterpolation = 1.0F - interpolation;
+
+        destination.x = left.x * inverseInterpolation + right.x * interpolation;
+        destination.y = left.y * inverseInterpolation + right.y * interpolation;
 
         return destination;
     }

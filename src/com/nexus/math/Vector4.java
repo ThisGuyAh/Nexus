@@ -70,10 +70,10 @@ public class Vector4 extends Vector {
     }
 
     /**
-     * Gets the dot product of this {@code Vector3} and another.
+     * Gets the dot product of this {@code Vector4} and another.
      *
-     * @param other the {@code Vector3} to compare from.
-     * @return the dot product of this {@code Vector3} and another.
+     * @param other the {@code Vector4} to compare from.
+     * @return the dot product of this {@code Vector4} and another.
      */
     public float getDot(Vector4 other) {
         return x * other.x + y * other.y + z * other.z + w * other.w;
@@ -113,7 +113,7 @@ public class Vector4 extends Vector {
      * @param left        the left {@code Vector4} to add.
      * @param right       the right {@code Vector4} to add.
      * @param destination the {@code Vector4} to store the result in.
-     * @return a {@code Vector3} containing the result.
+     * @return a {@code Vector4} containing the result.
      */
     public static Vector4 add(Vector4 left, Vector4 right, Vector4 destination) {
         if (destination == null) {
@@ -149,7 +149,7 @@ public class Vector4 extends Vector {
      * @param left        the left {@code Vector4} to subtract.
      * @param right       the right {@code Vector4} to subtract.
      * @param destination the {@code Vector4} to store the result in.
-     * @return a {@code Vector3} containing the result.
+     * @return a {@code Vector4} containing the result.
      */
     public static Vector4 subtract(Vector4 left, Vector4 right, Vector4 destination) {
         if (destination == null) {
@@ -160,6 +160,41 @@ public class Vector4 extends Vector {
         destination.y = left.y - right.y;
         destination.z = left.z - right.z;
         destination.w = left.w - right.w;
+
+        return destination;
+    }
+
+    /**
+     * Calculates the linear interpolation between this {@code Vector4} and another.
+     *
+     * @param interpolation the interpolation factor.
+     * @param other         the {@code Vector4} to linearly interpolate with.
+     * @return a {@code Vector4} containing the result.
+     */
+    public Vector4 lerp(float interpolation, Vector4 other) {
+        return lerp(interpolation, this, other, this);
+    }
+
+    /**
+     * Calculates the linear interpolation between a {@code Vector4} and another.
+     *
+     * @param interpolation the interpolation factor.
+     * @param left          the left {@code Vector4} to linearly interpolate with.
+     * @param right         the right {@code Vector4} to linearly interpolate with.
+     * @param destination   the {@code Vector4} to store the result in.
+     * @return a {@code Vector4} containing the result.
+     */
+    public static Vector4 lerp(float interpolation, Vector4 left, Vector4 right, Vector4 destination) {
+        if (destination == null) {
+            destination = new Vector4();
+        }
+
+        float inverseInterpolation = 1 - interpolation;
+
+        destination.x = left.x * inverseInterpolation + right.x * interpolation;
+        destination.y = left.y * inverseInterpolation + right.y * interpolation;
+        destination.z = left.z * inverseInterpolation + right.z * interpolation;
+        destination.w = left.w * inverseInterpolation + right.w * interpolation;
 
         return destination;
     }

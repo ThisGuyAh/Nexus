@@ -202,6 +202,7 @@ public abstract class Application {
             onDestroy();
             window.destroy();
             glfwTerminate();
+            bus.unregister(this);
         }
     }
 

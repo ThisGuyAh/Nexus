@@ -144,6 +144,40 @@ public class Vector3 extends Vector {
     }
 
     /**
+     * Calculates the linear interpolation between this {@code Vector3} and another.
+     *
+     * @param interpolation the interpolation factor.
+     * @param other         the {@code Vector3} to linearly interpolate with.
+     * @return a {@code Vector3} containing the result.
+     */
+    public Vector3 lerp(float interpolation, Vector3 other) {
+        return lerp(interpolation, this, other, this);
+    }
+
+    /**
+     * Calculates the linear interpolation between a {@code Vector3} and another.
+     *
+     * @param interpolation the interpolation factor.
+     * @param left          the left {@code Vector3} to linearly interpolate with.
+     * @param right         the right {@code Vector3} to linearly interpolate with.
+     * @param destination   the {@code Vector3} to store the result in.
+     * @return a {@code Vector3} containing the result.
+     */
+    public static Vector3 lerp(float interpolation, Vector3 left, Vector3 right, Vector3 destination) {
+        if (destination == null) {
+            destination = new Vector3();
+        }
+
+        float inverseInterpolation = 1 - interpolation;
+
+        destination.x = left.x * inverseInterpolation + right.x * interpolation;
+        destination.y = left.y * inverseInterpolation + right.y * interpolation;
+        destination.z = left.z * inverseInterpolation + right.z * interpolation;
+
+        return destination;
+    }
+
+    /**
      * Calculates the cross product of this {@code Vector3} and another.
      *
      * @param other the {@code Vector3} to cross.
